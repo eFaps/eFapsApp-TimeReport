@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+  Copyright 2003 - 2010 The eFaps Team
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Author:          The eFaps Team
+  Revision:        $Rev: 4017 $
+  Last Changed:    $Date: 2010-04-14 18:56:18 -0500 (Wed, 14 Apr 2010) $
+  Last Changed By: $Author: jan.moxter $
+
+-->
+
+<install xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+    <application>eFaps-ERP-TimeReport</application>
+    <dependencies>
+        <dependency order="0">
+            <groupId>org.efaps</groupId>
+            <artifactId>efaps-kernel-install</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="1">
+            <groupId>org.efaps</groupId>
+            <artifactId>efaps-webapp-install</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="2">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-crm-contacts</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="3">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-commons</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="4">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-humanresource</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="5">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-products</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="6">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-sales</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="7">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-accounting</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency order="8">
+            <groupId>org.efaps.module</groupId>
+            <artifactId>efaps-erp-projects</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <version number="1" reloadCache="false" login="true" compile="true">
+        <description>Install ERP-TimeReport Basic Modul.</description>
+        <script type="groovy">
+            import org.efaps.admin.runlevel.RunLevel;
+            import org.efaps.db.Context;
+            import org.efaps.db.Insert;
+            import org.efaps.db.SearchQuery;
+            import org.efaps.esjp.admin.ui.UIUpdate;
+            import org.efaps.importer.DataImport;
+            import org.efaps.db.Instance;
+
+            import java.net.URL
+            import java.io.File;
+
+            EFAPS_LOGGER.info("Checking for import of JaasKeys for eFaps-ERP-TimeReport");
+
+            SearchQuery query = new SearchQuery();
+            query.setQueryTypes("Admin_User_JAASKey");
+            query.addWhereExprEqValue("Key", "TimeReport_Admin");
+            query.addSelect("OID");
+            query.execute();
+            if (!query.next()) {
+                RunLevel.init("shell");
+                RunLevel.execute();
+
+                EFAPS_LOGGER.info("    Importing JaasKeys for eFaps-ERP-TimeReport");
+                URL url = new URL(EFAPS_ROOTURL, "Data/IMPORT_UserJAASKey.xml");
+                DataImport imp = DataImport.readFile(url);
+                imp.updateInDB();
+            }
+             UIUpdate update = new UIUpdate();
+            <!-- connect the TimeReport_MyDesk Menu to the main menu from efaps -->
+            update.add2Menu("5d86cc1e-61bc-4bd6-b529-d2dc1293bf54", "87001cc3-c45c-44de-b8f1-776df507f268", 1);
+
+            <!-- connect the TimeReport_HumanResource_EmployeeTree_EmployeeReportPosition to the main menu from HumanResource_EmployeeTree -->
+            update.add2Menu("050324fb-2c89-4ab8-9d03-aacb81c9160d", "136a5437-7642-4e09-8182-23fc97fedbab", -1);
+
+            <!-- connect the TimeReport_Projects_ProjectTree_Categories to the main menu from Projects_ProjectTree -->
+            update.add2Menu("4e58475b-fa91-44e1-9c4c-93ff776a4a85", "1336daea-b7d2-418f-accc-0edf5937f3cb", 1);
+        </script>
+    </version>
+</install>

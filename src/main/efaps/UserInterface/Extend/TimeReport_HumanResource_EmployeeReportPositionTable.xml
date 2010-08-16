@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ Copyright 2003 - 2010 The eFaps Team
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ Author:          The eFaps Team
+ Revision:        $Rev$
+ Last Changed:    $Date$
+ Last Changed By: $Author$
+
+-->
+
+<ui-table xmlns="http://www.efaps.org/xsd"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+    <uuid>4c98f2ef-557d-49a3-b731-21922292034a</uuid>
+    <file-application>eFaps-ERP-TimeReport</file-application>
+    <file-revision>$Rev$</file-revision>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+        <name>TimeReport_HumanResource_EmployeeReportPositionTable</name>
+        <!-- fields -->
+        <field name="positionNumber">
+            <property name="Attribute">PositionNumber</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.positionNumber.Label</property>
+        </field>
+        <field name="quantity">
+            <property name="Rows">6</property>
+            <property name="Attribute">Quantity</property>
+            <property name="Label">TimeReport_EmployeeReportPosition/Quantity.Label</property>
+        </field>
+        <field name="projects">
+            <property name="SelectAlternateOID">linkto[CategoryAbstractLink].linkto[ProjectLink].oid</property>
+            <property name="Select">linkto[CategoryAbstractLink].linkto[ProjectLink].attribute[Name]</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.projects.Label</property>
+            <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
+        </field>
+        <field name="categoryAbstractLink">
+            <property name="SelectAlternateOID">linkto[CategoryAbstractLink].oid</property>
+            <property name="Select">linkto[CategoryAbstractLink].attribute[Name]</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.categoryAbstractLink.Label</property>
+            <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
+        </field>
+        <field name="date">
+            <property name="SelectAlternateOID">linkto[ReportLink].oid</property>
+            <property name="Select">linkto[ReportLink].attribute[Date]</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.date.Label</property>
+        </field>
+        <field name="dueDate">
+            <property name="SelectAlternateOID">linkto[ReportLink].oid</property>
+            <property name="Select">linkto[ReportLink].attribute[DueDate]</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.dueDate.Label</property>
+        </field>
+    </definition>
+</ui-table>
