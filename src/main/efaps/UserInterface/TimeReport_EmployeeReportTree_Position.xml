@@ -27,7 +27,7 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>28e2a7ee-5a75-471f-9ee0-bd3281287d48</uuid>
-    <file-application>eFaps-ERP-TimeReport</file-application>
+    <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev$</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>

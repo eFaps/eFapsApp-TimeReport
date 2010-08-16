@@ -17,9 +17,9 @@
  limitations under the License.
 
  Author:          The eFaps Team
- Revision:        $Rev: 3731 $
- Last Changed:    $Date: 2010-02-15 20:03:03 -0500 (Mon, 15 Feb 2010) $
- Last Changed By: $Author: jan.moxter $
+ Revision:        $Rev$
+ Last Changed:    $Date$
+ Last Changed By: $Author$
 
 -->
 
@@ -27,8 +27,8 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>d17a5dbe-4109-476b-966d-1d2c38f51483</uuid>
-    <file-application>eFaps-ERP-TimeReport</file-application>
-    <file-revision>$Rev: 3731 $</file-revision>
+    <file-application>eFapsApp-TimeReport</file-application>
+    <file-revision>$Rev$</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_CategoryEmployee</name>

@@ -17,9 +17,9 @@
  limitations under the License.
 
  Author:          The eFaps Team
- Revision:        $Rev: 4303 $
- Last Changed:    $Date: 2010-04-29 17:42:34 -0500 (Thu, 29 Apr 2010) $
- Last Changed By: $Author: jan.moxter $
+ Revision:        $Rev$
+ Last Changed:    $Date$
+ Last Changed By: $Author$
 
 -->
 
@@ -33,8 +33,8 @@
     * Module Definition
     ************************************************************************* -->
     <packaging>jar</packaging>
-    <groupId>org.efaps.module</groupId>
-    <artifactId>efaps-erp-timereport</artifactId>
+    <groupId>org.efaps.apps</groupId>
+    <artifactId>timereport</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>eFaps ERP Time Report Module</name>
     <description>
@@ -75,7 +75,7 @@
         <name>The eFaps Team</name>
         <url>http://www.efaps.org</url>
     </organization>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -331,13 +331,13 @@
     <dependencies>
         <!-- eFaps ERP Products Module -->
         <dependency>
-            <groupId>org.efaps.module</groupId>
-            <artifactId>efaps-erp-projects</artifactId>
+            <groupId>org.efaps.apps</groupId>
+            <artifactId>projects</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.efaps.module</groupId>
-            <artifactId>efaps-erp-payroll</artifactId>
+            <groupId>org.efaps.apps</groupId>
+            <artifactId>payroll</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
