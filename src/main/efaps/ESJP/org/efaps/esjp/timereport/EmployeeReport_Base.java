@@ -25,14 +25,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.event.Parameter;
-import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Parameter.ParameterValues;
+import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
 import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
@@ -243,7 +243,10 @@ public abstract class EmployeeReport_Base
         final Return retVal = new Return();
         final Map<String, Long> map = new TreeMap<String, Long>();
         final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        final String project = _parameter.getParameterValue("projects");
+        final Integer pos = (_parameter.getParameterValue("eFapsRowSelectedRow") != null
+                        ? Integer.parseInt(_parameter.getParameterValue("eFapsRowSelectedRow"))
+                                        : 0);
+        final String project = _parameter.getParameterValues("projects")[pos];
         if (project != null && !project.isEmpty()) {
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.CategoryEmployee);
             queryBldr.addWhereAttrEqValue(CITimeReport.CategoryEmployee.ProjectLink, Instance.get(project).getId());
@@ -255,18 +258,20 @@ public abstract class EmployeeReport_Base
                 final String name = multi.<String>getAttribute(CITimeReport.CategoryEmployee.Name);
                 map.put(name, id);
             }
+            final Map<String, String> mapValue = new HashMap<String, String>();
+            final StringBuilder js = new StringBuilder();
             if (!map.isEmpty()) {
-                final Map<String, String> mapValue = new HashMap<String, String>();
-                final StringBuilder js = new StringBuilder();
                 js.append("new Array('").append(1).append("'");
                 for (final Entry<String, Long> entry : map.entrySet()) {
                     js.append(",'").append(entry.getValue()).append("','")
-                      .append(StringEscapeUtils.escapeJavaScript(entry.getKey())).append("'");
+                                   .append(StringEscapeUtils.escapeJavaScript(entry.getKey())).append("'");
                 }
                 js.append(")");
-                mapValue.put("categoryAbstractLink", js.toString());
-                list.add(mapValue);
+            } else {
+                js.append("new Array('").append(0).append("')");
             }
+            mapValue.put("categoryAbstractLink", js.toString());
+            list.add(mapValue);
             retVal.put(ReturnValues.VALUES, list);
         }
 
