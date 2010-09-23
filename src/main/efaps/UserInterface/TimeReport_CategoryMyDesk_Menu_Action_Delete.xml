@@ -23,19 +23,25 @@
 
 -->
 
-<ui-menu xmlns="http://www.efaps.org/xsd"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>3a1bd295-17e3-45e9-9c10-006ab8598268</uuid>
+<ui-command xmlns="http://www.efaps.org/xsd"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+    <uuid>ce9628a6-40f9-4b05-8d25-81624c02955d</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev$</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_CategoryMyDesk_Menu_Action</name>
-        <!-- childs -->
-        <childs>
-            <child>TimeReport_CategoryMyDesk_Menu_Action_CreateCategoryEmployee</child>
-            <child>TimeReport_CategoryMyDesk_Menu_Action_Delete</child>
-        </childs>
+        <name>TimeReport_CategoryMyDesk_Menu_Action_Delete</name>
+        <!-- access -->
+        <access>
+            <role>TimeReport_Admin</role>
+        </access>
+        <!-- target definitions -->
+        <target>
+            <execute program="org.efaps.esjp.common.uitable.CommonDelete" />
+        </target>
+        <!-- properties -->
+        <property name="AskUser">true</property>
+        <property name="Submit">true</property>
     </definition>
-</ui-menu>
+</ui-command>
