@@ -40,6 +40,7 @@
         <target>
             <form>TimeReport_EmployeeReportForm</form>
             <execute program="org.efaps.esjp.timereport.EmployeeReport" method="create" />
+            <validate program="org.efaps.esjp.timereport.EmployeeReport" method="validate"></validate>
         </target>
 
         <!-- properties -->

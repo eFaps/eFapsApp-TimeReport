@@ -30,6 +30,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.efaps.admin.datamodel.Status;
+import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Parameter.ParameterValues;
 import org.efaps.admin.event.Return;
@@ -66,6 +67,21 @@ public abstract class EmployeeReport_Base
     public Return create(final Parameter _parameter)
         throws EFapsException
     {
+        final Instance repInst = createBaseReport(_parameter);
+        createPositions(_parameter, repInst);
+        return new Return();
+    }
+
+
+    /**
+     * Create the base report.
+     * @param _parameter Parameter as passed form the eFasp API
+     * @return Instance of the new Report
+     * @throws EFapsException on error
+     */
+    protected Instance createBaseReport(final Parameter _parameter)
+        throws EFapsException
+    {
         final String name = _parameter.getParameterValue("name");
         final String date = _parameter.getParameterValue("date");
         final String duedate = _parameter.getParameterValue("dueDate");
@@ -78,6 +94,21 @@ public abstract class EmployeeReport_Base
         insert.add(CITimeReport.EmployeeReport.Status,
                                             Status.find(CITimeReport.EmployeeReportStatus.uuid, "Open").getId());
         insert.execute();
+        return insert.getInstance();
+    }
+
+    /**
+     * Create the positions for the report.
+     * @param _parameter    Parameter as passed form the eFasp API
+     * @param _reportInst   Instance of the report this positions belong to
+     * @return list of newly created instances
+     * @throws EFapsException on error
+     */
+    protected List<Instance> createPositions(final Parameter _parameter,
+                                             final Instance _reportInst)
+        throws EFapsException
+    {
+        final List<Instance> ret = new ArrayList<Instance>();
         final String[] employees = _parameter.getParameterValues("employeeLink");
         final String[] quantity = _parameter.getParameterValues("quantity");
         final String[] quantityUoM = _parameter.getParameterValues("quantityUoM");
@@ -88,15 +119,94 @@ public abstract class EmployeeReport_Base
                             && quantity[i] != null && !quantity[i].isEmpty()
                             && categories[i] != null && !categories[i].isEmpty()) {
                 final Insert posInsert = new Insert(CITimeReport.EmployeeReportPosition);
-                posInsert.add(CITimeReport.EmployeeReportPosition.ReportLink, insert.getInstance().getId());
+                posInsert.add(CITimeReport.EmployeeReportPosition.ReportLink, _reportInst.getId());
                 posInsert.add(CITimeReport.EmployeeReportPosition.EmployeeLink, Instance.get(employees[i]).getId());
                 posInsert.add(CITimeReport.EmployeeReportPosition.PositionNumber, i + 1);
-                posInsert.add(CITimeReport.EmployeeReportPosition.Quantity, new Object[]{ quantity[i], quantityUoM[i]});
+                posInsert.add(CITimeReport.EmployeeReportPosition.Quantity, new Object[] { quantity[i], quantityUoM[i] });
                 posInsert.add(CITimeReport.EmployeeReportPosition.CategoryAbstractLink, categories[i]);
                 posInsert.execute();
+                ret.add(posInsert.getInstance());
             }
         }
-        return new Return();
+        return ret;
+    }
+
+    /**
+     * Validate the parametets given form the create form.
+     * @param _parameter    Parameter as passed form the eFasp API
+     * @return Return
+     * @throws EFapsException on error
+     */
+    public Return validate(final Parameter _parameter)
+        throws EFapsException
+    {
+        final Return ret= new Return();
+        final StringBuilder html = validatePositions(_parameter);
+        if (html.length() > 0) {
+            ret.put(ReturnValues.SNIPLETT, html.toString());
+        } else {
+            ret.put(ReturnValues.TRUE, true);
+        }
+        return ret;
+    }
+
+
+    protected StringBuilder validatePositions(final Parameter _parameter)
+        throws EFapsException
+    {
+        final StringBuilder ret = new StringBuilder();
+        final String[] employees = _parameter.getParameterValues("employeeLink");
+        final String[] quantity = _parameter.getParameterValues("quantity");
+        final String[] categories = _parameter.getParameterValues("categoryAbstractLink");
+        final String[] projects = _parameter.getParameterValues("projects");
+
+        for (int i = 0; i < employees.length; i++) {
+            final boolean[] valid = new boolean[4];
+            if (employees[i] == null || employees[i].isEmpty()) {
+                valid[0] = false;
+            } else {
+                valid[0] = true;
+            }
+            if (quantity[i] == null || quantity[i].isEmpty()) {
+                valid[1] = false;
+            } else {
+                valid[1] = true;
+            }
+            if (projects[i] == null || projects[i].isEmpty()) {
+                valid[2] = false;
+            } else {
+                valid[2] = true;
+            }
+            if (categories[i] == null || categories[i].isEmpty()) {
+                valid[3] = false;
+            } else {
+                valid[3] = true;
+            }
+            if (valid[0] == false || valid[1] == false || valid[2] == false || valid[3] == false) {
+                if (ret.length() == 0) {
+                    ret.append("<table>")
+                        .append("<tr><th></th><th>")
+                        .append(DBProperties.getProperty("TimeReport_EmployeeReportPosition.employeeLink.Label"))
+                        .append("</th><th>")
+                        .append(DBProperties.getProperty("TimeReport_EmployeeReportPosition/Quantity.Label"))
+                        .append("</th><th>")
+                        .append(DBProperties.getProperty("TimeReport_EmployeeReportPositionTable.projects.Label"))
+                        .append("</th><th>")
+                        .append(DBProperties.getProperty(
+                                        "TimeReport_EmployeeReportPosition.categoryAbstractLink.Label"))
+                        .append("</th></tr>");
+                }
+                ret.append("<tr><td>").append(i + 1).append("</td>");
+                for (int j = 0 ; j < 4 ; j++) {
+                    ret.append("<td>").append(valid[j] ? "" : "X").append("</td>");
+                }
+                ret.append("</tr>");
+            }
+        }
+        if (ret.length() > 0) {
+            ret.append("</table>");
+        }
+        return ret;
     }
 
     /**
