@@ -39,6 +39,8 @@
 
         <type>TimeReport_EmployeeReport</type>
         <type>TimeReport_EquipmentReport</type>
+        <type>TimeReport_ForecastReport</type>
+        <type>TimeReport_TimeCardReport</type>
 
         <status group="TimeReport_EmployeeReportStatus">
             <key>Open</key>
@@ -51,6 +53,19 @@
             <key>Closed</key>
             <key>Canceled</key>
         </status>
+
+        <status group="TimeReport_ForecastReportStatus">
+            <key>Open</key>
+            <key>Closed</key>
+            <key>Canceled</key>
+        </status>
+
+        <status group="TimeReport_TimeCardReportStatus">
+            <key>Open</key>
+            <key>Closed</key>
+            <key>Canceled</key>
+        </status>
+
         <role>TimeReport_Reader</role>
     </definition>
 </access-set>

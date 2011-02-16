@@ -42,6 +42,7 @@
             <column name="CATEGORYID"      type="INTEGER"/>
             <column name="DESCR"           type="STRING_SHORT"                    length="255" />
             <column name="POS"             type="INTEGER"/>
+            <column name="DATE"            type="DATETIME"/>
             <column name="QUANTITY"        type="DECIMAL"                         length="16" scale="6"/>
             <column name="UOMID"           type="INTEGER"/>
             <column name="QUANTITYBASE"    type="REAL"/>

@@ -59,12 +59,18 @@
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>POS</sqlcolumn>
         </attribute>
-         <attribute>
+        <attribute>
             <name>DocumentAbstractLink</name>
             <type>Link</type>
             <typelink>TimeReport_DocumentAbstract</typelink>
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>DOCID</sqlcolumn>
+        </attribute>
+        <attribute>
+            <name>Date</name>
+            <type>Date</type>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>DATE</sqlcolumn>
         </attribute>
         <attribute>
             <name>CategoryAbstractLink</name>
