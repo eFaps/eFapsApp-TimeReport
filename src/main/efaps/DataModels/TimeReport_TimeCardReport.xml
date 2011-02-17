@@ -32,7 +32,7 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_TimeCardReport</name>
-        <parent>TimeReport_DocumentAbstract</parent>
+        <parent>TimeReport_EmployeeReportAbstract</parent>
         <attribute>
             <name>Status</name>
             <type>Status</type>

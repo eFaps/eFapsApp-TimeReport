@@ -38,7 +38,7 @@
             <form>TimeReport_EmployeeReportForm</form>
         </target>
         <!-- type tree for -->
-        <type>TimeReport_EmployeeReport</type>
+        <type>TimeReport_EmployeeReportAbstract</type>
 
         <!-- childs -->
         <childs>
