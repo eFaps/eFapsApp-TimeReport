@@ -35,7 +35,7 @@
         <target>
             <table>TimeReport_EmployeeReportPosition4ViewTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_EmployeeReportPosition</property>
+                <property name="Types">TimeReport_PositionAbstract</property>
                 <property name="LinkFroms">CategoryAbstractLink</property>
             </evaluate>
         </target>

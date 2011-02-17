@@ -124,8 +124,8 @@
             <property name="ModeEdit">NONE</property>
             <table>TimeReport_EmployeeReportPositionTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_EmployeeReportPosition</property>
-                <property name="LinkFroms">ReportLink</property>
+                <property name="Types">TimeReport_PositionAbstract</property>
+                <property name="LinkFroms">DocumentAbstractLink</property>
             </evaluate>
         </field>
     </definition>
