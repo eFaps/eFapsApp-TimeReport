@@ -33,7 +33,7 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_TimeCardReportPosition</name>
-        <parent>TimeReport_PositionAbstract</parent>
+        <parent>TimeReport_EmployeeReportAbstractPosition</parent>
         <attribute>
             <name>ReportLink</name>
             <type>Link</type>
