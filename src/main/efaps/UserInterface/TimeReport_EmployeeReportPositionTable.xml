@@ -53,8 +53,8 @@
              </trigger>
         </field>
         <field name="employeeLink4Read">
-            <property name="SelectAlternateOID">linkto[EmployeeLink].oid</property>
-            <property name="Phrase">$&lt;linkto[EmployeeLink].attribute[LastName]&gt; - $&lt;linkto[EmployeeLink].attribute[FirstName]&gt;</property>
+            <property name="SelectAlternateOID">linkto[EmployeeAbstractLink].oid</property>
+            <property name="Phrase">$&lt;linkto[EmployeeAbstractLink].attribute[LastName]&gt; - $&lt;linkto[EmployeeAbstractLink].attribute[FirstName]&gt;</property>
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="Label">TimeReport_EmployeeReportPosition.employeeLink.Label</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
