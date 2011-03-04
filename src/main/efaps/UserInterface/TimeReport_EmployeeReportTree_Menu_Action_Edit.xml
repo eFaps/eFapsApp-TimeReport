@@ -34,6 +34,7 @@
         <name>TimeReport_EmployeeReportTree_Menu_Action_Edit</name>
         <access>
             <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
         </access>
         <!-- target definitions -->
         <target>
