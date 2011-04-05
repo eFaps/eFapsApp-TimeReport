@@ -21,14 +21,22 @@
 
 package org.efaps.esjp.timereport;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.efaps.admin.datamodel.Dimension.UoM;
 import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
@@ -37,13 +45,19 @@ import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
 import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
+import org.efaps.db.Context;
 import org.efaps.db.Insert;
 import org.efaps.db.Instance;
 import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.QueryBuilder;
+import org.efaps.db.SelectBuilder;
+import org.efaps.esjp.ci.CIHumanResource;
 import org.efaps.esjp.ci.CIProjects;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.util.EFapsException;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 
 /**
@@ -384,7 +398,163 @@ public abstract class EmployeeReport_Base
             list.add(mapValue);
             retVal.put(ReturnValues.VALUES, list);
         }
-
         return retVal;
+    }
+
+    /**
+     * @param _parameter Parameter as passed from the eFaps API.
+     * @return map list with values.
+     * @throws EFapsException on error.
+     */
+    public Return getResumeUIFieldValue(final Parameter _parameter)
+        throws EFapsException
+    {
+        final Return ret = new Return();
+        final StringBuilder html = new StringBuilder();
+
+        final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeReportAbstractPosition);
+        queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeReportAbstractPosition.DocumentAbstractLink,
+                        _parameter.getInstance().getId());
+        final MultiPrintQuery multi = queryBldr.getPrint();
+        final SelectBuilder selEmp = new SelectBuilder().linkto(CITimeReport.EmployeeReportPosition.EmployeeAbstractLink);
+        final SelectBuilder selEmpLastName = new SelectBuilder(selEmp).attribute(CIHumanResource.Employee.LastName);
+        final SelectBuilder selEmpFirstName = new SelectBuilder(selEmp).attribute(CIHumanResource.Employee.FirstName);
+        final SelectBuilder selEmpOid = new SelectBuilder(selEmp).oid();
+        multi.addSelect(selEmpOid, selEmpLastName, selEmpFirstName);
+        multi.addAttribute(CITimeReport.EmployeeReportPosition.Date, CITimeReport.EmployeeReportPosition.Quantity);
+        multi.execute();
+        final Map<Instance, EmpReportPos> values = new HashMap<Instance, EmpReportPos>();
+        final List<EmpReportPos> employees = new ArrayList<EmpReportPos>();
+        while (multi.next()) {
+            final Instance emplInst = Instance.get((String) multi.getSelect(selEmpOid));
+            final Object[] quant = multi.getAttribute(CITimeReport.EmployeeReportPosition.Quantity);
+            final DateTime date = multi.<DateTime>getAttribute(CITimeReport.EmployeeReportPosition.Date);
+            EmpReportPos pos;
+            if (values.containsKey(emplInst)) {
+                pos = values.get(emplInst);
+            } else {
+                final String lastName = multi.<String>getSelect(selEmpLastName);
+                final String firstName = multi.<String>getSelect(selEmpFirstName);
+                pos = new EmpReportPos(emplInst, lastName + ", " + firstName);
+                employees.add(pos);
+            }
+            values.put(emplInst, pos);
+            pos.add(date, (BigDecimal) quant[0], (UoM) quant[1]);
+        }
+        final Set<DateTime> dates = new TreeSet<DateTime>();
+        for (final EmpReportPos pos : values.values()) {
+            for (final DateTime date : pos.getDate2quantity().keySet()) {
+                dates.add(date);
+            }
+        }
+        Collections.sort(employees, new Comparator<EmpReportPos>() {
+
+            @Override
+            public int compare(final EmpReportPos _o1,
+                               final EmpReportPos _o2)
+            {
+                return _o1.getName().compareTo(_o2.getName());
+            }});
+        html.append("<table><tr><th>")
+            .append(DBProperties.getProperty("org.efaps.esjp.timereport.EmployeeReport.getResumeUIFieldValue.employee"))
+            .append("</th>");
+        final DateTimeFormatter fomatr = DateTimeFormat.forStyle("M-").withLocale(
+                        Context.getThreadContext().getLocale());
+
+        for (final DateTime date : dates) {
+            html.append("<th>").append(fomatr.print(date)).append("</th>");
+        }
+        html.append("</tr>");
+        final DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(Context.getThreadContext().getLocale());
+        format.applyPattern("#,##0.##");
+        for (final EmpReportPos pos : employees) {
+            html.append("<tr>").append("<td>").append(pos.getName()).append("</td>");
+            for (final DateTime date : dates) {
+                html.append("<td>");
+                if (pos.getDate2quantity().containsKey(date)) {
+                    html.append(format.format(pos.getDate2quantity().get(date))).append(pos.getUom().getName());
+                }
+                html.append("</td>");
+            }
+            html.append("</tr>");
+        }
+        html.append("</table>");
+        ret.put(ReturnValues.SNIPLETT, html.toString());
+        return ret;
+    }
+
+    public class EmpReportPos
+    {
+
+        private final String name;
+
+        private UoM uom = null;
+
+        private final Map<DateTime, BigDecimal> date2quantity = new HashMap<DateTime, BigDecimal>();
+
+
+        /**
+         * Getter method for the instance variable {@link #name}.
+         *
+         * @return value of instance variable {@link #name}
+         */
+        protected String getName()
+        {
+            return this.name;
+        }
+
+
+        /**
+         * Getter method for the instance variable {@link #uom}.
+         *
+         * @return value of instance variable {@link #uom}
+         */
+        protected UoM getUom()
+        {
+            return this.uom;
+        }
+
+
+        /**
+         * Getter method for the instance variable {@link #date2quantity}.
+         *
+         * @return value of instance variable {@link #date2quantity}
+         */
+        protected Map<DateTime, BigDecimal> getDate2quantity()
+        {
+            return this.date2quantity;
+        }
+
+        /**
+         * @param _emplInst
+         * @param _string
+         */
+        public EmpReportPos(final Instance _emplInst,
+                            final String _name)
+        {
+            this.name = _name;
+        }
+
+        /**
+         * @param _date
+         * @param _quant2
+         * @param _quant
+         */
+        public void add(final DateTime _date,
+                        final BigDecimal _quantity,
+                        final UoM _uoM)
+        {
+            if (this.uom == null) {
+                this.uom = _uoM.getDimension().getBaseUoM();
+            }
+            BigDecimal quantity = BigDecimal.ZERO;
+            if (this.date2quantity.containsKey(_date)) {
+                quantity = this.date2quantity.get(_date);
+            }
+            quantity = quantity.add(new BigDecimal(_uoM.getNumerator()).setScale(8).divide(
+                            new BigDecimal(_uoM.getDenominator()), BigDecimal.ROUND_HALF_UP).multiply(_quantity));
+            this.date2quantity.put(_date, quantity);
+        }
+
     }
 }

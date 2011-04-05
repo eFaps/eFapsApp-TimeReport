@@ -2,7 +2,7 @@
 
 <!--
 
-  Copyright 2003 - 2010 The eFaps Team
+  Copyright 2003 - 2011 The eFaps Team
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -102,16 +102,20 @@
             <property name="Attribute">Modified</property>
             <property name="ModeSearch">EDITABLE</property>
         </field>
-        <field name="nameGroup" character="Group">
-            <property name="ModeEdit">NONE</property>
-            <property name="GroupCount">2</property>
-        </field>
         <field name="name">
             <property name="Attribute">Name</property>
             <property name="Columns">15</property>
             <property name="ModeEdit">EDITABLE</property>
             <property name="ModeCreate">EDITABLE</property>
             <property name="Required">true</property>
+        </field>
+        <field name="resume">
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="HideLabel">true</property>
+            <trigger program="org.efaps.esjp.timereport.EmployeeReport"
+                method="getResumeUIFieldValue"
+                name="TimeReport_EmployeeReportForm.resume.UI_FIELD_VALUE"
+                event="UI_FIELD_VALUE"></trigger>
         </field>
         <field name="positionHeading" character="Heading">
             <property name="Level">1</property>
