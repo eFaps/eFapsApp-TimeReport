@@ -127,6 +127,8 @@ public abstract class EmployeeReport_Base
         final String[] quantity = _parameter.getParameterValues("quantity");
         final String[] quantityUoM = _parameter.getParameterValues("quantityUoM");
         final String[] categories = _parameter.getParameterValues("categoryAbstractLink");
+        final String[] categoryDesc = _parameter.getParameterValues("categoryDesc");
+        final String[] dates = _parameter.getParameterValues("date");
 
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] != null && !employees[i].isEmpty()
@@ -138,6 +140,12 @@ public abstract class EmployeeReport_Base
                 posInsert.add(CITimeReport.EmployeeReportPosition.PositionNumber, i + 1);
                 posInsert.add(CITimeReport.EmployeeReportPosition.Quantity, new Object[] { quantity[i], quantityUoM[i] });
                 posInsert.add(CITimeReport.EmployeeReportPosition.CategoryAbstractLink, categories[i]);
+                if (categoryDesc != null) {
+                    posInsert.add(CITimeReport.EmployeeReportPosition.CategoryDesc, categoryDesc[i]);
+                }
+                if (dates != null) {
+                    posInsert.add(CITimeReport.EmployeeReportPosition.Date, dates[i]);
+                }
                 posInsert.execute();
                 ret.add(posInsert.getInstance());
             }
@@ -262,6 +270,8 @@ public abstract class EmployeeReport_Base
         final String employees = _parameter.getParameterValue("employeeLink");
         final String quantity = _parameter.getParameterValue("quantity");
         final String quantityUoM = _parameter.getParameterValue("quantityUoM");
+        final String categoryDesc = _parameter.getParameterValue("categoryDesc");
+        final String date = _parameter.getParameterValue("date");
 
         final Insert posInsert = new Insert(CITimeReport.EmployeeReportPosition);
         posInsert.add(CITimeReport.EmployeeReportPosition.ReportLink, 0);
@@ -269,6 +279,12 @@ public abstract class EmployeeReport_Base
         posInsert.add(CITimeReport.EmployeeReportPosition.PositionNumber, 0);
         posInsert.add(CITimeReport.EmployeeReportPosition.Quantity, new Object[] { quantity, quantityUoM });
         posInsert.add(CITimeReport.EmployeeReportPosition.CategoryAbstractLink, inst.getId());
+        if (categoryDesc != null) {
+            posInsert.add(CITimeReport.EmployeeReportPosition.CategoryDesc, categoryDesc);
+        }
+        if (date != null) {
+            posInsert.add(CITimeReport.EmployeeReportPosition.Date, date);
+        }
         posInsert.execute();
 
         return new Return();
@@ -289,6 +305,8 @@ public abstract class EmployeeReport_Base
         final String quantity = _parameter.getParameterValue("quantity");
         final String quantityUoM = _parameter.getParameterValue("quantityUoM");
         final String categories = _parameter.getParameterValue("categoryAbstractLink");
+        final String categoryDesc = _parameter.getParameterValue("categoryDesc");
+        final String date = _parameter.getParameterValue("date");
 
         if (inst != null && inst.isValid()) {
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeReportPosition);
@@ -307,6 +325,12 @@ public abstract class EmployeeReport_Base
             posInsert.add(CITimeReport.EmployeeReportPosition.PositionNumber, newPos + 1);
             posInsert.add(CITimeReport.EmployeeReportPosition.Quantity, new Object[] { quantity, quantityUoM });
             posInsert.add(CITimeReport.EmployeeReportPosition.CategoryAbstractLink, categories);
+            if (categoryDesc != null) {
+                posInsert.add(CITimeReport.EmployeeReportPosition.CategoryDesc, categoryDesc);
+            }
+            if (date != null) {
+                posInsert.add(CITimeReport.EmployeeReportPosition.Date, date);
+            }
             posInsert.execute();
         }
 

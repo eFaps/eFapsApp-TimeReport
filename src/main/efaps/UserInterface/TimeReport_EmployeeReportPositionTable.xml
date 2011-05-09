@@ -109,5 +109,19 @@
             <property name="ModeCreate">NONE</property>
             <property name="ModeEdit">NONE</property>
         </field>
+        <field name="categoryDesc">
+            <property name="Attribute">CategoryDesc</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.categoryDesc.Label</property>
+            <property name="ModeCreate">EDITABLE</property>
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="Columns">60</property>
+            <trigger program="org.efaps.esjp.admin.access.AccessOnField"
+                 method="configCheck"
+                 name="TimeReport_EmployeeReportPositionTable.categoryDesc.UI_ACCESSCHECK"
+                 event="UI_ACCESSCHECK">
+                <property name="SystemConfig">TimeReport_Configuration</property>
+                <property name="Attribute">PositionCatergoryDescriptionActivated</property>
+            </trigger>
+        </field>
     </definition>
 </ui-table>

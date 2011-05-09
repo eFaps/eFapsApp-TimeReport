@@ -60,6 +60,33 @@
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">EDITABLE</property>
         </field>
+        <field name="categoryDesc">
+            <property name="Attribute">CategoryDesc</property>
+            <property name="Label">TimeReport_EmployeeReportPosition/CategoryDesc.Label</property>
+            <property name="Columns">60</property>
+            <property name="ModeCreate">EDITABLE</property>
+            <property name="ModeEdit">EDITABLE</property>
+            <trigger program="org.efaps.esjp.admin.access.AccessOnField"
+                 method="configCheck"
+                 name="TimeReport_EmployeeReportPositionTable.categoryDesc.UI_ACCESSCHECK"
+                 event="UI_ACCESSCHECK">
+                <property name="SystemConfig">TimeReport_Configuration</property>
+                <property name="Attribute">PositionCatergoryDescriptionActivated</property>
+            </trigger>
+        </field>
+        <field name="date">
+            <property name="Attribute">Date</property>
+            <property name="Label">TimeReport_EmployeeReportPosition/Date.Label</property>
+            <property name="ModeCreate">EDITABLE</property>
+            <property name="ModeEdit">EDITABLE</property>
+            <trigger program="org.efaps.esjp.admin.access.AccessOnField"
+                 method="configCheck"
+                 name="TimeReport_EmployeeReportPositionTable.date.UI_ACCESSCHECK"
+                 event="UI_ACCESSCHECK">
+                <property name="SystemConfig">TimeReport_Configuration</property>
+                <property name="Attribute">PositionDateActivated</property>
+            </trigger>
+        </field>
         <field name="projects">
             <property name="Attribute">CategoryAbstractLink</property>
             <property name="Label">TimeReport_EmployeeReportPositionTable.projects.Label</property>
