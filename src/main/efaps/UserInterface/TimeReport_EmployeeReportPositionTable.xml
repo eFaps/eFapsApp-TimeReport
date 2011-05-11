@@ -66,7 +66,7 @@
             <property name="Label">TimeReport_EmployeeReportPosition/Quantity.Label</property>
             <property name="ModeCreate">EDITABLE</property>
         </field>
-        <field name="date">
+        <field name="positionDate">
             <property name="Attribute">Date</property>
             <property name="Label">TimeReport_EmployeeReportPosition/Date.Label</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>

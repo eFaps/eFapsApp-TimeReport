@@ -54,6 +54,7 @@ import org.efaps.db.SelectBuilder;
 import org.efaps.esjp.ci.CIHumanResource;
 import org.efaps.esjp.ci.CIProjects;
 import org.efaps.esjp.ci.CITimeReport;
+import org.efaps.esjp.erp.CommonDocument;
 import org.efaps.util.EFapsException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -69,6 +70,7 @@ import org.joda.time.format.DateTimeFormatter;
 @EFapsUUID("5626aabf-4f61-4844-8bca-498e65a878c6")
 @EFapsRevision("$Rev$")
 public abstract class EmployeeReport_Base
+    extends CommonDocument
 {
 
     /**
@@ -128,7 +130,7 @@ public abstract class EmployeeReport_Base
         final String[] quantityUoM = _parameter.getParameterValues("quantityUoM");
         final String[] categories = _parameter.getParameterValues("categoryAbstractLink");
         final String[] categoryDesc = _parameter.getParameterValues("categoryDesc");
-        final String[] dates = _parameter.getParameterValues("date");
+        final String[] dates = _parameter.getParameterValues("positionDate");
 
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] != null && !employees[i].isEmpty()
