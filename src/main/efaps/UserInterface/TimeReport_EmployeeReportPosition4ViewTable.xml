@@ -50,6 +50,11 @@
             <property name="Label">TimeReport_EmployeeReportPosition/Quantity.Label</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
         </field>
+        <field name="positionDate">
+            <property name="Attribute">Date</property>
+            <property name="Label">TimeReport_EmployeeReportPosition/Date.Label</property>
+        </field>
+
         <field name="projects">
             <property name="SelectAlternateOID">linkto[CategoryAbstractLink].linkto[ProjectLink].oid</property>
             <property name="Select">linkto[CategoryAbstractLink].linkto[ProjectLink].attribute[Name]</property>
@@ -61,6 +66,20 @@
             <property name="Select">linkto[CategoryAbstractLink].attribute[Name]</property>
             <property name="Label">TimeReport_EmployeeReportPosition.categoryAbstractLink.Label</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
+        </field>
+        <field name="categoryDesc">
+            <property name="Attribute">CategoryDesc</property>
+            <property name="Label">TimeReport_EmployeeReportPosition.categoryDesc.Label</property>
+            <property name="ModeCreate">EDITABLE</property>
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="Columns">60</property>
+            <trigger program="org.efaps.esjp.admin.access.AccessOnField"
+                 method="configCheck"
+                 name="TimeReport_EmployeeReportPositionTable.categoryDesc.UI_ACCESSCHECK"
+                 event="UI_ACCESSCHECK">
+                <property name="SystemConfig">TimeReport_Configuration</property>
+                <property name="Attribute">PositionCatergoryDescriptionActivated</property>
+            </trigger>
         </field>
         <field name="date">
             <property name="Select">linkto[DocumentAbstractLink].attribute[Date]</property>

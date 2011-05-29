@@ -65,11 +65,11 @@
             <property name="Attribute">Quantity</property>
             <property name="Label">TimeReport_EmployeeReportPosition/Quantity.Label</property>
             <property name="ModeCreate">EDITABLE</property>
+            <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
         </field>
         <field name="positionDate">
             <property name="Attribute">Date</property>
             <property name="Label">TimeReport_EmployeeReportPosition/Date.Label</property>
-            <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
         </field>
         <field name="projects">
             <property name="Attribute">CategoryAbstractLink</property>
