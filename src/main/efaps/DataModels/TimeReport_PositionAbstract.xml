@@ -86,6 +86,13 @@
             <sqlcolumn>DESCR</sqlcolumn>
         </attribute>
         <attribute>
+            <name>PayDocumentAbstractLink</name>
+            <type>Link</type>
+            <typelink>ERP_DocumentAbstract</typelink>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>PAYDOCID</sqlcolumn>
+        </attribute>
+        <attribute>
             <name>Creator</name>
             <type>CreatorLink</type>
             <sqltable>TimeReport_PositionSQLTable</sqltable>
