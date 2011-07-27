@@ -55,7 +55,7 @@
         </field>
         <field name="projectLink">
             <property name="ModeCreate">EDITABLE</property>
-            <property name="ModeEdit">EDITABLE</property>
+            <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
             <property name="Attribute">ProjectLink</property>
             <property name="Required">true</property>
@@ -72,6 +72,7 @@
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
             <property name="ModeCreate">NONE</property>
             <property name="ModeEdit">NONE</property>
+            <property name="Label">TimeReport_CategoryEmployeeForm.projectLink4Read.Label</property>
         </field>
         <field name="active">
             <property name="Attribute">Active</property>
