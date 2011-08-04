@@ -16,48 +16,48 @@ En este Manual de Usuario usted encontrará toda la información necesaria refer
 reporte de tiempo, de manera que usted esté informado de todas las funcionalidades de este menú para que pueda trabajar
 en toda su potencialidad.
 
-Veremos los siguientes puntos:
+Mostraremos los siguientes puntos:
 
   # Categorías
   # Reporte de tiempo
   # Acceso a reporte de tiempo
 
 ==1. Categorías==
-Nos ayuda a tener las diferentes categorías que puede ocuparse un trabajador durante sus horas trabajadas, a continuación veremos los siguientes puntos:
+Le ayuda a obtener las diferentes categorías que puede ocupar un trabajador durante sus horas trabajadas, a continuación se le mostrarán los siguientes puntos:
 
   * 1.1 Crear categoría
   * 1.2 Borrar
   * 1.3 Exportar
 
 ===1.1. Crear categoría===
-Para crear una categoría usted debe dirigirse a acción y seleccionar crear categoría, inmediatamente le aparecerá la ventana crear categoría de empleado en donde deberá de ingresar la información correspondiente:
+Para crear una categoría usted debe dirigirse a la opción acción y seleccionar crear categoría, inmediatamente le aparecerá la ventana *crear categoría de empleado* en donde deberá de ingresar la información correspondiente:
 
   * Nombre: es el nombre identificativo de la categoría.
   * Descripción: es la información principal de la categoría.
-  * Proyecto: usted puede llamar al proyecto colocando su Nº , nombre o {{{*}}}.
+  * Proyecto: usted puede llamar al proyecto colocando su Nº, nombre o {{{*}}}.
   * Activo: se coloca TRUE para que categoría aparezca en la lista y FALSE para que no aparezca.
 
 ===1.2 Borrar===
-Debe de escoger una o mas categorías haciendo un check en sus casillas, dirigirse a acción y seleccionar borrar.
+Seleccionar una o mas categorías haciendo un check en sus casillas, dirigirse a la opción acción y elegir borrar.
 
 ===1.3. Exportar===
-Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formatos PDF o XLS.
+Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formato PDF o XLS.
 
 ==2. Reporte de tiempo==
-Veremos los siguientes puntos en este menú:
+Mostraremos los siguientes puntos en este menú:
 
   * 2.1 Crear ingreso masivo de empleados
   * 2.2 Borrar
   * 2.3 Exportar
 
 ===2.1 Crear ingreso masivo de empleados===
-Para crear un reporte de tiempo usted debe dirigirse a acción y seleccionar crear ingreso masivo de empleados, inmediatamente le aparecerá la ventana ingreso masivo de empleados en donde ingresará la información correspondiente por cada campo obligatorio y secundario:
+Para crear un reporte de tiempo usted debe dirigirse a la opción acción y seleccionar crear ingreso masivo de empleados, inmediatamente le aparecerá la ventana *ingreso masivo de empleados* en donde ingresará la información correspondiente por cada campo obligatorio y secundario:
 
 Obligatorio:
-  * Desde: usted puede editar la fecha con el mismo formato mostrado o seleccionar la fecha del calendario.
+  * Desde: puede editar la fecha con el mismo formato mostrado o elegir la fecha del calendario.
   * Nombre: es el nombre identificativo del proyecto.
-  * Hasta: usted puede editar con el mismo formato mostrado o seleccionar la fecha del calendario.
-  * Persona encargada: es la persona quien es el responsable de crear el documento.
+  * Hasta: puede editar la fecha con el mismo formato mostrado o elegir la fecha del calendario.
+  * Persona encargada: es la persona responsable de crear el documento.
 
 Secundario:
   * Posiciones para los empleados: es donde el empleado colocará las horas trabajadas en cada proyecto.
@@ -67,8 +67,8 @@ Secundario:
     * Categoría: que tipo de actividad se realizo.
 
 ===2.2 Borrar===
-Debe de escoger uno o mas reportes de tiempo haciendo un check en sus casillas, dirigirse a acción y seleccionar borrar.
+Seleccionar uno o mas reportes de tiempo haciendo un check en sus casillas, dirigirse a la opción acción y elegir borrar.
 
 ===2.3. Exportar===
-Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formatos PDF o XLS.
+Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formato PDF o XLS.
 
