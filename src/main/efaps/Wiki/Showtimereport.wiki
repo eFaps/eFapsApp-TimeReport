@@ -19,10 +19,10 @@ Cuando usted ingresa a un reporte de tiempo podrá ver el contenido de este repo
   * 3.4 Posiciones
 
 ===3.1 Editar===
-Para poder editar usted debe de ir a acción y seleccionar editar, inmediatamente le aparecerá la ventana editar : reporte de tiempo en donde podrá editar los siguientes campos:
+Para poder editar usted debe de ir a la opción acción y seleccionar editar, inmediatamente le aparecerá la ventana *editar reporte de tiempo* en donde podrá editar los siguientes campos:
 
-  * Desde: puede editar la fecha con el mismo formato mostrado o seleccionando del calendario.
-  * Hasta: puede editar la fecha con el mismo formato mostrado o seleccionando del calendario.
+  * Desde: puede editar la fecha con el mismo formato mostrado o elegir la fecha del calendario.
+  * Hasta: puede editar la fecha con el mismo formato mostrado o elegir la fecha del calendario.
   * Estado: tiene tres tipos,
     * Abierto: es el estado predeterminado al momento de crearse un reporte de tiempo.
     * Cancelado: cuando se cancela el reporte por algún motivo.
@@ -30,21 +30,21 @@ Para poder editar usted debe de ir a acción y seleccionar editar, inmediatament
   * Nombre: modificar el nombre identificativo del reporte.
 
 ===3.2 Exportar===
-Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formatos PDF o XLS.
+Le sirve para poder imprimir una o varias hojas con todos los datos que se encuentran en el menú, en dos tipos de formato PDF o XLS.
 
 ===3.3 Posiciones===
-Veremos los siguientes puntos,
+Verá los siguientes puntos,
 
   * 3.3.1 Crear
   * 3.3.2 Borrar
 
 ====3.3.1 Crear====
-Para crear una posición debe de ir a acción y seleccionar crear, inmediatamente le aparecerá la ventana crear nueva posición en donde ingresara la información correspondiente,
+Para crear una posición debe de ir a acción y seleccionar crear, inmediatamente le aparecerá la ventana crear nueva posición en donde ingresará la información correspondiente,
   * Empleado: se llama al empleado colocando su apellido, número o {{{* }}}.
   * Cantidad: se coloca la cantidad correspondiente.
   * Proyecto: se llama al proyecto colocando su nombre o {{{*}}}.
-  * Categoría: se elige el tipo de categoría( véase *categoría*).
+  * Categoría: se elige el tipo de categoría( véase [./org.efaps.wiki.timereport.Timereport.wiki#1.1._Crear_categor%C3%ADa categoría]).
 
 ====3.3.2 Borrar====
-Elegimos uno o varios reportes de tiempo haciendo un check en sus casillas, luego nos dirigimos a acción y elegimos borrar.
+Seleccionar uno o varios reportes de tiempo haciendo un check en sus casillas, luego dirigirse a acción y escoger borrar.
 
