@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.efaps.admin.datamodel.Dimension.UoM;
 import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.dbproperty.DBProperties;
@@ -414,7 +414,7 @@ public abstract class EmployeeReport_Base
                 js.append("new Array('").append(1).append("'");
                 for (final Entry<String, Long> entry : map.entrySet()) {
                     js.append(",'").append(entry.getValue()).append("','")
-                                   .append(StringEscapeUtils.escapeJavaScript(entry.getKey())).append("'");
+                                   .append(StringEscapeUtils.escapeEcmaScript(entry.getKey())).append("'");
                 }
                 js.append(")");
             } else {
