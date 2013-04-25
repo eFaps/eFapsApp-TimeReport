@@ -34,6 +34,7 @@
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeReportAbstractPosition</name>
         <parent>TimeReport_PositionAbstract</parent>
+        <purpose abstract="true"/>
         <attribute>
             <name>EmployeeAbstractLink</name>
             <type>Link</type>
