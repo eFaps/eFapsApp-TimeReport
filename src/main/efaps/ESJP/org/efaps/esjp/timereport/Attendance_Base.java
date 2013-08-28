@@ -158,8 +158,15 @@ public abstract class Attendance_Base
         {
             final DateTime dateFrom = new DateTime().minusMonths(6);
             final Map<LocalDate, AttendanceTime> values = new TreeMap<LocalDate, AttendanceTime>();
+
+            final QueryBuilder attrQueryBldr = new QueryBuilder(CIHumanResource.Employee);
+            attrQueryBldr.addWhereAttrEqValue(CIHumanResource.Employee.UserPerson,
+                            Context.getThreadContext().getPersonId());
+            final AttributeQuery attrQuery = attrQueryBldr.getAttributeQuery(CIHumanResource.Employee.ID);
+
             final QueryBuilder queryBuilder = new QueryBuilder(CITimeReport.AttendanceAbstract);
             queryBuilder.addWhereAttrGreaterValue(CITimeReport.AttendanceAbstract.Time, dateFrom);
+            queryBuilder.addWhereAttrInQuery(CITimeReport.AttendanceAbstract.EmployeeAbstractLink, attrQuery);
             final MultiPrintQuery multi = queryBuilder.getPrint();
             multi.addAttribute(CITimeReport.AttendanceAbstract.Time);
             multi.execute();
