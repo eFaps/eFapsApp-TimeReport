@@ -22,26 +22,26 @@
 -->
 <ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>7f8b4c78-239f-4318-86bc-cdb52192fe5d</uuid>
+    <uuid>6549e2ea-d7bc-408f-abe4-926d6edcb363</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev$</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_AttendanceSelfRegStartStop</name>
+        <name>TimeReport_AttendanceMyDesk</name>
         <access>
-            <role>TimeReport_AttendanceSelfRegistration</role>
+            <role>TimeReport_Admin</role>
         </access>
         <target>
-            <form>TimeReport_AttendanceSelfRegStartStopForm</form>
-            <execute method="myAttendanceStartStop"
-                program="org.efaps.esjp.timereport.Attendance">
-            </execute>
+            <menu>TimeReport_AttendanceMyDesk_Menu</menu>
+            <table>TimeReport_AttendanceTable</table>
+            <evaluate 
+                program="org.efaps.esjp.common.uitable.MultiPrint">
+                <property name="Types">TimeReport_AttendanceAbstract</property>
+            </evaluate>
         </target>
 
         <!-- properties -->
-        <property name="Target">modal</property>
-        <property name="TargetMode">create</property>
-        <property name="TargetCreateType">TimeReport_AttendanceAbstract</property>
-        <property name="NoUpdateAfterCOMMAND">true</property>
+        <property name="Target">content</property>
+        <property name="TargetShowCheckBoxes">true</property>
     </definition>
 </ui-command>

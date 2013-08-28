@@ -38,6 +38,10 @@
         <field name="time">
             <property name="Attribute">Time</property>
             <property name="Label">TimeReport_AttendanceAbstract/Time.Label</property>
+            <property name="FilterType">FREETEXT</property>
+            <property name="FilterRequired">TRUE</property>
+            <property name="FilterBase">DATABASE</property>
+            <property name="FilterDefault">WEEK</property>
         </field>
         <field name="creator">
             <property name="Attribute">Creator</property>
@@ -52,6 +56,7 @@
             <property name="Phrase">$&lt;linkto[EmployeeAbstractLink].attribute[Number]&gt; - $&lt;linkto[EmployeeAbstractLink].attribute[LastName]&gt;, $&lt;linkto[EmployeeAbstractLink].attribute[FirstName]&gt;</property>
             <property name="Label">TimeReport_AttendanceAbstract/EmployeeAbstractLink.Label</property>
             <property name="HRef">TREE</property>
+            <property name="FilterType">PICKLIST</property>
         </field>
     </definition>
 </ui-table>
