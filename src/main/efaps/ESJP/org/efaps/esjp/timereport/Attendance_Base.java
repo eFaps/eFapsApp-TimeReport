@@ -156,17 +156,28 @@ public abstract class Attendance_Base
         protected JRDataSource createDataSource(final Parameter _parameter)
             throws EFapsException
         {
-            final DateTime dateFrom = new DateTime().minusMonths(6);
+            final DateTime dateFrom = new DateTime(_parameter.getParameterValue(
+                            CIFormTimeReport.TimeReport_AttendanceSelfRegistrationReportSelectForm.dateFrom.name));
+            final DateTime dateUntil = new DateTime(_parameter.getParameterValue(
+                            CIFormTimeReport.TimeReport_AttendanceSelfRegistrationReportSelectForm.dateUntil.name));
             final Map<LocalDate, AttendanceTime> values = new TreeMap<LocalDate, AttendanceTime>();
 
-            final QueryBuilder attrQueryBldr = new QueryBuilder(CIHumanResource.Employee);
-            attrQueryBldr.addWhereAttrEqValue(CIHumanResource.Employee.UserPerson,
-                            Context.getThreadContext().getPersonId());
-            final AttributeQuery attrQuery = attrQueryBldr.getAttributeQuery(CIHumanResource.Employee.ID);
-
             final QueryBuilder queryBuilder = new QueryBuilder(CITimeReport.AttendanceAbstract);
-            queryBuilder.addWhereAttrGreaterValue(CITimeReport.AttendanceAbstract.Time, dateFrom);
-            queryBuilder.addWhereAttrInQuery(CITimeReport.AttendanceAbstract.EmployeeAbstractLink, attrQuery);
+            queryBuilder.addWhereAttrGreaterValue(CITimeReport.AttendanceAbstract.Time, dateFrom.minusMinutes(1));
+            queryBuilder.addWhereAttrLessValue(CITimeReport.AttendanceAbstract.Time, dateUntil.plusDays(1));
+
+            final Instance employeeInst = Instance.get(_parameter.getParameterValue(
+                            CIFormTimeReport.TimeReport_AttendanceSelfRegistrationReportSelectForm.employee.name));
+            if (employeeInst.isValid()) {
+                queryBuilder.addWhereAttrEqValue(CITimeReport.AttendanceAbstract.EmployeeAbstractLink, employeeInst);
+            } else {
+                final QueryBuilder attrQueryBldr = new QueryBuilder(CIHumanResource.Employee);
+                attrQueryBldr.addWhereAttrEqValue(CIHumanResource.Employee.UserPerson,
+                                Context.getThreadContext().getPersonId());
+                final AttributeQuery attrQuery = attrQueryBldr.getAttributeQuery(CIHumanResource.Employee.ID);
+                queryBuilder.addWhereAttrInQuery(CITimeReport.AttendanceAbstract.EmployeeAbstractLink, attrQuery);
+            }
+
             final MultiPrintQuery multi = queryBuilder.getPrint();
             multi.addAttribute(CITimeReport.AttendanceAbstract.Time);
             multi.execute();
@@ -356,7 +367,7 @@ public abstract class Attendance_Base
             while (startIter.hasNext()) {
                 // set the start and end
                 final DateTime start = startIter.next();
-                if (currentEnd == null && endIter.hasNext()) {
+                if (endIter.hasNext()) {
                     currentEnd = endIter.next();
                 }
                 if (currentEnd != null) {
