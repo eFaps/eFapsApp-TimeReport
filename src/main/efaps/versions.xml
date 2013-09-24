@@ -103,7 +103,7 @@
 
              UIUpdate update = new UIUpdate();
             <!-- connect the TimeReport_MyDesk Menu to the main menu from efaps -->
-            update.add2Menu("5d86cc1e-61bc-4bd6-b529-d2dc1293bf54", "87001cc3-c45c-44de-b8f1-776df507f268", 1);
+            update.add2Menu("5d86cc1e-61bc-4bd6-b529-d2dc1293bf54", "87001cc3-c45c-44de-b8f1-776df507f268", 2);
 
             <!-- connect the TimeReport_HumanResource_EmployeeTree_EmployeeReportPosition to the main menu from HumanResource_EmployeeTree -->
             update.add2Menu("050324fb-2c89-4ab8-9d03-aacb81c9160d", "136a5437-7642-4e09-8182-23fc97fedbab", -1);
