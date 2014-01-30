@@ -93,6 +93,7 @@
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
+            <property name="Columns">80</property>
             <trigger program="org.efaps.esjp.timereport.EmployeeReport"
                      name="TimeReport_EmployeeReportPosition.projects.UI_FIELD_AUTOCOMPLETE"
                      method="autoComplete4Projects"

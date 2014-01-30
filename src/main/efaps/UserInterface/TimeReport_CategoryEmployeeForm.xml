@@ -58,6 +58,7 @@
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
             <property name="Attribute">ProjectLink</property>
+            <property name="Columns">80</property>
             <property name="Required">true</property>
             <trigger program="org.efaps.esjp.timereport.EmployeeReport"
                      name="TimeReport_CategoryEmployeeForm.projectLink.UI_FIELD_AUTOCOMPLETE"
