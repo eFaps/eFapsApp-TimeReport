@@ -29,7 +29,6 @@
     <uuid>68d947e4-8944-47e9-96de-50ea8b89f237</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 5312 $</file-revision>
-
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeReportAbstractPosition</name>
@@ -45,9 +44,9 @@
         <attribute>
             <name>Quantity</name>
             <type>DecimalWithUoM</type>
+            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>QUANTITY,UOMID,QUANTITYBASE</sqlcolumn>
-            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
         </attribute>
     </definition>
 </datamodel-type>
