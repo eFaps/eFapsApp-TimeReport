@@ -33,6 +33,7 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_MyDesk</name>
+        <icon>TimeReport_MyDeskImg</icon>
         <childs>
             <child>TimeReport_DocumentsMyDesk</child>
             <child>TimeReport_CategoryMyDesk</child>
