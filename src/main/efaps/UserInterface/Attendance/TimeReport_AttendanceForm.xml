@@ -44,6 +44,7 @@
             <property name="Phrase">$&lt;linkto[EmployeeAbstractLink].attribute[Number]&gt; - $&lt;linkto[EmployeeAbstractLink].attribute[LastName]&gt;, $&lt;linkto[EmployeeAbstractLink].attribute[FirstName]&gt;</property>
             <property name="Label">TimeReport_AttendanceAbstract/EmployeeAbstractLink.Label</property>
             <property name="HRef">TREE</property>
+             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field character="Group" name="createGroup">
             <property name="GroupCount">2</property>
