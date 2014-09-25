@@ -36,8 +36,8 @@
             <menu>TimeReport_Projects_ProjectTree_Categories_Menu</menu>
             <table>TimeReport_CategoryAbstractTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_CategoryAbstract</property>
-                <property name="LinkFroms">ProjectLink</property>
+                <property name="Type">TimeReport_CategoryAbstract</property>
+                <property name="LinkFrom">ProjectLink</property>
             </evaluate>
         </target>
         <!-- properties -->
