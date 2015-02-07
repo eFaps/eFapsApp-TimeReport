@@ -29,7 +29,6 @@
     <uuid>6042bdbc-47d4-424c-9326-248fd0e9217e</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev$</file-revision>
-
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeReportPosition</name>

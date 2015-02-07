@@ -2,7 +2,7 @@
 
 <!--
 
- Copyright 2003 - 2010 The eFaps Team
+ Copyright 2003 - 2015 The eFaps Team
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -22,19 +22,15 @@
  Last Changed By: $Author$
 
 -->
-
-<datamodel-type  xmlns="http://www.efaps.org/xsd"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+<datamodel-type xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>76645637-b2e8-4b88-9664-714ffd89b465</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev$</file-revision>
-
     <definition>
-
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_PositionAbstract</name>
-        <purpose abstract="true"/>
+        <purpose abstract="true" />
         <attribute>
             <name>Type</name>
             <type>Type</type>

@@ -34,5 +34,11 @@
         <name>TimeReport_DocumentAbstract</name>
         <parent>ERP_DocumentAbstract</parent>
         <purpose abstract="true"/>
+        <attribute>
+            <name>ResourceID</name>
+            <type>Long</type>
+            <sqltable>TimeReport_DocumentSQLTable</sqltable>
+            <sqlcolumn>RESOURCEID</sqlcolumn>
+        </attribute>
     </definition>
 </datamodel-type>

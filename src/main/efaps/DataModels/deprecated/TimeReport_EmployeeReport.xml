@@ -34,6 +34,13 @@
         <name>TimeReport_EmployeeReport</name>
         <parent>TimeReport_EmployeeReportAbstract</parent>
         <attribute>
+            <name>EmployeeLink</name>
+            <type>Link</type>
+            <typelink>HumanResource_Employee</typelink>
+            <sqltable>TimeReport_DocumentSQLTable</sqltable>
+            <sqlcolumn>RESOURCEID</sqlcolumn>
+        </attribute>
+        <attribute>
             <name>Status</name>
             <type>Status</type>
             <typelink>TimeReport_EmployeeReportStatus</typelink>
