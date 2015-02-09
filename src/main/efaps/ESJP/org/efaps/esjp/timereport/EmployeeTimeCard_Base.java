@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.UUID;
 
+import org.efaps.admin.common.MsgPhrase;
+import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Return;
@@ -44,8 +47,11 @@ import org.efaps.db.InstanceQuery;
 import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.PrintQuery;
 import org.efaps.db.QueryBuilder;
+import org.efaps.db.SelectBuilder;
 import org.efaps.db.Update;
 import org.efaps.esjp.ci.CIFormTimeReport;
+import org.efaps.esjp.ci.CIHumanResource;
+import org.efaps.esjp.ci.CIProjects;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.esjp.common.parameter.ParameterUtil;
 import org.efaps.esjp.common.uiform.Create;
@@ -85,6 +91,42 @@ public abstract class EmployeeTimeCard_Base
     {
         final Return ret = new Return();
         ;
+        final CreatedDoc createdDoc = createDoc(_parameter);
+        connect2Object(_parameter, createdDoc);
+        ret.put(ReturnValues.INSTANCE, createdDoc.getInstance());
+        return ret;
+    }
+
+    public Return create4Project(final Parameter _parameter)
+        throws EFapsException
+    {
+        final Return ret = new Return();
+        final QueryBuilder queryBldr = new QueryBuilder(CIProjects.ProjectService2Employee);
+        queryBldr.addWhereAttrEqValue(CIProjects.ProjectService2Employee.Status,
+                        Status.find(CIProjects.ProjectService2EmployeeStatus.Active));
+
+        final MultiPrintQuery multi = queryBldr.getPrint();
+        final SelectBuilder selEmplInst = SelectBuilder.get().linkto(CIProjects.ProjectService2Employee.ToLink)
+                        .instance();
+        final SelectBuilder selProjInst = SelectBuilder.get().linkto(CIProjects.ProjectService2Employee.FromLink)
+                        .instance();
+        multi.addSelect(selEmplInst, selProjInst);
+        multi.execute();
+        while (multi.next()) {
+            final Instance employinst = multi.getSelect(selEmplInst);
+            final Instance projInst = multi.getSelect(selProjInst);
+            if (employinst.isValid() && projInst.isValid()) {
+                final Parameter parameter = ParameterUtil.clone(_parameter);
+                ParameterUtil.setParmeterValue(parameter,
+                                CIFormTimeReport.TimeReport_EmployeeTimeCardForm.employee.name,
+                                employinst.getOid());
+                ParameterUtil.setParmeterValue(parameter,
+                                CIFormTimeReport.TimeReport_EmployeeTimeCardForm.project.name,
+                                projInst.getOid());
+                create(parameter);
+            }
+        }
+
         final CreatedDoc createdDoc = createDoc(_parameter);
         connect2Object(_parameter, createdDoc);
         ret.put(ReturnValues.INSTANCE, createdDoc.getInstance());
@@ -182,27 +224,28 @@ public abstract class EmployeeTimeCard_Base
         }
 
         final StringBuilder script = new StringBuilder()
-                        .append("var layout = [{")
-                        .append("onBeforeRow : function(inDataIndex, inSubRows)")
-                        .append("{")
-                        .append("  inSubRows[0].invisible = inDataIndex >= 0;")
-                        .append("}, ")
-                        .append("noscroll: true,")
-                        .append("cells: [")
-                        .append("[")
-                        .append("{ name: 'Documento', colSpan: 2, width: 'auto'}")
-                        .append("],[")
-                        .append("{ name: 'Name', field: 'name', width: '50px'},")
-                        .append("{ name: 'Emleado',field: 'employee', width: '50px'}")
-                        .append("]")
-                        .append("]},{")
-                        .append("onBeforeRow : function(inDataIndex, inSubRows)")
-                        .append("{")
-                        .append("  inSubRows[0].invisible = inDataIndex >= 0;")
-                        .append("}, ")
-                        .append("defaultCell: { width: \"25px\" },")
-                        .append("cells: [")
-                        .append("[");
+            .append("var layout = [{")
+            .append("onBeforeRow : function(inDataIndex, inSubRows)")
+            .append("{")
+            .append("  inSubRows[0].invisible = inDataIndex >= 0;")
+            .append("}, ")
+            .append("noscroll: true,")
+            .append("cells: [")
+            .append("[")
+            .append("{ name: 'Documento', colSpan: 3, width: 'auto'}")
+            .append("],[")
+            .append("{ name: 'No', field: 'name', width: '50px'},")
+            .append("{ name: 'DNI',field: 'number', width: '50px'},")
+            .append("{ name: 'Empleado',field: 'employee', width: '250px'}")
+            .append("]")
+            .append("]},{")
+            .append("onBeforeRow : function(inDataIndex, inSubRows)")
+            .append("{")
+            .append("  inSubRows[0].invisible = inDataIndex >= 0;")
+            .append("}, ")
+            .append("defaultCell: { width: \"25px\" },")
+            .append("cells: [")
+            .append("[");
         boolean first = true;
         for (final LocalDate localDate : dates) {
             if (first) {
@@ -251,12 +294,23 @@ public abstract class EmployeeTimeCard_Base
         final List<Instance> instances = getSelectedInstances(_parameter);
         final MultiPrintQuery multi = new MultiPrintQuery(instances);
         multi.setEnforceSorted(true);
+        final SelectBuilder selEmpl = SelectBuilder.get().linkto(CITimeReport.EmployeeTimeCard.EmployeeLink);
+        final SelectBuilder selEmplNumber = new SelectBuilder(selEmpl).attribute(CIHumanResource.EmployeeAbstract.Number);
+        //HumanResource_EmployeeMsgPhrase
+        final MsgPhrase emplPhrase = MsgPhrase.get(UUID.fromString("f543ca6d-29fb-4f1a-8747-0057b9a08404"));
+
+        multi.addMsgPhrase(selEmpl, emplPhrase);
+
+        multi.addSelect(selEmplNumber);
         multi.addAttribute(CITimeReport.EmployeeTimeCard.Name, CITimeReport.EmployeeTimeCard.Date,
                         CITimeReport.EmployeeTimeCard.DueDate);
         multi.execute();
         first = true;
         while (multi.next()) {
             final String name = multi.getAttribute(CITimeReport.EmployeeTimeCard.Name);
+            final String number = multi.getSelect(selEmplNumber);
+            final String employee = multi.getMsgPhrase(selEmpl, emplPhrase);
+
             final DateTime tcDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.Date);
             final DateTime tcDueDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.DueDate);
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
@@ -292,7 +346,9 @@ public abstract class EmployeeTimeCard_Base
             }
 
             script.append("{").append("oid:\"").append(multi.getCurrentInstance().getOid())
-                            .append("\", name:\"").append(name).append("\"");
+                            .append("\", name:\"").append(name)
+                            .append("\", number:\"").append(number)
+                            .append("\", employee:\"").append(employee).append("\"");
             for (final LocalDate localDate : dates) {
                 if (localDate.isEqual(tcDate.toLocalDate()) || localDate.isEqual(tcDueDate.toLocalDate())
                                 || localDate.isAfter(tcDate.toLocalDate())

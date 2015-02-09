@@ -118,9 +118,16 @@
   ************************************************************************* -->
     <build>
         <plugins>
-            <!--
-                eFaps plugin
-            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/ci/CIProjects*.class</exclude>
+                        <exclude>**/projects/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.efaps</groupId>
                 <artifactId>efaps-maven-plugin</artifactId>
@@ -167,11 +174,6 @@
     ************************************************************************* -->
     <dependencies>
         <!-- eFaps ERP Products Module -->
-        <dependency>
-            <groupId>org.efaps.apps</groupId>
-            <artifactId>projects</artifactId>
-            <version>${efaps.app.dependencies}</version>
-        </dependency>
         <dependency>
             <groupId>org.efaps.apps</groupId>
             <artifactId>payroll</artifactId>

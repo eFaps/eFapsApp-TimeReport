@@ -52,7 +52,6 @@ import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.QueryBuilder;
 import org.efaps.db.SelectBuilder;
 import org.efaps.esjp.ci.CIHumanResource;
-import org.efaps.esjp.ci.CIProjects;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.esjp.erp.CommonDocument;
 import org.efaps.util.EFapsException;
@@ -348,34 +347,11 @@ public abstract class EmployeeReport_Base
     public Return autoComplete4Projects(final Parameter _parameter)
         throws EFapsException
     {
-        final String input = (String) _parameter.get(ParameterValues.OTHERS);
+        _parameter.get(ParameterValues.OTHERS);
         final Map<?, ?> properties = (Map<?, ?>) _parameter.get(ParameterValues.PROPERTIES);
-        final String key = (String) properties.get("key");
+        properties.get("key");
         final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        if (input != null & !input.isEmpty()) {
-            final Map<String, Map<String, String>> tmpMap = new TreeMap<String, Map<String, String>>();
-            final QueryBuilder queryBldr = new QueryBuilder(CIProjects.ProjectService);
-            queryBldr.setOr(true);
-            queryBldr.addWhereAttrMatchValue(CIProjects.ProjectService.Name, input + "*").setIgnoreCase(true);
-            queryBldr.addWhereAttrMatchValue(CIProjects.ProjectService.Description, input + "*").setIgnoreCase(true);
-            final MultiPrintQuery multi = queryBldr.getPrint();
-            multi.addAttribute(CIProjects.ProjectService.Name,
-                               CIProjects.ProjectService.Description);
-            multi.execute();
-            while (multi.next()) {
-                final String name = multi.<String>getAttribute(CIProjects.ProjectService.Name);
-                final String desc = multi.<String>getAttribute(CIProjects.ProjectService.Description);
-                final String choice = name + " - " + desc;
-                final Map<String, String> map = new HashMap<String, String>();
-                map.put("eFapsAutoCompleteKEY", "ID".equalsIgnoreCase(key)
-                                                ? ((Long) multi.getCurrentInstance().getId()).toString()
-                                                : multi.getCurrentInstance().getOid());
-                map.put("eFapsAutoCompleteVALUE", name);
-                map.put("eFapsAutoCompleteCHOICE", choice);
-                tmpMap.put(choice, map);
-            }
-            list.addAll(tmpMap.values());
-        }
+
         final Return retVal = new Return();
         retVal.put(ReturnValues.VALUES, list);
         return retVal;
@@ -393,9 +369,9 @@ public abstract class EmployeeReport_Base
         final Return retVal = new Return();
         final Map<String, Long> map = new TreeMap<String, Long>();
         final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        final Integer pos = (_parameter.getParameterValue("eFapsRowSelectedRow") != null
+        final Integer pos = _parameter.getParameterValue("eFapsRowSelectedRow") != null
                         ? Integer.parseInt(_parameter.getParameterValue("eFapsRowSelectedRow"))
-                                        : 0);
+                                        : 0;
         final String project = _parameter.getParameterValues("projects")[pos];
         if (project != null && !project.isEmpty()) {
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.CategoryEmployee);

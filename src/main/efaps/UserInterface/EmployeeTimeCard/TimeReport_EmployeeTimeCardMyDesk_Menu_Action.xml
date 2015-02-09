@@ -27,9 +27,25 @@
     <file-revision>$Rev: 5578 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
+         <application-dependencies>
+            <application exclude="true" name="eFapsApp-Projects" />
+        </application-dependencies>
         <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action</name>
         <childs>
             <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create</child>
+            <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Register</child>
+            <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Delete</child>
+        </childs>
+    </definition>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+         <application-dependencies>
+            <application name="eFapsApp-Projects" />
+        </application-dependencies>
+        <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action</name>
+        <childs>
+            <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create</child>
+            <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create4Project</child>
             <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Register</child>
             <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Delete</child>
         </childs>
