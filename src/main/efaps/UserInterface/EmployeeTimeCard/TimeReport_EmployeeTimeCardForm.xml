@@ -210,11 +210,11 @@
         </field>
         <field name="headingProject" character="Heading">
             <property name="Level">2</property>
-            <property name="Label">Payroll_PayslipForm.headingProject.Heading</property>
+            <property name="Label">TimeReport_EmployeeTimeCardForm.headingProject.Heading</property>
             <property name="ModeCreate">EDITABLE</property>
         </field>
         <field name="project">
-            <property name="Label">Payroll_PayslipForm.project.Label</property>
+            <property name="Label">TimeReport_EmployeeTimeCardForm.project.Label</property>
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
@@ -235,7 +235,7 @@
             </trigger>
         </field>
         <field name="projectData">
-            <property name="Label">Payroll_PayslipForm.projectData.Label</property>
+            <property name="Label">TimeReport_EmployeeTimeCardForm.projectData.Label</property>
             <property name="ModeCreate">READONLY</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
@@ -245,7 +245,7 @@
             <property name="SelectAlternateOID">linkfrom[PayRoll_Projects_ProjectService2Payslip#ToLink].linkto[FromLink].oid</property>
             <property name="Phrase">$&lt;linkfrom[PayRoll_Projects_ProjectService2Payslip#ToLink].linkto[FromLink].attribute[Name]&gt; - $&lt;linkfrom[PayRoll_Projects_ProjectService2Payslip#ToLink].linkto[FromLink].attribute[Description]&gt;</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
-            <property name="Label">Payroll_PayslipForm.project.Label</property>
+            <property name="Label">TimeReport_EmployeeTimeCardForm.project.Label</property>
             <property name="ModeCreate">NONE</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">READONLY</property>
