@@ -27,6 +27,7 @@ import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Insert;
 import org.efaps.db.Instance;
+import org.efaps.db.PrintQuery;
 import org.efaps.esjp.ci.CIFormTimeReport;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.esjp.common.uiform.Create;
@@ -95,4 +96,31 @@ public abstract class EmployeeTimeCard_Base
                         .getParameterValue(CIFormTimeReport.TimeReport_EmployeeTimeCardForm.employee.name)));
     }
 
+    /**
+     * Create a EmployeeReport.
+     *
+     * @param _parameter Parameter as passed from the eFaps API
+     * @return new Return
+     * @throws EFapsException on error
+     */
+    public Return createPosition(final Parameter _parameter)
+        throws EFapsException
+    {
+        final Create create = new Create()
+        {
+            @Override
+            protected void add2basicInsert(final Parameter _parameter,
+                                           final Insert _insert)
+                throws EFapsException
+            {
+                super.add2basicInsert(_parameter, _insert);
+                final PrintQuery print= new PrintQuery(_parameter.getInstance());
+                print.addAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink);
+                print.execute();
+                _insert.add(CITimeReport.EmployeeTimeCardPosition.EmployeeLink,
+                                print.getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
+            }
+        };
+        return create.execute(_parameter);
+    }
 }

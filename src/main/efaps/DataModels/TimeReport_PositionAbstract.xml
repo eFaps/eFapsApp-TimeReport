@@ -89,6 +89,34 @@
             <sqlcolumn>PAYDOCID</sqlcolumn>
         </attribute>
         <attribute>
+            <name>LaborTime</name>
+            <type>DecimalWithUoM</type>
+            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>TIME,TIMEUOMID,TIMEBASE</sqlcolumn>
+        </attribute>
+        <attribute>
+            <name>ExtraLaborTime</name>
+            <type>DecimalWithUoM</type>
+            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>EXTRATIME,EXTRATIMEUOMID,EXTRATIMEBASE</sqlcolumn>
+        </attribute>
+         <attribute>
+            <name>NightLaborTime</name>
+            <type>DecimalWithUoM</type>
+            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>NIGHTTIME,NIGHTTIMEUOMID,NIGHTTIMEBASE</sqlcolumn>
+        </attribute>
+         <attribute>
+            <name>HolidayLaborTime</name>
+            <type>DecimalWithUoM</type>
+            <dimensionUUID>8154e40c-3f2d-4bc0-91e6-b8510eaf642c</dimensionUUID>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>HOLIDAYTIME,HOLIDAYTIMEUOMID,HOLIDAYTIMEBASE</sqlcolumn>
+        </attribute>
+        <attribute>
             <name>Creator</name>
             <type>CreatorLink</type>
             <sqltable>TimeReport_PositionSQLTable</sqltable>

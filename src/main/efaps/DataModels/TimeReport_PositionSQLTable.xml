@@ -46,6 +46,18 @@
             <column name="UOMID"           type="INTEGER"/>
             <column name="QUANTITYBASE"    type="REAL"/>
             <column name="PAYDOCID"        type="INTEGER"/>
+            <column name="TIME"             type="DECIMAL"                      length="16" scale="6"/>
+            <column name="TIMEUOMID"        type="INTEGER"/>
+            <column name="TIMEBASE"         type="REAL"/>
+            <column name="EXTRATIME"        type="DECIMAL"                      length="16" scale="6"/>
+            <column name="EXTRATIMEUOMID"   type="INTEGER"/>
+            <column name="EXTRATIMEBASE"    type="REAL"/>
+            <column name="NIGHTTIME"        type="DECIMAL"                      length="16" scale="6"/>
+            <column name="NIGHTTIMEUOMID"   type="INTEGER"/>
+            <column name="NIGHTTIMEBASE"    type="REAL"/>
+            <column name="HOLIDAYTIME"      type="DECIMAL"                      length="16" scale="6"/>
+            <column name="HOLIDAYTIMEUOMID" type="INTEGER"/>
+            <column name="HOLIDAYTIMEBASE"  type="REAL"/>
             <column name="CREATOR"         type="INTEGER"         not-null="true"/>
             <column name="CREATED"         type="DATETIME"        not-null="true"/>
             <column name="MODIFIER"        type="INTEGER"         not-null="true"/>
