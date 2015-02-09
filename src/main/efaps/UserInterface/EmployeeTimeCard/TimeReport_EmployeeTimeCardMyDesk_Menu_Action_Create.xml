@@ -27,6 +27,9 @@
     <file-revision>$Rev: 5312 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
+        <application-dependencies>
+            <application name="eFapsApp-Projects" exclude="true"/>
+        </application-dependencies>
         <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create</name>
         <target>
             <form>TimeReport_EmployeeTimeCardForm</form>
@@ -34,6 +37,33 @@
                 <property name="UseNumberGenerator4Name">true</property>
                 <property name="StatusGroup">TimeReport_EmployeeTimeCardStatus</property>
                 <property name="Status">Open</property>
+            </execute>
+        </target>
+        <property name="Target">modal</property>
+        <property name="TargetCmdRevise">true</property>
+        <property name="TargetMode">create</property>
+        <property name="TargetCreateType">TimeReport_EmployeeTimeCard</property>
+        <property name="WindowHeight">460</property>
+        <property name="WindowWidth">800</property>
+    </definition>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+        <application-dependencies>
+            <application name="eFapsApp-Projects" />
+        </application-dependencies>
+        <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create</name>
+        <target>
+            <form>TimeReport_EmployeeTimeCardForm</form>
+            <execute method="create" program="org.efaps.esjp.timereport.EmployeeTimeCard" >
+                <property name="UseNumberGenerator4Name">true</property>
+                <property name="StatusGroup">TimeReport_EmployeeTimeCardStatus</property>
+                <property name="Status">Open</property>
+
+                 <!-- TimeReport_Projects_ProjectService2EmployeeTimeCard -->
+                <property name="ConnectType01">0980d23f-ee69-467f-ae1f-1871886cf5bb</property>
+                <property name="ConnectCurrentLink01">ToLink</property>
+                <property name="ConnectForeignLink01">FromLink</property>
+                <property name="ConnectForeignField01">project</property>
             </execute>
         </target>
         <property name="Target">modal</property>

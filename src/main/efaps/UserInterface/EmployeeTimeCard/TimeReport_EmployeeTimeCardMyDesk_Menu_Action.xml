@@ -30,6 +30,7 @@
         <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action</name>
         <childs>
             <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Create</child>
+            <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Register</child>
             <child>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Delete</child>
         </childs>
     </definition>
