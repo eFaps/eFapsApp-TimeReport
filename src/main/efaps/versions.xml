@@ -85,7 +85,7 @@
             import org.efaps.db.QueryBuilder;
             import org.efaps.db.InstanceQuery;
             import org.efaps.esjp.admin.ui.UIUpdate;
-            
+
             EFAPS_LOGGER.info("Importing Data for eFapsApp-TimeReport");
 
             RunLevel.init("shell");
@@ -98,8 +98,8 @@
             <!-- connect the TimeReport_HumanResource_EmployeeTree_EmployeeReportPosition to the main menu from HumanResource_EmployeeTree -->
             update.add2Menu("050324fb-2c89-4ab8-9d03-aacb81c9160d", "136a5437-7642-4e09-8182-23fc97fedbab", -1);
 
-            <!-- connect the TimeReport_Projects_ProjectTree_Categories to the main menu from Projects_ProjectTree -->
-            update.add2Menu("4e58475b-fa91-44e1-9c4c-93ff776a4a85", "1336daea-b7d2-418f-accc-0edf5937f3cb", 1);
+            <!-- connect the TimeReport_Projects_ProjectTree_EmployeeTimeCard to the main menu from Projects_ProjectTree -->
+            update.add2Menu("3a46f88d-604c-46c8-8c23-80fe9d6b899a", "1336daea-b7d2-418f-accc-0edf5937f3cb", 1);
 
             <!-- Timereport_Timereport, Admin_Help_MainMenu -->
             update.add2Help("f40d1f5d-0b6c-410e-b4bc-c855d38f220e", "dead549e-5cc6-49f9-9a79-8e33aa139f6d", -1);
