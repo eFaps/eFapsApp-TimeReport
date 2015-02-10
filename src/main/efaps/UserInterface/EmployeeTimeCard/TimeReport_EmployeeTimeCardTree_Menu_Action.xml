@@ -29,7 +29,7 @@
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardTree_Menu_Action</name>
         <childs>
-            <child>TimeReport_EmployeeReportTree_Menu_Action_Edit</child>
+            <child>TimeReport_EmployeeTimeCardTree_Menu_Action_Edit</child>
         </childs>
     </definition>
 </ui-menu>

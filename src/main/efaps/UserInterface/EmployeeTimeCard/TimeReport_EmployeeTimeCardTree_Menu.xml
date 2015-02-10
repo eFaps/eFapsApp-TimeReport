@@ -19,17 +19,17 @@
  Last Changed:    $Date: 2010-08-16 11:14:37 -0500 (Mon, 16 Aug 2010) $
  Last Changed By: $Author: miguel.a.aranya $
 
---><ui-menu xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+-->
+<ui-menu xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>01a777d5-9c88-4683-8629-40ed47859bb3</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 5312 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardTree_Menu</name>
-        <!-- childs -->
         <childs>
-            <child>TimeReport_EmployeeReportTree_Menu_Action</child>
+            <child>TimeReport_EmployeeTimeCardTree_Menu_Action</child>
         </childs>
     </definition>
-
 </ui-menu>

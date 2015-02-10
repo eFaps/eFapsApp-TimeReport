@@ -37,6 +37,7 @@
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">EDITABLE</property>
             <property name="Required">true</property>
+            <property name="Label">TimeReport_EmployeeTimeCard/Date.Label</property>
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
         </field>
         <field name="toDate">
@@ -44,6 +45,7 @@
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">EDITABLE</property>
             <property name="Required">true</property>
+            <property name="Label">TimeReport_EmployeeTimeCard/DueDate.Label</property>
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
         </field>
          <field name="selection">
