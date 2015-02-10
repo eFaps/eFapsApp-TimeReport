@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+
+  Copyright 2003 - 2014 The eFaps Team
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Author:          The eFaps Team
+  Revision:        $Rev: 14794 $
+  Last Changed:    $Date: 2015-01-29 13:50:04 -0500 (Thu, 29 Jan 2015) $
+  Last Changed By: $Author: jan@moxter.net $
+
+-->
+<ui-form xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+    <uuid>d7e413d3-40cd-4b5a-a0e2-b3df74bca91e</uuid>
+    <file-application>eFapsApp-Commons</file-application>
+    <file-revision>$Rev: 14794 $</file-revision>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+        <application-dependencies>
+            <application exclude="true" name="eFapsApp-Projects" />
+        </application-dependencies>
+        <name>TimeReport_PositionAnalyzeReportFilterForm</name>
+        <field name="dateFrom">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="Label">ERP_ReportFilterForm4DateFromTo.dateFrom.Label</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getDateFromFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateFrom.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+        <field name="dateTo">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="Label">ERP_ReportFilterForm4DateFromTo.dateTo.Label</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getDateToFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+       <field name="employee">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.employee</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getInstanceFieldValue"
+                name="TimeReport_PositionAnalyzeReportFilterForm.employee.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport">
+                <property name="HumanResource_Employee_MsgPhrase">HumanResource_EmployeeWithNumberMsgPhrase</property>
+            </trigger>
+            <trigger event="UI_FIELD_AUTOCOMPLETE"
+                method="autoComplete4Employee"
+                name="TimeReport_PositionAnalyzeReportFilterForm.employee.UI_FIELD_AUTOCOMPLETE"
+                program="org.efaps.esjp.humanresource.Employee" />
+        </field>
+         <field name="dateGroup">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.dateGroup</property>
+            <trigger event="UI_FIELD_VALUE" method="getEnumFieldValue"
+                name="ERP_ReportFilterForm4DateFromToType.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.timereport.reports.PositionAnalyzeReport">
+                <property name="Enum">org.efaps.esjp.erp.AbstractGroupedByDate_Base$DateGroup</property>
+            </trigger>
+        </field>
+         <field name="departmentGroup">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.BooleanUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.departmentGroup</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getBooleanFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+    </definition>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+        <application-dependencies>
+            <application name="eFapsApp-Projects" />
+        </application-dependencies>
+        <name>TimeReport_PositionAnalyzeReportFilterForm</name>
+        <field name="dateFrom">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="Label">ERP_ReportFilterForm4DateFromTo.dateFrom.Label</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getDateFromFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateFrom.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+        <field name="dateTo">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="Label">ERP_ReportFilterForm4DateFromTo.dateTo.Label</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getDateToFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+       <field name="employee">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.employee</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getInstanceFieldValue"
+                name="TimeReport_PositionAnalyzeReportFilterForm.employee.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport">
+                <property name="HumanResource_Employee_MsgPhrase">HumanResource_EmployeeWithNumberMsgPhrase</property>
+            </trigger>
+            <trigger event="UI_FIELD_AUTOCOMPLETE"
+                method="autoComplete4Employee"
+                name="TimeReport_PositionAnalyzeReportFilterForm.employee.UI_FIELD_AUTOCOMPLETE"
+                program="org.efaps.esjp.humanresource.Employee" />
+        </field>
+         <field name="dateGroup">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.dateGroup</property>
+            <trigger event="UI_FIELD_VALUE" method="getEnumFieldValue"
+                name="ERP_ReportFilterForm4DateFromToType.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.timereport.reports.PositionAnalyzeReport">
+                <property name="Enum">org.efaps.esjp.erp.AbstractGroupedByDate_Base$DateGroup</property>
+            </trigger>
+        </field>
+         <field name="departmentGroup">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.BooleanUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.departmentGroup</property>
+            <trigger event="UI_FIELD_VALUE"
+                method="getBooleanFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+        <field name="projectGroup">
+            <property name="ModeEdit">EDITABLE</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.BooleanUI</property>
+            <property name="Label">org.efaps.esjp.timereport.reports.PositionAnalyzeReport.projectGroup</property>
+            <trigger event="UI_FIELD_VALUE" method="getBooleanFieldValue"
+                name="ERP_ReportFilterForm4DateFromTo.dateTo.UI_FIELD_VALUE"
+                program="org.efaps.esjp.erp.FilteredReport" />
+        </field>
+    </definition>
+</ui-form>

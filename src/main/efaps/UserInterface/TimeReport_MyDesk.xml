@@ -41,6 +41,7 @@
             <child>TimeReport_AttendanceSelfRegMyDesk</child>
             <child>TimeReport_AttendanceSelfRegStartStop</child>
             <child>TimeReport_AttendanceSelfRegistrationReportSelect</child>
+            <child>TimeReport_PositionAnalyzeReportMyDesk</child>
         </childs>
     </definition>
 </ui-menu>
