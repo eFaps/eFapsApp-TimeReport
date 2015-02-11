@@ -28,7 +28,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Instance;
 import org.efaps.db.QueryBuilder;
 import org.efaps.esjp.ci.CITimeReport;
-import org.efaps.esjp.payroll.listener.IOnPayslip;
+import org.efaps.esjp.payroll.listener.IOnAdvance;
 import org.efaps.util.EFapsException;
 import org.joda.time.DateTime;
 
@@ -38,23 +38,21 @@ import org.joda.time.DateTime;
  * @author The eFaps Team
  * @version $Id: $
  */
-@EFapsUUID("04a65fab-e47f-4349-9d59-6a490dc184c1")
+@EFapsUUID("46c3ca20-6be4-43ef-8433-4bf815050e56")
 @EFapsRevision("$Rev: 14133 $")
-public abstract class OnPayslip_Base
+public abstract class IOnAdvance_Base
     extends AbstractOnPayroll
-    implements IOnPayslip
+    implements IOnAdvance
 {
 
     @Override
     public BigDecimal getLaborTime(final Parameter _parameter,
-                                   final Instance _payslipInst,
+                                   final Instance _advanceInst,
                                    final DateTime _date,
-                                   final DateTime _dueDate,
                                    final Instance _emplInst)
         throws EFapsException
     {
         setDate(_date);
-        setDueDate(_dueDate);
         setEmplInst(_emplInst);
         final TimeBean bean = getTimeBean(_parameter);
         return bean.getLaborTime();
@@ -62,14 +60,12 @@ public abstract class OnPayslip_Base
 
     @Override
     public BigDecimal getExtraLaborTime(final Parameter _parameter,
-                                        final Instance _payslipInst,
+                                        final Instance _advanceInst,
                                         final DateTime _date,
-                                        final DateTime _dueDate,
                                         final Instance _emplInst)
         throws EFapsException
     {
         setDate(_date);
-        setDueDate(_dueDate);
         setEmplInst(_emplInst);
         final TimeBean bean = getTimeBean(_parameter);
         return bean.getExtraLaborTime();
@@ -77,14 +73,12 @@ public abstract class OnPayslip_Base
 
     @Override
     public BigDecimal getNightLaborTime(final Parameter _parameter,
-                                        final Instance _payslipInst,
+                                        final Instance _advanceInst,
                                         final DateTime _date,
-                                        final DateTime _dueDate,
                                         final Instance _emplInst)
         throws EFapsException
     {
         setDate(_date);
-        setDueDate(_dueDate);
         setEmplInst(_emplInst);
         final TimeBean bean = getTimeBean(_parameter);
         return bean.getNightLaborTime();
@@ -92,14 +86,12 @@ public abstract class OnPayslip_Base
 
     @Override
     public BigDecimal getHolidayLaborTime(final Parameter _parameter,
-                                          final Instance _payslipInst,
+                                          final Instance _advanceInst,
                                           final DateTime _date,
-                                          final DateTime _dueDate,
                                           final Instance _emplInst)
         throws EFapsException
     {
         setDate(_date);
-        setDueDate(_dueDate);
         setEmplInst(_emplInst);
         final TimeBean bean = getTimeBean(_parameter);
         return bean.getHolidayLaborTime();
@@ -113,11 +105,9 @@ public abstract class OnPayslip_Base
 
     @Override
     protected void add2QueryBldr(final Parameter _parameter,
-                                 final QueryBuilder _queryBldr)
-        throws EFapsException
+                                 final QueryBuilder _queryBldr) throws EFapsException
     {
         _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeLink, getEmplInst());
-        _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, getDueDate().plusDays(1));
-        _queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date, getDate().minusDays(1));
+        _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, getDate().plusDays(1));
     }
 }
