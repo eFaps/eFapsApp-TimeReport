@@ -47,6 +47,7 @@ import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
 import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
+import org.efaps.db.Instance;
 import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.QueryBuilder;
 import org.efaps.db.SelectBuilder;
@@ -159,15 +160,13 @@ public class PositionAnalyzeReport_Base
             final List<DataBean> beans = new ArrayList<>();
             final Map<String, Object> filter = getFilterReport().getFilterMap(_parameter);
 
-            final boolean project = filter.containsKey("projectGroup") && BooleanUtils.isTrue((Boolean) filter.get("projectGroup"));
-            final boolean department = filter.containsKey("departmentGroup") && BooleanUtils.isTrue((Boolean) filter.get("departmentGroup"));
+            final boolean project = filter.containsKey("projectGroup")
+                            && BooleanUtils.isTrue((Boolean) filter.get("projectGroup"));
+            final boolean department = filter.containsKey("departmentGroup")
+                            && BooleanUtils.isTrue((Boolean) filter.get("departmentGroup"));
 
-            AbstractGroupedByDate.DateGroup dateGroup;
-            if (filter.containsKey("dateGroup") && filter.get("dateGroup") != null) {
-                dateGroup = (AbstractGroupedByDate.DateGroup) ((EnumFilterValue) filter.get("dateGroup")).getObject();
-            } else {
-                dateGroup = DocumentSumGroupedByDate_Base.DateGroup.MONTH;
-            }
+            final AbstractGroupedByDate.DateGroup dateGroup = getDateGroup(_parameter);
+
             final PositionGroupedByDate group = new PositionGroupedByDate();
             final DateTimeFormatter dateTimeFormatter = group.getDateTimeFormatter(dateGroup);
 
@@ -209,7 +208,7 @@ public class PositionAnalyzeReport_Base
             multi.execute();
             while (multi.next()) {
                 final DateTime date = multi.getAttribute(CITimeReport.EmployeeTimeCardPosition.Date);
-                final String partial = group.getPartial(date, DateGroup.MONTH).toString(dateTimeFormatter);
+                final String partial = group.getPartial(date, dateGroup).toString(dateTimeFormatter);
 
                 final DataBean bean = new DataBean()
                                 .setPartial(partial)
@@ -232,6 +231,24 @@ public class PositionAnalyzeReport_Base
                 beans.add(bean);
             }
             return new JRBeanCollectionDataSource(beans);
+        }
+
+        protected DateGroup getDateGroup(final Parameter _parameter)
+            throws EFapsException
+        {
+            DateGroup ret;
+            final Map<String, Object> filter = getFilterReport().getFilterMap(_parameter);
+            if (filter.containsKey("dateGroup") && filter.get("dateGroup") != null) {
+                ret = (AbstractGroupedByDate.DateGroup) ((EnumFilterValue) filter.get("dateGroup")).getObject();
+            } else {
+                final Instance inst = _parameter.getInstance();
+                if (inst != null && inst.getType().isKindOf(CIProjects.ProjectAbstract)) {
+                    ret = DocumentSumGroupedByDate_Base.DateGroup.WEEK;
+                } else {
+                    ret = DocumentSumGroupedByDate_Base.DateGroup.MONTH;
+                }
+            }
+            return ret;
         }
 
         /**
@@ -260,6 +277,16 @@ public class PositionAnalyzeReport_Base
                     _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeAbstractLink,
                                     filter.getObject());
                 }
+            }
+
+            final Instance inst = _parameter.getInstance();
+            if (inst != null && inst.getType().isKindOf(CIProjects.ProjectAbstract)) {
+                final QueryBuilder attrQueryBldr = new QueryBuilder(
+                                CITimeReport.Projects_ProjectService2EmployeeTimeCard);
+                attrQueryBldr.addWhereAttrEqValue(CITimeReport.Projects_ProjectService2EmployeeTimeCard.FromLink, inst);
+                _queryBldr.addWhereAttrInQuery(
+                                CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
+                        attrQueryBldr.getAttributeQuery(CITimeReport.Projects_ProjectService2EmployeeTimeCard.ToLink));
             }
         }
 

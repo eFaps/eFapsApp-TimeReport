@@ -84,4 +84,28 @@ public final class CIProjects
         public final CIStatus Active = new CIStatus(this, "Active");
         public final CIStatus Inactive = new CIStatus(this, "Inactive");
     }
+
+    public static final _ProjectAbstract ProjectAbstract = new _ProjectAbstract("5d76d1ca-a8b6-4b6d-9142-38eb447adc0c");
+    public static class _ProjectAbstract extends CIType
+    {
+        protected _ProjectAbstract(final String _uuid)
+        {
+            super(_uuid);
+        }
+        public final CIAttribute Company = new CIAttribute(this, "Company");
+        public final CIAttribute Contact = new CIAttribute(this, "Contact");
+        public final CIAttribute Created = new CIAttribute(this, "Created");
+        public final CIAttribute Creator = new CIAttribute(this, "Creator");
+        public final CIAttribute CurrencyLink = new CIAttribute(this, "CurrencyLink");
+        public final CIAttribute Date = new CIAttribute(this, "Date");
+        public final CIAttribute Description = new CIAttribute(this, "Description");
+        public final CIAttribute DueDate = new CIAttribute(this, "DueDate");
+        public final CIAttribute Lead = new CIAttribute(this, "Lead");
+        public final CIAttribute Modified = new CIAttribute(this, "Modified");
+        public final CIAttribute Modifier = new CIAttribute(this, "Modifier");
+        public final CIAttribute Name = new CIAttribute(this, "Name");
+        public final CIAttribute Note = new CIAttribute(this, "Note");
+        public final CIAttribute ProjectTypeLink = new CIAttribute(this, "ProjectTypeLink");
+        public final CIAttribute StatusAbstract = new CIAttribute(this, "StatusAbstract");
+    }
 }
