@@ -29,6 +29,7 @@ import org.efaps.db.Instance;
 import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.QueryBuilder;
 import org.efaps.esjp.ci.CITimeReport;
+import org.efaps.esjp.common.AbstractCommon;
 import org.efaps.util.EFapsException;
 import org.joda.time.DateTime;
 
@@ -41,6 +42,7 @@ import org.joda.time.DateTime;
 @EFapsUUID("be7bb3ea-2e4d-43bb-8dc7-173d18573aca")
 @EFapsRevision("$Rev: 14133 $")
 public abstract class AbstractOnPayroll_Base
+    extends AbstractCommon
 {
 
     private Instance emplInst;

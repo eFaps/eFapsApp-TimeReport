@@ -38,4 +38,5 @@ import org.efaps.admin.program.esjp.EFapsUUID;
 public class OnPayslip
     extends OnPayslip_Base
 {
+
 }

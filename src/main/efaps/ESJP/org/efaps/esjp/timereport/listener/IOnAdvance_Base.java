@@ -107,6 +107,11 @@ public abstract class IOnAdvance_Base
     protected void add2QueryBldr(final Parameter _parameter,
                                  final QueryBuilder _queryBldr) throws EFapsException
     {
+        // must not be related to any Payslip
+        final QueryBuilder attrQueryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCard2Payslip);
+        _queryBldr.addWhereAttrNotInQuery(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
+                        attrQueryBldr.getAttributeQuery(CITimeReport.EmployeeTimeCard2Payslip.ToLink));
+
         _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeLink, getEmplInst());
         _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, getDate().plusDays(1));
     }
