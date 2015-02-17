@@ -224,6 +224,8 @@ public abstract class EmployeeTimeCard_Base
         }
 
         final StringBuilder script = new StringBuilder()
+            .append("var fsStore = new ItemFileReadStore({ data : {identifier:'value', label: 'name', items: [{value: 1, name: 'A'}, {value: 2,name: 'B'}, {value: 3, name: 'C'}]}}); ")
+            .append("")
             .append("var layout = [{")
             .append("onBeforeRow : function(inDataIndex, inSubRows)")
             .append("{")
@@ -253,7 +255,7 @@ public abstract class EmployeeTimeCard_Base
             } else {
                 script.append(",");
             }
-            script.append("{headerClasses : 'staticHeader', classes: 'staticHeader', colSpan: 4, name: '")
+            script.append("{headerClasses : 'staticHeader', classes: 'staticHeader', colSpan: 5, name: '")
                             .append(localDate.toString(dateFormatter)).append("'}");
         }
         script.append("],[");
@@ -264,18 +266,24 @@ public abstract class EmployeeTimeCard_Base
             } else {
                 script.append(",");
             }
-            script.append("{ editable: true,  name: '")
-                            .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".LaborTime"))
-                            .append("', field: 'LT_").append(localDate.getDayOfYear()).append("'}")
-                            .append(",{ editable: true, name: '")
-                            .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".ExtraLaborTime"))
-                            .append("', field: 'ELT_").append(localDate.getDayOfYear()).append("'}")
-                            .append(",{ editable: true, name: '")
-                            .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".NightLaborTime"))
-                            .append("', field: 'NLT_").append(localDate.getDayOfYear()).append("'}")
-                            .append(",{ editable: true, name: '")
-                            .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".HolidayLaborTime"))
-                            .append("', field: 'HLT_").append(localDate.getDayOfYear()).append("'}");
+            script
+                .append("{ editable: true, name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".AbsenceReason"))
+                .append("', field: 'AR_").append(localDate.getDayOfYear()).append("', type: dojox.grid.cells._Widget, ")
+                .append("widgetClass: dijit.form.FilteringSelect, widgetProps: {store: fsStore}")
+                .append("},")
+                .append("{ editable: true,  name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".LaborTime"))
+                .append("', field: 'LT_").append(localDate.getDayOfYear()).append("'}")
+                .append(",{ editable: true, name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".ExtraLaborTime"))
+                .append("', field: 'ELT_").append(localDate.getDayOfYear()).append("'}")
+                .append(",{ editable: true, name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".NightLaborTime"))
+                .append("', field: 'NLT_").append(localDate.getDayOfYear()).append("'}")
+                .append(",{ editable: true, name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".HolidayLaborTime"))
+                .append("', field: 'HLT_").append(localDate.getDayOfYear()).append("'}");
         }
         script.append("")
                         .append("]")
@@ -379,17 +387,31 @@ public abstract class EmployeeTimeCard_Base
         }
 
         script.append("\n]")
-                        .append("};\n")
-                        .append("var store = new ItemFileWriteStore({data: data});\n")
-                        .append("var grid = new EnhancedGrid({")
-                        .append("id: 'grid',")
-                        .append("canSort: function(col){return false; },")
-                        .append("store: store,")
-                        .append("singleClickEdit: true,")
-                        .append("structure: layout,")
-                        .append("selectionMode: 'none'});\n")
-                        .append("grid.placeAt(\"gridDiv\");")
-                        .append("grid.startup();");
+                .append("};\n")
+                .append("var store = new ItemFileWriteStore({data: data});\n")
+                .append("var grid = new EnhancedGrid({")
+                .append("id: 'grid',")
+                .append("canSort: function(col){return false; },")
+                .append("store: store,")
+                .append("singleClickEdit: true,")
+                .append("structure: layout,")
+                .append("selectionMode: 'none'});\n")
+                .append("grid.placeAt(\"gridDiv\");")
+                .append("grid.startup();")
+                .append("var gotList = function (items, request) {\n")
+                .append("    var json = [\n")
+                .append("    ];\n")
+                .append("    dojo.forEach(items, function (i) {\n")
+                .append("      json.push(itemToJSON(store, i));\n")
+                .append("    });\n")
+                .append("    var jsonStr = dojo.toJson(json);\n")
+                .append("    document.getElementsByName('values')[0].value = jsonStr;\n")
+                .append("  }\n ")
+                .append("topic.subscribe(\"eFaps/submitClose\", function(){\n")
+                .append(" store.fetch({\n")
+                .append("onComplete: gotList\n")
+                .append(" });\n")
+                .append("});") ;
 
         final StringBuilder funScript = new StringBuilder()
                         .append("function itemToJSON(store, item) {\n"
@@ -466,41 +488,7 @@ public abstract class EmployeeTimeCard_Base
                                         +
                                         "  return json;\n"
                                         +
-                                        "}\n"
-                                        +
-                                        "require(['dijit/registry',\n"
-                                        +
-                                        "'dojo/data/ItemFileWriteStore'], function (registry, ItemFileWriteStore) {\n"
-                                        +
-                                        "  var grid = registry.byId('grid');\n"
-                                        +
-                                        "  var store = grid.store;\n"
-                                        +
-                                        "  var gotList = function (items, request) {\n"
-                                        +
-                                        "    var json = [\n"
-                                        +
-                                        "    ];\n"
-                                        +
-                                        "    dojo.forEach(items, function (i) {\n"
-                                        +
-                                        "      json.push(itemToJSON(store, i));\n"
-                                        +
-                                        "    });\n"
-                                        +
-                                        "    var jsonStr = dojo.toJson(json);\n"
-                                        +
-                                        "    document.getElementsByName('values')[0].value = jsonStr;\n"
-                                        +
-                                        "  }\n "
-                                        +
-                                        "dojo.connect(grid, 'onApplyCellEdit', function (inValue, inRowIndex, inFieldIndex) {\n"
-                                        +
-                                        "  store.fetch({\n" +
-                                        "    onComplete: gotList\n" +
-                                        "  });\n" +
-                                        "});" +
-                                        "});");
+                                        "}\n");
 
         final StringBuilder html = new StringBuilder()
                         .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/dojox/grid/resources/Grid.css\" >")
@@ -510,9 +498,9 @@ public abstract class EmployeeTimeCard_Base
                         .append("</style>")
                         .append("<div id=\"gridDiv\" style=\"position: absolute; height:98%; width: 90%;\">")
                         .append(InterfaceUtils.wrappInScriptTag(_parameter,
-                                        InterfaceUtils.wrapInDojoRequire(_parameter, script,
-                                                        DojoLibs.ENHANCEDGRID, DojoLibs.IFWSTORE).append(funScript),
-                                        true, 0));
+                                        funScript.append(InterfaceUtils.wrapInDojoRequire(_parameter, script,
+                                        DojoLibs.ENHANCEDGRID, DojoLibs.IFWSTORE, DojoLibs.IFRSTORE, DojoLibs.FSELECT,
+                                        DojoLibs.REGISTRY, DojoLibs.TOPIC)), true, 0));
 
         ret.put(ReturnValues.SNIPLETT, html.toString());
         return ret;
