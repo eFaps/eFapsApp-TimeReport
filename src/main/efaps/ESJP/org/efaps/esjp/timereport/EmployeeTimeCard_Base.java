@@ -224,8 +224,6 @@ public abstract class EmployeeTimeCard_Base
         }
 
         final StringBuilder script = new StringBuilder()
-            .append("var fsStore = new ItemFileReadStore({ data : {identifier:'value', label: 'name', items: [{value: 1, name: 'A'}, {value: 2,name: 'B'}, {value: 3, name: 'C'}]}}); ")
-            .append("")
             .append("var layout = [{")
             .append("onBeforeRow : function(inDataIndex, inSubRows)")
             .append("{")
@@ -255,7 +253,7 @@ public abstract class EmployeeTimeCard_Base
             } else {
                 script.append(",");
             }
-            script.append("{headerClasses : 'staticHeader', classes: 'staticHeader', colSpan: 5, name: '")
+            script.append("{headerClasses : 'staticHeader', classes: 'staticHeader', colSpan: 4, name: '")
                             .append(localDate.toString(dateFormatter)).append("'}");
         }
         script.append("],[");
@@ -267,11 +265,11 @@ public abstract class EmployeeTimeCard_Base
                 script.append(",");
             }
             script
-                .append("{ editable: true, name: '")
-                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".AbsenceReason"))
-                .append("', field: 'AR_").append(localDate.getDayOfYear()).append("', type: dojox.grid.cells._Widget, ")
-                .append("widgetClass: dijit.form.FilteringSelect, widgetProps: {store: fsStore}")
-                .append("},")
+//                .append("{ editable: true, name: '")
+//                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".AbsenceReason"))
+//                .append("', field: 'AR_").append(localDate.getDayOfYear()).append("', type: dojox.grid.cells._Widget, ")
+//                .append("widgetClass: dijit.form.FilteringSelect, widgetProps: {store: fsStore}")
+//                .append("},")
                 .append("{ editable: true,  name: '")
                 .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".LaborTime"))
                 .append("', field: 'LT_").append(localDate.getDayOfYear()).append("'}")
