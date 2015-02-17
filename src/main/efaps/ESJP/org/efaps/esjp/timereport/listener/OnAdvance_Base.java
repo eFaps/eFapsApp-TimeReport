@@ -40,7 +40,7 @@ import org.joda.time.DateTime;
  */
 @EFapsUUID("46c3ca20-6be4-43ef-8433-4bf815050e56")
 @EFapsRevision("$Rev: 14133 $")
-public abstract class IOnAdvance_Base
+public abstract class OnAdvance_Base
     extends AbstractOnPayroll
     implements IOnAdvance
 {

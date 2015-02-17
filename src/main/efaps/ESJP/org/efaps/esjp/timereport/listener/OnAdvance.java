@@ -36,7 +36,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
 @EFapsUUID("408cf918-75e9-43f1-89a9-9d446a3a8a07")
 @EFapsRevision("$Rev: 14133 $")
 @EFapsListener
-public class IOnAdvance
-    extends IOnAdvance_Base
+public class OnAdvance
+    extends OnAdvance_Base
 {
 }
