@@ -101,6 +101,9 @@
             <!-- connect the TimeReport_Projects_ProjectTree_EmployeeTimeCard to the main menu from Projects_ProjectTree -->
             update.add2Menu("3a46f88d-604c-46c8-8c23-80fe9d6b899a", "1336daea-b7d2-418f-accc-0edf5937f3cb", 1);
 
+            <!-- TimeReport_AttributeDefinitionAbstractMyDesk_Menu_Action, ERP_AttributeDefinitionMyDesk_Menu-->
+            update.add2Menu("d2f63142-e82a-40f0-8d94-9025ba9cb577", "69e0b34a-2483-4662-9a45-1ce5d4e420e6", 1);
+
             <!-- Timereport_Timereport, Admin_Help_MainMenu -->
             update.add2Help("f40d1f5d-0b6c-410e-b4bc-c855d38f220e", "dead549e-5cc6-49f9-9a79-8e33aa139f6d", -1);
         </script>

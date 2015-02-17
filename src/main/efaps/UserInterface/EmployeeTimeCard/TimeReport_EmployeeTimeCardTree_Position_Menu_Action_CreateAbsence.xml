@@ -20,18 +20,22 @@
  Last Changed By: $Author: miguel.a.aranya $
 
 -->
-<ui-menu xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>ca1e2fad-1d48-4359-a1e6-4605530978dd</uuid>
+    <uuid>3e7284cd-5625-4fd3-928e-dfed28d3f2af</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 5312 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_EmployeeTimeCardTree_Position_Menu_Action</name>
-        <childs>
-            <child>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Create</child>
-            <child>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_CreateAbsence</child>
-            <child>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Delete</child>
-        </childs>
+        <name>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_CreateAbsence</name>
+        <target>
+            <form>TimeReport_EmployeeAbsencePositionForm</form>
+            <execute method="createPosition" program="org.efaps.esjp.timereport.EmployeeTimeCard" />
+        </target>
+        <property name="Target">modal</property>
+        <property name="TargetCmdRevise">true</property>
+        <property name="TargetMode">create</property>
+        <property name="TargetCreateType">TimeReport_EmployeeAbsencePosition</property>
+        <property name="TargetConnectAttribute">TimeReport_EmployeeAbsencePosition/EmployeeTimeCardLink</property>
     </definition>
-</ui-menu>
+</ui-command>

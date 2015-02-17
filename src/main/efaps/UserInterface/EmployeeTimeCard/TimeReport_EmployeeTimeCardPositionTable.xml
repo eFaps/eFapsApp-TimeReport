@@ -28,9 +28,9 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardPositionTable</name>
-        <field name="positionNumber">
-            <property name="Attribute">PositionNumber</property>
-            <property name="Label">TimeReport_EmployeeTimeCardPosition/PositionNumber.Label</property>
+        <field name="tyoe">
+            <property name="Attribute">Type</property>
+            <property name="Label">TimeReport_EmployeeTimeCardPosition/Type.Label</property>
         </field>
         <field name="employeeLink">
             <property name="SelectAlternateOID">linkto[EmployeeAbstractLink].oid</property>
@@ -43,6 +43,10 @@
             <property name="Attribute">Date</property>
             <property name="Label">TimeReport_EmployeeTimeCardPosition/Date.Label</property>
              <property name="HRef">TREE</property>
+        </field>
+        <field name="attrDefLinkAbstract">
+            <property name="Attribute">AttrDefLinkAbstract</property>
+            <property name="Label">TimeReport_EmployeeAbsencePosition/AbsenceReasonLink.Label</property>
         </field>
         <field name="laborTime">
             <property name="Attribute">LaborTime</property>

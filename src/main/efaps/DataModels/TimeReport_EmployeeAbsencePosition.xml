@@ -22,12 +22,12 @@
 -->
 <datamodel-type xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>6cbee2fb-0dff-41b5-876a-8fbde3f0f844</uuid>
+    <uuid>04398626-b84a-498e-a19b-f60910145376</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 14822 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_EmployeeTimeCardPosition</name>
+        <name>TimeReport_EmployeeAbsencePosition</name>
         <parent>TimeReport_EmployeeAbstractPosition</parent>
         <attribute>
             <name>EmployeeTimeCardLink</name>
@@ -42,6 +42,19 @@
             <typelink>HumanResource_Employee</typelink>
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>RESOURCEID</sqlcolumn>
+        </attribute>
+         <attribute>
+            <name>AbsenceReasonLink</name>
+            <type>LinkWithRanges</type>
+            <typelink>TimeReport_AttributeDefinitionAbsenceReason</typelink>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>ATRDEFID</sqlcolumn>
+            <trigger event="RANGE_VALUE"
+                name="TimeReport_EmployeeAbsencePosition.HealthRegimeLink.RANGE_VALUE"
+                program="org.efaps.esjp.admin.datamodel.RangesValue">
+                 <property name="Value">$&lt;attribute[Value]&gt; - $&lt;attribute[Description]&gt; </property>
+                <property name="Type">TimeReport_AttributeDefinitionAbsenceReason</property>
+            </trigger>
         </attribute>
     </definition>
 </datamodel-type>

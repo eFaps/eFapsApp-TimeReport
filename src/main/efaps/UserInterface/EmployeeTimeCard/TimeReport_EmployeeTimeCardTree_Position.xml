@@ -36,8 +36,10 @@
             <menu>TimeReport_EmployeeTimeCardTree_Position_Menu</menu>
             <table>TimeReport_EmployeeTimeCardPositionTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Type">TimeReport_EmployeeTimeCardPosition</property>
-                <property name="LinkFrom">EmployeeTimeCardLink</property>
+                <property name="Type01">TimeReport_EmployeeTimeCardPosition</property>
+                <property name="LinkFrom01">EmployeeTimeCardLink</property>
+                <property name="Type02">TimeReport_EmployeeAbsencePosition</property>
+                <property name="LinkFrom02">EmployeeTimeCardLink</property>
             </evaluate>
         </target>
         <property name="Target">content</property>

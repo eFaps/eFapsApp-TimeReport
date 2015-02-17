@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
 
- Copyright 2003 - 2010 The eFaps Team
+ Copyright 2003 - 2013 The eFaps Team
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,33 +15,30 @@
  limitations under the License.
 
  Author:          The eFaps Team
- Revision:        $Rev: 14822 $
- Last Changed:    $Date: 2015-02-07 12:10:27 -0500 (Sat, 07 Feb 2015) $
+ Revision:        $Rev: 11011 $
+ Last Changed:    $Date: 2013-11-20 10:07:45 -0500 (mié, 20 nov 2013) $
  Last Changed By: $Author: jan@moxter.net $
 
 -->
 <datamodel-type xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>6cbee2fb-0dff-41b5-876a-8fbde3f0f844</uuid>
+    <uuid>1b3b6f4d-76ed-4471-987f-a4281c2ad5d8</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
-    <file-revision>$Rev: 14822 $</file-revision>
+    <file-revision>$Rev: 11011 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_EmployeeTimeCardPosition</name>
-        <parent>TimeReport_EmployeeAbstractPosition</parent>
+        <name>TimeReport_AttributeDefinitionAbsenceReason</name>
+        <parent>TimeReport_AttributeDefinitionAbstract</parent>
         <attribute>
-            <name>EmployeeTimeCardLink</name>
-            <type>Link</type>
-            <typelink>TimeReport_EmployeeReport</typelink>
-            <sqltable>TimeReport_PositionSQLTable</sqltable>
-            <sqlcolumn>DOCID</sqlcolumn>
-        </attribute>
-        <attribute>
-            <name>EmployeeLink</name>
-            <type>Link</type>
-            <typelink>HumanResource_Employee</typelink>
-            <sqltable>TimeReport_PositionSQLTable</sqltable>
-            <sqlcolumn>RESOURCEID</sqlcolumn>
+            <name>Status</name>
+            <type>Status</type>
+            <typelink>ERP_AttributeDefinitionStatus</typelink>
+            <sqltable>ERP_AttributeDefinitionSQLTable</sqltable>
+            <sqlcolumn>STATUS</sqlcolumn>
+            <trigger event="RANGE_VALUE"
+                name="TimeReport_AttributeDefinitionAbsenceReason.Status.RANGE_VALUE"
+                program="org.efaps.esjp.admin.datamodel.StatusValue">
+            </trigger>
         </attribute>
     </definition>
 </datamodel-type>

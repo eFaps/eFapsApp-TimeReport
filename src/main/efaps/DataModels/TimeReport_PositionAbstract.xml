@@ -68,19 +68,7 @@
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>DATE</sqlcolumn>
         </attribute>
-        <attribute>
-            <name>CategoryAbstractLink</name>
-            <type>Link</type>
-            <typelink>TimeReport_CategoryAbstract</typelink>
-            <sqltable>TimeReport_PositionSQLTable</sqltable>
-            <sqlcolumn>CATEGORYID</sqlcolumn>
-        </attribute>
-        <attribute>
-            <name>CategoryDesc</name>
-            <type>String</type>
-            <sqltable>TimeReport_PositionSQLTable</sqltable>
-            <sqlcolumn>DESCR</sqlcolumn>
-        </attribute>
+
         <attribute>
             <name>PayDocumentAbstractLink</name>
             <type>Link</type>
@@ -116,6 +104,19 @@
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>HOLIDAYTIME,HOLIDAYTIMEUOMID,HOLIDAYTIMEBASE</sqlcolumn>
         </attribute>
+         <attribute>
+            <name>AttrDefLinkAbstract</name>
+            <type>LinkWithRanges</type>
+            <typelink>TimeReport_AttributeDefinitionAbstract</typelink>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>ATRDEFID</sqlcolumn>
+            <trigger event="RANGE_VALUE"
+                name="TimeReport_PositionAbstract.ReasonLinkAbstract.RANGE_VALUE"
+                program="org.efaps.esjp.admin.datamodel.RangesValue">
+                <property name="Value">$&lt;attribute[Value]&gt; - $&lt;attribute[Description]&gt; </property>
+                <property name="Type">TimeReport_AttributeDefinitionAbstract</property>
+            </trigger>
+        </attribute>
         <attribute>
             <name>Creator</name>
             <type>CreatorLink</type>
@@ -139,6 +140,21 @@
             <type>Modified</type>
             <sqltable>TimeReport_PositionSQLTable</sqltable>
             <sqlcolumn>MODIFIED</sqlcolumn>
+        </attribute>
+
+        <!-- deprecated -->
+        <attribute>
+            <name>CategoryAbstractLink</name>
+            <type>Link</type>
+            <typelink>TimeReport_CategoryAbstract</typelink>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>CATEGORYID</sqlcolumn>
+        </attribute>
+        <attribute>
+            <name>CategoryDesc</name>
+            <type>String</type>
+            <sqltable>TimeReport_PositionSQLTable</sqltable>
+            <sqlcolumn>DESCR</sqlcolumn>
         </attribute>
     </definition>
 </datamodel-type>
