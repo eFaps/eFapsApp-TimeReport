@@ -49,6 +49,7 @@ import org.efaps.db.PrintQuery;
 import org.efaps.db.QueryBuilder;
 import org.efaps.db.SelectBuilder;
 import org.efaps.db.Update;
+import org.efaps.esjp.ci.CIERP;
 import org.efaps.esjp.ci.CIFormTimeReport;
 import org.efaps.esjp.ci.CIHumanResource;
 import org.efaps.esjp.ci.CIProjects;
@@ -210,7 +211,7 @@ public abstract class EmployeeTimeCard_Base
                         CIFormTimeReport.TimeReport_EmployeeTimeCardRegisterSelectForm.fromDate.name));
         final DateTime toDate = new DateTime(_parameter.getParameterValue(
                         CIFormTimeReport.TimeReport_EmployeeTimeCardRegisterSelectForm.toDate.name));
-        final DateTimeFormatter dateFormatter = DateTimeFormat.shortDate().withLocale(
+        final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("E dd/MM/YY").withLocale(
                         Context.getThreadContext().getLocale());
 
         final List<LocalDate> dates = new ArrayList<>();
@@ -224,76 +225,116 @@ public abstract class EmployeeTimeCard_Base
         }
 
         final StringBuilder script = new StringBuilder()
-            .append("var layout = [{")
-            .append("onBeforeRow : function(inDataIndex, inSubRows)")
-            .append("{")
-            .append("  inSubRows[0].invisible = inDataIndex >= 0;")
-            .append("}, ")
-            .append("noscroll: true,")
-            .append("cells: [")
-            .append("[")
-            .append("{ name: 'Documento', colSpan: 3, width: 'auto'}")
-            .append("],[")
-            .append("{ name: 'No', field: 'name', width: '50px'},")
-            .append("{ name: 'DNI',field: 'number', width: '50px'},")
-            .append("{ name: 'Empleado',field: 'employee', width: '250px'}")
-            .append("]")
-            .append("]},{")
-            .append("onBeforeRow : function(inDataIndex, inSubRows)")
-            .append("{")
-            .append("  inSubRows[0].invisible = inDataIndex >= 0;")
-            .append("}, ")
-            .append("defaultCell: { width: \"25px\" },")
-            .append("cells: [")
-            .append("[");
-        boolean first = true;
-        for (final LocalDate localDate : dates) {
-            if (first) {
-                first = false;
-            } else {
-                script.append(",");
-            }
-            script.append("{headerClasses : 'staticHeader', classes: 'staticHeader', colSpan: 4, name: '")
-                            .append(localDate.toString(dateFormatter)).append("'}");
-        }
-        script.append("],[");
-        first = true;
-        for (final LocalDate localDate : dates) {
-            if (first) {
-                first = false;
-            } else {
-                script.append(",");
-            }
-            script
-//                .append("{ editable: true, name: '")
-//                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".AbsenceReason"))
-//                .append("', field: 'AR_").append(localDate.getDayOfYear()).append("', type: dojox.grid.cells._Widget, ")
-//                .append("widgetClass: dijit.form.FilteringSelect, widgetProps: {store: fsStore}")
-//                .append("},")
-                .append("{ editable: true,  name: '")
-                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".LaborTime"))
-                .append("', field: 'LT_").append(localDate.getDayOfYear()).append("'}")
-                .append(",{ editable: true, name: '")
-                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".ExtraLaborTime"))
-                .append("', field: 'ELT_").append(localDate.getDayOfYear()).append("'}")
-                .append(",{ editable: true, name: '")
-                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".NightLaborTime"))
-                .append("', field: 'NLT_").append(localDate.getDayOfYear()).append("'}")
-                .append(",{ editable: true, name: '")
-                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".HolidayLaborTime"))
-                .append("', field: 'HLT_").append(localDate.getDayOfYear()).append("'}");
-        }
-        script.append("")
-                        .append("]")
-                        .append("]")
-                        .append("}")
-                        .append("];")
-                        .append("")
-                        .append("");
+            .append("var selectStore = new Memory({\n")
+            .append("data: {\n")
+            .append("items: [\n")
+            .append("{ id: '").append(0)
+            .append("',label: '").append("-")
+            .append("'}\n");
+        final QueryBuilder rQueryBldr = new QueryBuilder(CITimeReport.AttributeDefinitionAbsenceReason);
+        rQueryBldr.addWhereAttrEqValue(CITimeReport.AttributeDefinitionAbsenceReason.Status,
+                        Status.find(CIERP.AttributeDefinitionStatus.Active));
+        final MultiPrintQuery rMutli = rQueryBldr.getPrint();
+        rMutli.addAttribute(CITimeReport.AttributeDefinitionAbsenceReason.Value);
+        rMutli.execute();
 
-        script.append("var data = {")
-                        .append("identifier: \"oid\",")
-                        .append(" items: [\n");
+        while (rMutli.next()) {
+            script.append(",{ id: '").append(rMutli.getCurrentInstance().getId())
+                .append("',label: '").append(rMutli.getAttribute(CITimeReport.AttributeDefinitionAbsenceReason.Value))
+                .append("'}\n");
+        }
+
+        script.append("]\n")
+            .append("}\n")
+            .append("})\n")
+            .append("\n")
+            .append("var cellVal = function (gridData, storeData, cellWidget) {\n")
+            .append("cellWidget.select.set('labelAttr', 'label');\n")
+            .append("cellWidget.select.setStore(selectStore, gridData);\n")
+            .append("}\n")
+            .append("var selectCreate = function (cellWidget, column) {\n")
+            .append("var sl = new Select({")
+            .append("store: selectStore,")
+            .append("labelAttr: 'label',")
+            .append("style: {")
+            .append(" width: '100%',")
+            .append("}")
+            .append("});")
+            .append("sl.placeAt(cellWidget.domNode);\n")
+            .append("cellWidget.gridCellEditField = sl;\n")
+            .append("cellWidget.select = sl;\n")
+            .append("}\n")
+            .append("var numVal = function (gridData, storeData, cellWidget) {\n")
+            .append("cellWidget.gridCellEditField.set('value', gridData);\n")
+            .append("}\n")
+            .append("var numCreate = function (cellWidget, column) {\n")
+            .append("var ntb = new NumberTextBox({\n")
+            .append("constraints: {\n")
+            .append("min: 0, max: 12, places: 0\n")
+            .append("},\n")
+            .append("style: {\n")
+            .append("width: '100%',textAlign: 'right'\n")
+            .append("},\n")
+            .append("});\n")
+            .append("ntb.placeAt(cellWidget.domNode);\n")
+            .append("domAttr.set(ntb.textbox, 'type', 'number');\n")
+            .append("cellWidget.gridCellEditField = ntb;\n")
+            .append("};\n")
+            .append("var numCon = function (cellWidget, cell) {\n")
+            .append("return [\n")
+            .append("[cellWidget.gridCellEditField,\n")
+            .append("'onFocus',\n")
+            .append("function (e) {\n")
+            .append("cellWidget.gridCellEditField.focusNode.select();\n")
+            .append("}]];\n")
+            .append("}\n")
+
+            .append("var layout = [\n")
+            .append("{ field: 'name', name: 'No', width: '40px'},\n")
+            .append("{ field: 'number', name: 'DNI', width: '50px'},\n")
+            .append("{ field: 'employee', name: 'Empleado', width: '200px'}\n");
+
+        for (final LocalDate localDate : dates) {
+            script.append(",")
+                .append("{  widgetsInCell: true, onCellWidgetCreated: selectCreate, setCellValue: cellVal,")
+                .append(" headerClass: ' dow").append(localDate.getDayOfWeek()).append("',")
+                .append(" width: '50px', name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".absenceType"))
+                .append("', field: 'A_").append(localDate.getDayOfYear()).append("'}\n")
+                .append(",{  widgetsInCell: true, onCellWidgetCreated: numCreate, setCellValue: numVal,")
+                .append(" headerClass: ' dow").append(localDate.getDayOfWeek()).append("',")
+                .append("  getCellWidgetConnects: numCon, width: '30px', name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".LaborTime"))
+                .append("', field: 'LT_").append(localDate.getDayOfYear()).append("'}\n")
+                .append(",{  widgetsInCell: true, onCellWidgetCreated: numCreate, setCellValue: numVal,")
+                .append(" headerClass: ' dow").append(localDate.getDayOfWeek()).append("',")
+                .append("  getCellWidgetConnects: numCon, width: '30px', name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".ExtraLaborTime"))
+                .append("', field: 'ELT_").append(localDate.getDayOfYear()).append("'}\n")
+                .append(",{  widgetsInCell: true, onCellWidgetCreated: numCreate, setCellValue: numVal,")
+                .append(" headerClass: ' dow").append(localDate.getDayOfWeek()).append("',")
+                .append("  getCellWidgetConnects: numCon, width: '30px', name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".NightLaborTime"))
+                .append("', field: 'NLT_").append(localDate.getDayOfYear()).append("'}\n")
+                .append(",{  widgetsInCell: true, onCellWidgetCreated: numCreate, setCellValue: numVal,")
+                .append(" headerClass: ' dow").append(localDate.getDayOfWeek()).append("',")
+                .append("  getCellWidgetConnects: numCon, width: '30px', name: '")
+                .append(DBProperties.getProperty(EmployeeTimeCard.class.getName() + ".HolidayLaborTime"))
+                .append("', field: 'HLT_").append(localDate.getDayOfYear()).append("'}\n");
+        }
+
+        script.append("];\n")
+            .append(" docHeaderGroup = [\n")
+            .append("{name: 'Empleado', children: 3} \n");
+
+        for (final LocalDate localDate : dates) {
+             script.append(",{ children: 5, name: '").append(localDate.toString(dateFormatter)).append("'}");
+        }
+
+        script.append("];\n")
+            .append("var data = {")
+            .append("identifier: \"oid\",")
+            .append(" items: [\n");
         ParameterUtil.setParmeterValue(_parameter, "selectedRow",
                         (String[]) Context.getThreadContext().getSessionAttribute(
                                         CIFormTimeReport.TimeReport_EmployeeTimeCardRegisterSelectForm.selection.name));
@@ -311,7 +352,7 @@ public abstract class EmployeeTimeCard_Base
         multi.addAttribute(CITimeReport.EmployeeTimeCard.Name, CITimeReport.EmployeeTimeCard.Date,
                         CITimeReport.EmployeeTimeCard.DueDate);
         multi.execute();
-        first = true;
+        boolean first = true;
         while (multi.next()) {
             final String name = multi.getAttribute(CITimeReport.EmployeeTimeCard.Name);
             final String number = multi.getSelect(selEmplNumber);
@@ -320,12 +361,14 @@ public abstract class EmployeeTimeCard_Base
             final DateTime tcDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.Date);
             final DateTime tcDueDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.DueDate);
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
-            queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeTimeCardLink,
+            queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
+            queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
                             multi.getCurrentInstance());
             queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date, fromDate.minusDays(1));
             queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, toDate.plusDays(1));
             final MultiPrintQuery posMulti = queryBldr.getPrint();
-            posMulti.addAttribute(CITimeReport.EmployeeTimeCardPosition.Date,
+            posMulti.addAttribute(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract,
+                            CITimeReport.EmployeeTimeCardPosition.Date,
                             CITimeReport.EmployeeTimeCardPosition.LaborTime,
                             CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime,
                             CITimeReport.EmployeeTimeCardPosition.NightLaborTime,
@@ -341,7 +384,8 @@ public abstract class EmployeeTimeCard_Base
                                 .setNightLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
                                                 CITimeReport.EmployeeTimeCardPosition.NightLaborTime)[0])
                                 .setHolidayLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
-                                                CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)[0]);
+                                                CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)[0])
+                    .setReasonID(posMulti.<Long>getAttribute(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract));
                 map.put(posMulti.<DateTime>getAttribute(CITimeReport.EmployeeTimeCardPosition.Date).toLocalDate(), bean);
             }
 
@@ -366,14 +410,16 @@ public abstract class EmployeeTimeCard_Base
                         bean = new PosBean();
                     }
 
-                    script.append(",").append("LT_").append(localDate.getDayOfYear()).append(":")
-                                    .append(bean.getLaborTime())
-                                    .append(",").append("ELT_").append(localDate.getDayOfYear()).append(":")
-                                    .append(bean.getExtraLaborTime())
-                                    .append(",").append("NLT_").append(localDate.getDayOfYear()).append(":")
-                                    .append(bean.getNightLaborTime())
-                                    .append(",").append("HLT_").append(localDate.getDayOfYear()).append(":")
-                                    .append(bean.getHolidayLaborTime());
+                    script.append(",").append("A_").append(localDate.getDayOfYear()).append(":")
+                        .append(bean.getReasonID())
+                        .append(",").append("LT_").append(localDate.getDayOfYear()).append(":")
+                        .append(bean.getLaborTime())
+                        .append(",").append("ELT_").append(localDate.getDayOfYear()).append(":")
+                        .append(bean.getExtraLaborTime())
+                        .append(",").append("NLT_").append(localDate.getDayOfYear()).append(":")
+                        .append(bean.getNightLaborTime())
+                        .append(",").append("HLT_").append(localDate.getDayOfYear()).append(":")
+                        .append(bean.getHolidayLaborTime());
                 } else {
                     // table.addColumn("").getCurrentColumn().setCSSClass("firstC noneEdit")
                     // .getRow().addColumn("").getCurrentColumn().setCSSClass("noneEdit")
@@ -386,119 +432,51 @@ public abstract class EmployeeTimeCard_Base
 
         script.append("\n]")
                 .append("};\n")
-                .append("var store = new ItemFileWriteStore({data: data});\n")
-                .append("var grid = new EnhancedGrid({")
+                .append("var store = new Memory({data: data});\n")
+
+                .append("var grid = new Grid({")
                 .append("id: 'grid',")
-                .append("canSort: function(col){return false; },")
                 .append("store: store,")
-                .append("singleClickEdit: true,")
                 .append("structure: layout,")
-                .append("selectionMode: 'none'});\n")
+                .append("cacheClass: Cache,")
+                .append("columnLockCount: 3,")
+                .append("headerGroups: docHeaderGroup,")
+                .append("modules: [\n")
+                .append("GroupHeader,\n")
+                .append("ColumnLock,\n")
+                .append("Edit,\n")
+                .append("CellWidget\n")
+                .append("]\n")
+
+                .append("});\n")
                 .append("grid.placeAt(\"gridDiv\");")
                 .append("grid.startup();")
-                .append("var gotList = function (items, request) {\n")
-                .append("    var json = [\n")
-                .append("    ];\n")
-                .append("    dojo.forEach(items, function (i) {\n")
-                .append("      json.push(itemToJSON(store, i));\n")
-                .append("    });\n")
-                .append("    var jsonStr = dojo.toJson(json);\n")
-                .append("    document.getElementsByName('values')[0].value = jsonStr;\n")
-                .append("  }\n ")
                 .append("topic.subscribe(\"eFaps/submitClose\", function(){\n")
-                .append(" store.fetch({\n")
-                .append("onComplete: gotList\n")
-                .append(" });\n")
-                .append("});") ;
 
-        final StringBuilder funScript = new StringBuilder()
-                        .append("function itemToJSON(store, item) {\n"
-                                        +
-                                        "  var json = {\n"
-                                        +
-                                        "  };\n"
-                                        +
-                                        "  if (item && store) {\n"
-                                        +
-                                        "    // Determine the attributes we need to process.\n"
-                                        +
-                                        "    var attributes = store.getAttributes(item);\n"
-                                        +
-                                        "    if (attributes && attributes.length > 0) {\n"
-                                        +
-                                        "      var i;\n"
-                                        +
-                                        "      for (i = 0; i < attributes.length; i++) {\n"
-                                        +
-                                        "        var values = store.getValues(item, attributes[i]);\n"
-                                        +
-                                        "        if (values) {\n"
-                                        +
-                                        "          // Handle multivalued and single-valued attributes.\n"
-                                        +
-                                        "          if (values.length > 1) {\n"
-                                        +
-                                        "            var j;\n"
-                                        +
-                                        "            json[attributes[i]] = [\n"
-                                        +
-                                        "            ];\n"
-                                        +
-                                        "            for (j = 0; j < values.length; j++) {\n"
-                                        +
-                                        "              var value = values[j];\n"
-                                        +
-                                        "              // Check that the value isn't another item. If it is, process it as an item.\n"
-                                        +
-                                        "              if (store.isItem(value)) {\n"
-                                        +
-                                        "                json[attributes[i]].push(dojo.fromJson(itemToJSON(store, value)));\n"
-                                        +
-                                        "              } else {\n"
-                                        +
-                                        "                json[attributes[i]].push(value);\n"
-                                        +
-                                        "              }\n"
-                                        +
-                                        "            }\n"
-                                        +
-                                        "          } else {\n"
-                                        +
-                                        "            if (store.isItem(values[0])) {\n"
-                                        +
-                                        "              json[attributes[i]] = dojo.fromJson(itemToJSON(store, values[0]));\n"
-                                        +
-                                        "            } else {\n"
-                                        +
-                                        "              json[attributes[i]] = values[0];\n"
-                                        +
-                                        "            }\n"
-                                        +
-                                        "          }\n"
-                                        +
-                                        "        }\n"
-                                        +
-                                        "      }\n"
-                                        +
-                                        "    }\n"
-                                        +
-                                        "  }\n"
-                                        +
-                                        "  return json;\n"
-                                        +
-                                        "}\n");
+                .append("registry.byId('grid').model.save();\n")
+                .append("var json = [];\n")
+                .append("var query = store.query({ oid: /\\w*/ }).forEach(function (item) {\n")
+                .append("json.push(item);\n")
+                .append("});\n")
+                .append("var jsonStr = dojo.toJson(json);\n")
+                .append("document.getElementsByName('values') [0].value = jsonStr;\n")
+                .append("});\n") ;
 
         final StringBuilder html = new StringBuilder()
-                        .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/dojox/grid/resources/Grid.css\" >")
+                        .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/gridx/resources/claro/Gridx.css\" >")
                         .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/dojox/grid/resources/tundraGrid.css\" >")
                         .append("<style>")
                         .append(".dojoxGridCell.staticHeader {width: 120px;}")
+                        .append(".dow7 {background-color: #CC8181;}")
                         .append("</style>")
-                        .append("<div id=\"gridDiv\" style=\"position: absolute; height:98%; width: 90%;\">")
+                        .append("<div id=\"gridDiv\" style=\"position: absolute; height:98%; width: 98%;\">")
                         .append(InterfaceUtils.wrappInScriptTag(_parameter,
-                                        funScript.append(InterfaceUtils.wrapInDojoRequire(_parameter, script,
-                                        DojoLibs.ENHANCEDGRID, DojoLibs.IFWSTORE, DojoLibs.IFRSTORE, DojoLibs.FSELECT,
-                                        DojoLibs.REGISTRY, DojoLibs.TOPIC)), true, 0));
+                                        InterfaceUtils.wrapInDojoRequire(_parameter, script,
+                                        DojoLibs.MEMORY , DojoLibs.GXGRID, DojoLibs.GXCACHE, DojoLibs.GXGRPHEADER,
+                                        DojoLibs.GXEDIT,
+                                        DojoLibs.CLMLOCK,DojoLibs.GXEDIT,DojoLibs.GXCELLWIDGET,
+                                        DojoLibs.SELECT,DojoLibs.NBRTEXTBOX,DojoLibs.DOMATTR,
+                                        DojoLibs.REGISTRY, DojoLibs.TOPIC, DojoLibs.LANG), true, 0));
 
         ret.put(ReturnValues.SNIPLETT, html.toString());
         return ret;
@@ -582,39 +560,55 @@ public abstract class EmployeeTimeCard_Base
             throws EFapsException
         {
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
-            queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeTimeCardLink,
+            queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
+            queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink,
                             getInstance());
-            queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date, _fromDate.minusDays(1));
-            queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, _toDate.plusDays(1));
+            queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeAbstractPosition.Date, _fromDate.minusDays(1));
+            queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeAbstractPosition.Date, _toDate.plusDays(1));
             final InstanceQuery posInst = queryBldr.getQuery();
             final List<Instance> posInsts = posInst.execute();
-
+            final List<Instance> toDelete = new ArrayList<>();
             final Iterator<Instance> posIter = posInsts.iterator();
             for (final PosBean bean : this.beans.values()) {
                 if (bean.isValid()) {
-                    Update update;
+                    Update update = null;
                     if (posIter.hasNext()) {
-                        update = new Update(posIter.next());
-                    } else {
-                        update = new Insert(CITimeReport.EmployeeTimeCardPosition);
+                        final Instance currInst = posIter.next();
+                        if (bean.getReasonID() > 0 && currInst.getType()
+                                        .isCIType(CITimeReport.EmployeeAbsencePosition)
+                                        || bean.getReasonID() == 0 && currInst.getType().isCIType(
+                                                        CITimeReport.EmployeeTimeCardPosition)) {
+                            update = new Update(currInst);
+                        } else {
+                            toDelete.add(currInst);
+                        }
+                    }
+
+                    if (update == null) {
+                        update = new Insert(bean.getReasonID() > 0 ? CITimeReport.EmployeeAbsencePosition
+                                        : CITimeReport.EmployeeTimeCardPosition);
                         final PrintQuery print = new PrintQuery(getInstance());
                         print.addAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink);
                         print.execute();
-                        update.add(CITimeReport.EmployeeTimeCardPosition.EmployeeLink,
+                        update.add(CITimeReport.EmployeeAbstractPosition.EmployeeAbstractLink,
                                         print.getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
-                        update.add(CITimeReport.EmployeeTimeCardPosition.EmployeeTimeCardLink, getInstance());
+                        update.add(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink, getInstance());
                     }
-                    update.add(CITimeReport.EmployeeTimeCardPosition.Date, new DateTime(bean.getDate().getYear(),
+                    update.add(CITimeReport.EmployeeAbstractPosition.Date, new DateTime(bean.getDate().getYear(),
                                     bean.getDate().getMonthOfYear(), bean.getDate().getDayOfMonth(), 0, 0));
-                    update.add(CITimeReport.EmployeeTimeCardPosition.LaborTime, bean.getLaborTimeObject());
-                    update.add(CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime, bean.getExtraLaborTimeObject());
-                    update.add(CITimeReport.EmployeeTimeCardPosition.NightLaborTime, bean.getNightLaborTimeObject());
-                    update.add(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime, bean.getHolidayLaborTimeObject());
+                    update.add(CITimeReport.EmployeeAbstractPosition.AttrDefLinkAbstract, bean.getReasonObject());
+                    update.add(CITimeReport.EmployeeAbstractPosition.LaborTime, bean.getLaborTimeObject());
+                    update.add(CITimeReport.EmployeeAbstractPosition.ExtraLaborTime, bean.getExtraLaborTimeObject());
+                    update.add(CITimeReport.EmployeeAbstractPosition.NightLaborTime, bean.getNightLaborTimeObject());
+                    update.add(CITimeReport.EmployeeAbstractPosition.HolidayLaborTime, bean.getHolidayLaborTimeObject());
                     update.execute();
                 }
             }
             while (posIter.hasNext()) {
-                new Delete(posIter.next()).execute();
+                toDelete.add(posIter.next());
+            }
+            for (final Instance inst: toDelete) {
+                new Delete(inst).execute();
             }
         }
 
@@ -640,8 +634,13 @@ public abstract class EmployeeTimeCard_Base
                 BigDecimal value = BigDecimal.ZERO;
                 if (_value instanceof Number) {
                     value = new BigDecimal(((Number) _value).floatValue());
+                } else if (_value instanceof String) {
+                    value = new BigDecimal((String) _value);
                 }
                 switch (keyArr[0]) {
+                    case "A":
+                        bean.setReasonID(value.longValue());
+                        break;
                     case "LT":
                         bean.setLaborTime(value);
                         break;
@@ -699,6 +698,8 @@ public abstract class EmployeeTimeCard_Base
         private BigDecimal NightLaborTime = BigDecimal.ZERO;
         private BigDecimal HolidayLaborTime = BigDecimal.ZERO;
 
+        private Long reasonID = Long.valueOf(0);
+
         /**
          * Getter method for the instance variable {@link #laborTime}.
          *
@@ -712,38 +713,57 @@ public abstract class EmployeeTimeCard_Base
 
         public Object[] getLaborTimeObject()
         {
-            return new Object[] {
-                            getLaborTime(),
-                            CITimeReport.EmployeeTimeCardPosition.getType()
-                                            .getAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime.name)
-                                            .getDimension().getBaseUoM().getId() };
+            Object[] ret = null;
+            if (this.reasonID == 0) {
+                ret = new Object[] {
+                                getLaborTime(),
+                                CITimeReport.EmployeeTimeCardPosition.getType()
+                                                .getAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime.name)
+                                                .getDimension().getBaseUoM().getId() };
+            }
+            return ret;
         }
 
         public Object[] getExtraLaborTimeObject()
         {
-            return new Object[] {
-                            getExtraLaborTime(),
-                            CITimeReport.EmployeeTimeCardPosition.getType()
-                                            .getAttribute(CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime.name)
-                                            .getDimension().getBaseUoM().getId() };
+            Object[] ret = null;
+            if (this.reasonID == 0) {
+                ret = new Object[] {
+                                getExtraLaborTime(),
+                                CITimeReport.EmployeeTimeCardPosition
+                                                .getType()
+                                                .getAttribute(CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime.name)
+                                                .getDimension().getBaseUoM().getId() };
+            }
+            return ret;
         }
 
         public Object[] getNightLaborTimeObject()
         {
-            return new Object[] {
-                            getNightLaborTime(),
-                            CITimeReport.EmployeeTimeCardPosition.getType()
-                                            .getAttribute(CITimeReport.EmployeeTimeCardPosition.NightLaborTime.name)
-                                            .getDimension().getBaseUoM().getId() };
+            Object[] ret = null;
+            if (this.reasonID == 0) {
+                ret = new Object[] {
+                                getNightLaborTime(),
+                                CITimeReport.EmployeeTimeCardPosition
+                                                .getType()
+                                                .getAttribute(CITimeReport.EmployeeTimeCardPosition.NightLaborTime.name)
+                                                .getDimension().getBaseUoM().getId() };
+            }
+            return ret;
         }
 
         public Object[] getHolidayLaborTimeObject()
         {
-            return new Object[] {
-                            getHolidayLaborTime(),
-                            CITimeReport.EmployeeTimeCardPosition.getType()
-                                            .getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime.name)
-                                            .getDimension().getBaseUoM().getId() };
+            Object[] ret = null;
+            if (this.reasonID == 0) {
+                ret = new Object[] {
+                                getHolidayLaborTime(),
+                                CITimeReport.EmployeeTimeCardPosition
+                                                .getType()
+                                                .getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime.name)
+                                                .getDimension().getBaseUoM().getId() };
+            }
+            return ret;
         }
 
         /**
@@ -848,7 +868,44 @@ public abstract class EmployeeTimeCard_Base
             return getLaborTime().compareTo(BigDecimal.ZERO) > 0
                             ||  getExtraLaborTime().compareTo(BigDecimal.ZERO) > 0
                             ||  getNightLaborTime().compareTo(BigDecimal.ZERO) > 0
-                            ||  getHolidayLaborTime().compareTo(BigDecimal.ZERO) > 0;
+                            ||  getHolidayLaborTime().compareTo(BigDecimal.ZERO) > 0
+                            ||  getReasonID() > 0;
+        }
+
+        /**
+         * Getter method for the instance variable {@link #reasonID}.
+         *
+         * @return value of instance variable {@link #reasonID}
+         */
+        public Long getReasonID()
+        {
+            return this.reasonID;
+        }
+
+        /**
+         * Getter method for the instance variable {@link #reasonID}.
+         *
+         * @return value of instance variable {@link #reasonID}
+         */
+        public Long getReasonObject()
+        {
+            Long ret = null;
+            if (this.reasonID > 0) {
+                ret = this.reasonID;
+            }
+            return ret;
+        }
+
+        /**
+         * Setter method for instance variable {@link #reasonID}.
+         *
+         * @param _reasonID value for instance variable {@link #reasonID}
+         */
+        public void setReasonID(final Long _reasonID)
+        {
+            if (_reasonID != null) {
+                this.reasonID = _reasonID;
+            }
         }
     }
 }
