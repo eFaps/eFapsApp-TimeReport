@@ -35,4 +35,13 @@ import org.efaps.admin.program.esjp.EFapsUUID;
 @EFapsRevision("$Rev$")
 public interface TimereportSettings
 {
+    /**
+     * Base string.
+     */
+    String BASE = "org.efaps.timereport.";
+
+    /**
+     * DateGroup for the PorsitionAnalyseReport when shown inside a project.
+     */
+    String PARDATEGRP4PRJT = TimereportSettings.BASE + "PositionAnalyseReportDateGroup4Project";
 }

@@ -38,6 +38,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.EnumUtils;
 import org.efaps.admin.common.MsgPhrase;
 import org.efaps.admin.datamodel.Dimension.UoM;
 import org.efaps.admin.dbproperty.DBProperties;
@@ -60,6 +61,8 @@ import org.efaps.esjp.erp.AbstractGroupedByDate_Base.DateGroup;
 import org.efaps.esjp.erp.FilteredReport;
 import org.efaps.esjp.sales.report.DocumentSumGroupedByDate_Base;
 import org.efaps.esjp.sales.report.DocumentSumReport;
+import org.efaps.esjp.timereport.util.Timereport;
+import org.efaps.esjp.timereport.util.TimereportSettings;
 import org.efaps.util.EFapsException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -243,7 +246,13 @@ public class PositionAnalyzeReport_Base
             } else {
                 final Instance inst = _parameter.getInstance();
                 if (inst != null && inst.getType().isKindOf(CIProjects.ProjectAbstract)) {
-                    ret = DocumentSumGroupedByDate_Base.DateGroup.WEEK;
+                    final String dgStr = Timereport.getSysConfig()
+                                    .getAttributeValue(TimereportSettings.PARDATEGRP4PRJT);
+                    if (dgStr == null) {
+                        ret = DocumentSumGroupedByDate_Base.DateGroup.DAY;
+                    } else {
+                        ret = EnumUtils.getEnum(DocumentSumGroupedByDate_Base.DateGroup.class, dgStr);
+                    }
                 } else {
                     ret = DocumentSumGroupedByDate_Base.DateGroup.MONTH;
                 }
