@@ -759,7 +759,9 @@ public abstract class EmployeeTimeCard_Base
          */
         public PosBean setLaborTime(final BigDecimal _laborTime)
         {
-            this.LaborTime = _laborTime;
+            if (_laborTime != null) {
+                this.LaborTime = _laborTime;
+            }
             return this;
         }
 
@@ -781,7 +783,9 @@ public abstract class EmployeeTimeCard_Base
          */
         public PosBean setExtraLaborTime(final BigDecimal _extraLaborTime)
         {
-            this.ExtraLaborTime = _extraLaborTime;
+            if (_extraLaborTime != null) {
+                this.ExtraLaborTime = _extraLaborTime;
+            }
             return this;
         }
 
@@ -803,7 +807,9 @@ public abstract class EmployeeTimeCard_Base
          */
         public PosBean setNightLaborTime(final BigDecimal _nightLaborTime)
         {
-            this.NightLaborTime = _nightLaborTime;
+            if (_nightLaborTime != null) {
+                this.NightLaborTime = _nightLaborTime;
+            }
             return this;
         }
 
@@ -825,7 +831,9 @@ public abstract class EmployeeTimeCard_Base
          */
         public PosBean setHolidayLaborTime(final BigDecimal _holidayLaborTime)
         {
-            this.HolidayLaborTime = _holidayLaborTime;
+            if (_holidayLaborTime != null) {
+                this.HolidayLaborTime = _holidayLaborTime;
+            }
             return this;
         }
 
