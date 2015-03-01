@@ -21,15 +21,20 @@
 package org.efaps.esjp.timereport.listener;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
+import org.efaps.db.CachedPrintQuery;
 import org.efaps.db.Instance;
 import org.efaps.db.MultiPrintQuery;
 import org.efaps.db.QueryBuilder;
+import org.efaps.db.SelectBuilder;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.esjp.common.AbstractCommon;
+import org.efaps.esjp.timereport.util.Timereport;
+import org.efaps.esjp.timereport.util.TimereportSettings;
 import org.efaps.util.EFapsException;
 import org.joda.time.DateTime;
 
@@ -56,19 +61,67 @@ public abstract class AbstractOnPayroll_Base
     {
         final TimeBean ret = new TimeBean();
         final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
+        queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
         add2QueryBldr(_parameter, queryBldr);
         final MultiPrintQuery multi = queryBldr.getCachedPrint4Request();
+        final SelectBuilder selAbsenceInst = SelectBuilder.get()
+                        .linkto(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract).instance();
+        multi.addSelect(selAbsenceInst);
         multi.addAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime,
                         CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime,
                         CITimeReport.EmployeeTimeCardPosition.NightLaborTime,
                         CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime);
         multi.execute();
         while (multi.next()) {
-            ret.addLaborTime(multi.<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime));
-            ret.addExtraLaborTime(multi.<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime));
-            ret.addNightLaborTime(multi.<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.NightLaborTime));
-            ret.addHolidayLaborTime(multi
-                            .<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime));
+            if (multi.getCurrentInstance().getType().isCIType(CITimeReport.EmployeeAbsencePosition)) {
+                final Instance absenceInst = multi.getSelect(selAbsenceInst);
+                if (absenceInst != null && absenceInst.isValid()) {
+                    analyzeAbsence(_parameter, ret, absenceInst);
+                }
+            } else {
+                ret.addLaborTime(multi.<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime));
+                ret.addExtraLaborTime(multi.<Object[]>getAttribute(
+                                CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime));
+                ret.addNightLaborTime(multi.<Object[]>getAttribute(
+                                CITimeReport.EmployeeTimeCardPosition.NightLaborTime));
+                ret.addHolidayLaborTime(multi
+                                .<Object[]>getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime));
+            }
+        }
+        return ret;
+    }
+
+    protected abstract void analyzeAbsence(final Parameter _parameter,
+                                           final TimeBean _bean,
+                                           final Instance _absenceInst)
+        throws EFapsException;
+
+    protected void addTimeFromSysConf(final Parameter _parameter,
+                                      final TimeBean _bean,
+                                      final Instance _absenceInst,
+                                      final String _key)
+        throws EFapsException
+    {
+        final CachedPrintQuery print = CachedPrintQuery.get4Request(_absenceInst);
+        print.addAttribute(CITimeReport.AttributeDefinitionAbsenceReason.MappingKey);
+        print.execute();
+        final String key = print.getAttribute(CITimeReport.AttributeDefinitionAbsenceReason.MappingKey);
+
+        _bean.addLaborTime(getTimeFromSysConf(_parameter, key + "." + _key + "." + "LT"));
+        _bean.addExtraLaborTime(getTimeFromSysConf(_parameter, key + "." + _key + "." + "ELT"));
+        _bean.addNightLaborTime(getTimeFromSysConf(_parameter, key + "." + _key + "." + "NLT"));
+        _bean.addHolidayLaborTime(getTimeFromSysConf(_parameter, key + "." + _key + "." + "HLT"));
+    }
+
+    protected BigDecimal getTimeFromSysConf(final Parameter _parameter,
+                                            final String _key)
+        throws EFapsException
+    {
+        BigDecimal ret = BigDecimal.ZERO;
+        final Properties properties = Timereport.getSysConfig().getAttributeValueAsProperties(
+                        TimereportSettings.ABSENCECONFIG, true);
+        if (properties.containsKey(_key)) {
+            ret = new BigDecimal(properties.getProperty(_key));
         }
         return ret;
     }
@@ -96,12 +149,28 @@ public abstract class AbstractOnPayroll_Base
             this.laborTime = this.laborTime.add((BigDecimal) _valueWithUom[0]);
         }
 
+        public void addLaborTime(final BigDecimal _laborTime)
+        {
+            if (this.laborTime == null) {
+                this.laborTime = BigDecimal.ZERO;
+            }
+            this.laborTime = this.laborTime.add(_laborTime);
+        }
+
         public void addExtraLaborTime(final Object[] _valueWithUom)
         {
             if (this.extraLaborTime == null) {
                 this.extraLaborTime = BigDecimal.ZERO;
             }
             this.extraLaborTime = this.extraLaborTime.add((BigDecimal) _valueWithUom[0]);
+        }
+
+        public void addExtraLaborTime(final BigDecimal _laborTime)
+        {
+            if (this.extraLaborTime == null) {
+                this.extraLaborTime = BigDecimal.ZERO;
+            }
+            this.extraLaborTime = this.extraLaborTime.add(_laborTime);
         }
 
         public void addNightLaborTime(final Object[] _valueWithUom)
@@ -112,12 +181,28 @@ public abstract class AbstractOnPayroll_Base
             this.nightLaborTime = this.nightLaborTime.add((BigDecimal) _valueWithUom[0]);
         }
 
+        public void addNightLaborTime(final BigDecimal _laborTime)
+        {
+            if (this.nightLaborTime == null) {
+                this.nightLaborTime = BigDecimal.ZERO;
+            }
+            this.nightLaborTime = this.nightLaborTime.add(_laborTime);
+        }
+
         public void addHolidayLaborTime(final Object[] _valueWithUom)
         {
             if (this.holidayLaborTime == null) {
                 this.holidayLaborTime = BigDecimal.ZERO;
             }
             this.holidayLaborTime = this.holidayLaborTime.add((BigDecimal) _valueWithUom[0]);
+        }
+
+        public void addHolidayLaborTime(final BigDecimal _laborTime)
+        {
+            if (this.holidayLaborTime == null) {
+                this.holidayLaborTime = BigDecimal.ZERO;
+            }
+            this.holidayLaborTime = this.holidayLaborTime.add(_laborTime);
         }
 
         /**

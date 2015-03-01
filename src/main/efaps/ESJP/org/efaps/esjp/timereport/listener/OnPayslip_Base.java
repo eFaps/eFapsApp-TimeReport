@@ -63,6 +63,15 @@ public abstract class OnPayslip_Base
     private Instance payslipInst;
 
     @Override
+    protected void analyzeAbsence(final Parameter _parameter,
+                                  final TimeBean _bean,
+                                  final Instance _absenceInst)
+        throws EFapsException
+    {
+        addTimeFromSysConf(_parameter, _bean, _absenceInst, "Payslip");
+    }
+
+    @Override
     public BigDecimal getLaborTime(final Parameter _parameter,
                                    final Instance _payslipInst,
                                    final DateTime _date,
@@ -159,7 +168,7 @@ public abstract class OnPayslip_Base
             _queryBldr.addWhereAttrInQuery(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
                             attrQueryBldr.getAttributeQuery(CITimeReport.EmployeeTimeCard2Payslip.FromLink));
         }
-        _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeLink, getEmplInst());
+        _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeAbstractLink, getEmplInst());
     }
 
     @Override

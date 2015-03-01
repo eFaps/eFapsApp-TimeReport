@@ -46,6 +46,15 @@ public abstract class OnAdvance_Base
 {
 
     @Override
+    protected void analyzeAbsence(final Parameter _parameter,
+                                  final TimeBean _bean,
+                                  final Instance _absenceInst)
+        throws EFapsException
+    {
+        addTimeFromSysConf(_parameter, _bean, _absenceInst, "Advance");
+    }
+
+    @Override
     public BigDecimal getLaborTime(final Parameter _parameter,
                                    final Instance _advanceInst,
                                    final DateTime _date,

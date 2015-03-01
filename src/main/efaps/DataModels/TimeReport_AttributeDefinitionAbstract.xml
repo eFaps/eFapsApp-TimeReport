@@ -28,7 +28,7 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_AttributeDefinitionAbstract</name>
-        <parent>ERP_AttributeDefinitionAbstract</parent>
+        <parent>ERP_AttributeDefinitionMappingAbstract</parent>
         <purpose abstract="true" />
     </definition>
 </datamodel-type>

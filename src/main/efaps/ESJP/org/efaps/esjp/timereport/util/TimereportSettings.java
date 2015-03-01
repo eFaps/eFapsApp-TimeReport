@@ -44,4 +44,9 @@ public interface TimereportSettings
      * DateGroup for the PorsitionAnalyseReport when shown inside a project.
      */
     String PARDATEGRP4PRJT = TimereportSettings.BASE + "PositionAnalyseReportDateGroup4Project";
+
+    /**
+     * Properties. Can be concatenated.
+     */
+    String ABSENCECONFIG = TimereportSettings.BASE + "AbsenceConfiguration";
 }
