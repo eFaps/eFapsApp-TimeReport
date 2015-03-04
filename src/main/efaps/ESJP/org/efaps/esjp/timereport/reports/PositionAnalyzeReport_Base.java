@@ -201,7 +201,7 @@ public class PositionAnalyzeReport_Base
             multi.addMsgPhrase(selEmp, emplPhrase);
 
             final SelectBuilder selProj = SelectBuilder.get()
-                            .linkto(CITimeReport.EmployeeTimeCardPosition.EmployeeTimeCardLink)
+                            .linkto(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink)
                             .linkfrom(CIProjects.Project2DocumentAbstract.ToAbstract)
                             .linkto(CIProjects.Project2DocumentAbstract.FromAbstract);
             MsgPhrase msgPhrase4Project = null;
@@ -211,14 +211,14 @@ public class PositionAnalyzeReport_Base
                 multi.addMsgPhrase(selProj, msgPhrase4Project);
             }
 
-            multi.addAttribute(CITimeReport.EmployeeTimeCardPosition.Date,
-                            CITimeReport.EmployeeTimeCardPosition.LaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.NightLaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime);
+            multi.addAttribute(CITimeReport.EmployeeAbstractPosition.Date,
+                            CITimeReport.EmployeeAbstractPosition.LaborTime,
+                            CITimeReport.EmployeeAbstractPosition.ExtraLaborTime,
+                            CITimeReport.EmployeeAbstractPosition.NightLaborTime,
+                            CITimeReport.EmployeeAbstractPosition.HolidayLaborTime);
             multi.execute();
             while (multi.next()) {
-                final DateTime date = multi.getAttribute(CITimeReport.EmployeeTimeCardPosition.Date);
+                final DateTime date = multi.getAttribute(CITimeReport.EmployeeAbstractPosition.Date);
                 final String partial = group.getPartial(date, dateGroup).toString(dateTimeFormatter);
                 final String absence = multi.getSelect(selAbsenceValue);
                 final DataBean bean = new DataBean()
