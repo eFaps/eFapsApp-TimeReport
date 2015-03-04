@@ -63,7 +63,7 @@ public abstract class OnPayslip_Base
     private Instance payslipInst;
 
     @Override
-    protected void analyzeAbsence(final Parameter _parameter,
+    public void analyzeAbsence(final Parameter _parameter,
                                   final TimeBean _bean,
                                   final Instance _absenceInst)
         throws EFapsException

@@ -61,6 +61,8 @@ import org.efaps.esjp.erp.AbstractGroupedByDate_Base.DateGroup;
 import org.efaps.esjp.erp.FilteredReport;
 import org.efaps.esjp.sales.report.DocumentSumGroupedByDate_Base;
 import org.efaps.esjp.sales.report.DocumentSumReport;
+import org.efaps.esjp.timereport.listener.AbstractOnPayroll_Base.TimeBean;
+import org.efaps.esjp.timereport.listener.OnPayslip;
 import org.efaps.esjp.timereport.util.Timereport;
 import org.efaps.esjp.timereport.util.TimereportSettings;
 import org.efaps.util.EFapsException;
@@ -174,12 +176,18 @@ public class PositionAnalyzeReport_Base
             final DateTimeFormatter dateTimeFormatter = group.getDateTimeFormatter(dateGroup);
 
             final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
+            queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
             add2QueryBuilder(_parameter, queryBldr);
             final MultiPrintQuery multi = queryBldr.getPrint();
             final SelectBuilder selEmp = SelectBuilder.get()
-                            .linkto(CITimeReport.EmployeeTimeCardPosition.EmployeeLink);
+                            .linkto(CITimeReport.EmployeeAbstractPosition.EmployeeAbstractLink);
             final SelectBuilder selEmpNum = new SelectBuilder(selEmp).attribute(CIHumanResource.Employee.Number);
-            multi.addSelect(selEmpNum);
+            final SelectBuilder selAbsenceInst = SelectBuilder.get()
+                            .linkto(CITimeReport.EmployeeAbstractPosition.AttrDefLinkAbstract).instance();
+            final SelectBuilder selAbsenceValue = SelectBuilder.get()
+                            .linkto(CITimeReport.EmployeeAbstractPosition.AttrDefLinkAbstract)
+                            .attribute(CITimeReport.AttributeDefinitionAbstract.Value);
+            multi.addSelect(selEmpNum, selAbsenceInst, selAbsenceValue);
             final SelectBuilder selDepName = new SelectBuilder(selEmp)
                             .linkfrom(CIHumanResource.Department2EmployeeAdminister.EmployeeLink)
                             .linkto(CIHumanResource.Department2EmployeeAdminister.DepartmentLink)
@@ -212,12 +220,24 @@ public class PositionAnalyzeReport_Base
             while (multi.next()) {
                 final DateTime date = multi.getAttribute(CITimeReport.EmployeeTimeCardPosition.Date);
                 final String partial = group.getPartial(date, dateGroup).toString(dateTimeFormatter);
-
+                final String absence = multi.getSelect(selAbsenceValue);
                 final DataBean bean = new DataBean()
                                 .setPartial(partial)
                                 .setEmployee(multi.getMsgPhrase(selEmp, emplPhrase))
                                 .setEmployeeNumber(multi.<String>getSelect(selEmpNum))
-                                .setLaborTime(getTime((Object[]) multi
+                                .setAbsence(absence);
+                if (multi.getCurrentInstance().getType().isCIType(CITimeReport.EmployeeAbsencePosition)) {
+                    final Instance absenceInst = multi.getSelect(selAbsenceInst);
+                    if (absenceInst != null && absenceInst.isValid()) {
+                        final TimeBean timeBean = new TimeBean();
+                        new OnPayslip().analyzeAbsence(_parameter, timeBean, absenceInst);
+                        bean.setLaborTime(timeBean.getLaborTime());
+                        bean.setExtraLaborTime(timeBean.getExtraLaborTime());
+                        bean.setNightLaborTime(timeBean.getNightLaborTime());
+                        bean.setHolidayLaborTime(timeBean.getHolidayLaborTime());
+                    }
+                } else {
+                    bean.setLaborTime(getTime((Object[]) multi
                                                 .getAttribute(CITimeReport.EmployeeTimeCardPosition.LaborTime)))
                                 .setExtraLaborTime(getTime((Object[]) multi
                                                 .getAttribute(CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime)))
@@ -225,6 +245,7 @@ public class PositionAnalyzeReport_Base
                                                 .getAttribute(CITimeReport.EmployeeTimeCardPosition.NightLaborTime)))
                                 .setHolidayLaborTime(getTime((Object[]) multi
                                                 .getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)));
+                }
                 if (project) {
                     bean.setProject(multi.getMsgPhrase(selProj, msgPhrase4Project));
                 }
@@ -271,19 +292,19 @@ public class PositionAnalyzeReport_Base
             final Map<String, Object> filterMap = getFilterReport().getFilterMap(_parameter);
             if (filterMap.containsKey("dateFrom")) {
                 final DateTime date = (DateTime) filterMap.get("dateFrom");
-                _queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date,
+                _queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeAbstractPosition.Date,
                                 date.withTimeAtStartOfDay().minusSeconds(1));
             }
             if (filterMap.containsKey("dateTo")) {
                 final DateTime date = (DateTime) filterMap.get("dateTo");
-                _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date,
+                _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeAbstractPosition.Date,
                                 date.withTimeAtStartOfDay().plusDays(1));
             }
 
             if (filterMap.containsKey("employee")) {
                 final InstanceFilterValue filter = (InstanceFilterValue) filterMap.get("employee");
                 if (filter.getObject() != null && filter.getObject().isValid()) {
-                    _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeAbstractLink,
+                    _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeAbstractPosition.EmployeeAbstractLink,
                                     filter.getObject());
                 }
             }
@@ -294,7 +315,7 @@ public class PositionAnalyzeReport_Base
                                 CITimeReport.Projects_ProjectService2EmployeeTimeCard);
                 attrQueryBldr.addWhereAttrEqValue(CITimeReport.Projects_ProjectService2EmployeeTimeCard.FromLink, inst);
                 _queryBldr.addWhereAttrInQuery(
-                                CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
+                                CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink,
                         attrQueryBldr.getAttributeQuery(CITimeReport.Projects_ProjectService2EmployeeTimeCard.ToLink));
             }
         }
@@ -351,6 +372,14 @@ public class PositionAnalyzeReport_Base
                             String.class);
             crosstab.addColumnGroup(columnGroup);
 
+            if (BooleanUtils.isTrue((Boolean) filterMap.get("absence"))
+                            && getDateGroup(_parameter).equals(DocumentSumGroupedByDate_Base.DateGroup.DAY)) {
+                final CrosstabMeasureBuilder<String> advanceMeasure = DynamicReports.ctab.measure(
+                                getLabel("Absence"),
+                                "absence", String.class, Calculation.NOTHING);
+                crosstab.addMeasure(advanceMeasure);
+            }
+
             final CrosstabMeasureBuilder<BigDecimal> laborTimeMeasure = DynamicReports.ctab.measure(
                             getLabel("LaborTime"),
                             "laborTime", BigDecimal.class, Calculation.SUM);
@@ -399,6 +428,8 @@ public class PositionAnalyzeReport_Base
         private BigDecimal extraLaborTime = BigDecimal.ZERO;
         private BigDecimal nightLaborTime = BigDecimal.ZERO;
         private BigDecimal holidayLaborTime = BigDecimal.ZERO;
+
+        private String absence;
 
         /**
          * Getter method for the instance variable {@link #partial}.
@@ -590,6 +621,27 @@ public class PositionAnalyzeReport_Base
         public DataBean setDepartment(final String _department)
         {
             this.department = _department;
+            return this;
+        }
+
+        /**
+         * Getter method for the instance variable {@link #absence}.
+         *
+         * @return value of instance variable {@link #absence}
+         */
+        public String getAbsence()
+        {
+            return this.absence;
+        }
+
+        /**
+         * Setter method for instance variable {@link #absence}.
+         *
+         * @param _advance value for instance variable {@link #absence}
+         */
+        public DataBean setAbsence(final String _advance)
+        {
+            this.absence = _advance;
             return this;
         }
     }
