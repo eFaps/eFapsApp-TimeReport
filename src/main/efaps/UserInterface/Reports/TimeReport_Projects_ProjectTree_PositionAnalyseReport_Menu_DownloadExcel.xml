@@ -34,6 +34,7 @@
         <icon>Document_Excel</icon>
         <target>
             <execute method="exportReport" program="org.efaps.esjp.timereport.reports.PositionAnalyzeReport">
+                <property name="FilterKey">org.efaps.esjp.timereport.reports.PositionAnalyzeReport4Project.FilterKey</property>
                 <property name="Mime">xls</property>
             </execute>
         </target>

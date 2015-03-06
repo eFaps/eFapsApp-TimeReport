@@ -34,6 +34,7 @@
         <childs>
             <child>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu_DownloadExcel</child>
             <child>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu_DownloadPDF</child>
+            <child>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu_Filter</child>
         </childs>
     </definition>
 </ui-menu>

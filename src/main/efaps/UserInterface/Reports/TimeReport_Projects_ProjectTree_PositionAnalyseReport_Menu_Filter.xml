@@ -15,33 +15,32 @@
  limitations under the License.
 
  Author:          The eFaps Team
- Revision:        $Rev: 14564 $
- Last Changed:    $Date: 2014-12-02 14:05:52 -0500 (Tue, 02 Dec 2014) $
+ Revision:        $Rev: 14583 $
+ Last Changed:    $Date: 2014-12-03 16:48:15 -0500 (Wed, 03 Dec 2014) $
  Last Changed By: $Author: jan@moxter.net $
 
 -->
 <ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>dcd2fbc7-fd72-4025-82c0-188b3777e17d</uuid>
+    <uuid>2829a1b4-e0b0-420c-8a8a-d93535c096fe</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
-    <file-revision>$Rev: 14564 $</file-revision>
+    <file-revision>$Rev: 14583 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <application-dependencies>
-            <application name="eFapsApp-Projects" />
-        </application-dependencies>
-        <name>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu_DownloadPDF</name>
-        <icon>Document_PDF</icon>
+        <name>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu_Filter</name>
+        <icon>Filter</icon>
         <target>
-            <execute method="exportReport" program="org.efaps.esjp.timereport.reports.PositionAnalyzeReport">
+            <form>TimeReport_PositionAnalyzeReportFilterForm4Project</form>
+            <execute method="setFilter" program="org.efaps.esjp.timereport.reports.PositionAnalyzeReport">
                 <property name="FilterKey">org.efaps.esjp.timereport.reports.PositionAnalyzeReport4Project.FilterKey</property>
-                <property name="Mime">pdf</property>
-                <property name="PageType">A4</property>
-                <property name="PageOrientation">LANDSCAPE</property>
             </execute>
         </target>
-        <property name="Target">hidden</property>
-        <property name="TargetShowFile">true</property>
-        <property name="Label">report.DownloadPDF</property>
+        <property name="Target">modal</property>
+        <property name="TargetMode">edit</property>
+        <property name="Label">report.Filter</property>
+        <property name="TargetTitle">report.Filter</property>
+        <property name="FilterKey">org.efaps.esjp.timereport.reports.PositionAnalyzeReport4Project.FilterKey</property>
+        <property name="FilterTargetForm">TimeReport_PositionAnalyzeReportForm</property>
+        <property name="FilterTargetField">report</property>
     </definition>
 </ui-command>

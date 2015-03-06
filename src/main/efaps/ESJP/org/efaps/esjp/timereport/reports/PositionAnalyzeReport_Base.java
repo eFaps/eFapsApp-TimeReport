@@ -23,8 +23,10 @@ package org.efaps.esjp.timereport.reports;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -41,6 +43,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.efaps.admin.common.MsgPhrase;
 import org.efaps.admin.datamodel.Dimension.UoM;
+import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Parameter.ParameterValues;
@@ -124,6 +127,38 @@ public class PositionAnalyzeReport_Base
         }
         ret.put(ReturnValues.VALUES, file);
         ret.put(ReturnValues.TRUE, true);
+        return ret;
+    }
+
+    @Override
+    protected Object getDefaultValue(final Parameter _parameter,
+                                     final String _field,
+                                     final String _type,
+                                     final String _default)
+        throws EFapsException
+    {
+        Object ret = null;
+        if (_type.equals("Status")) {
+            final Set<Long> set = new HashSet<>();
+            set.add(Status.find(CITimeReport.EmployeeTimeCardStatus.Open).getId());
+            ret = new StatusFilterValue().setObject(set);
+        }
+        if (_field.equals("dateGroup")) {
+            final Instance inst = _parameter.getInstance();
+            if (inst != null && inst.getType().isKindOf(CIProjects.ProjectAbstract)) {
+                final String dgStr = Timereport.getSysConfig()
+                                .getAttributeValue(TimereportSettings.PARDATEGRP4PRJT);
+                if (dgStr == null) {
+                    ret = new EnumFilterValue().setObject(DocumentSumGroupedByDate_Base.DateGroup.DAY);
+                } else {
+                    ret = new EnumFilterValue().setObject(EnumUtils.getEnum(
+                                    DocumentSumGroupedByDate_Base.DateGroup.class, dgStr));
+                }
+            }
+        }
+        if (ret == null) {
+            ret = super.getDefaultValue(_parameter, _field, _type, _default);
+        }
         return ret;
     }
 
@@ -299,6 +334,15 @@ public class PositionAnalyzeReport_Base
                 final DateTime date = (DateTime) filterMap.get("dateTo");
                 _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeAbstractPosition.Date,
                                 date.withTimeAtStartOfDay().plusDays(1));
+            }
+
+            if (filterMap.containsKey("status")) {
+                final StatusFilterValue statusFltr = (StatusFilterValue) filterMap.get("status");
+                final QueryBuilder attrQueryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCard);
+                attrQueryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCard.Status, statusFltr.getObject()
+                                .toArray());
+                _queryBldr.addWhereAttrInQuery(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink,
+                                attrQueryBldr.getAttributeQuery(CITimeReport.EmployeeTimeCard.ID));
             }
 
             if (filterMap.containsKey("employee")) {
