@@ -38,10 +38,8 @@
         <target>
             <menu>TimeReport_Projects_ProjectTree_EmployeeTimeCard_Menu</menu>
             <table>TimeReport_Projects_ProjectService2EmployeeTimeCardTable</table>
-            <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Type">TimeReport_Projects_ProjectService2EmployeeTimeCard</property>
-                <property name="LinkFrom">FromLink</property>
-                <property name="InstanceSelect">linkto[ToLink].instance</property>
+            <evaluate program="org.efaps.esjp.timereport.EmployeeTimeCard" method="multiPrint4Project">
+                <property name="Type">TimeReport_EmployeeTimeCard</property>
             </evaluate>
         </target>
         <property name="Target">content</property>

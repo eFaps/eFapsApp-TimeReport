@@ -52,9 +52,12 @@
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="statusAbstract">
-            <property name="Select">attribute[StatusAbstract]</property>
-            <property name="FilterType">PICKLIST</property>
+            <property name="Attribute">Status</property>
+            <property name="FilterType">STATUS</property>
             <property name="Label">TimeReport_EmployeeTimeCard/Status.Label</property>
+            <property name="FilterDefault">Open</property>
+            <property name="FilterRequired">true</property>
+            <property name="FilterBase">DATABASE</property>
         </field>
     </definition>
 </ui-table>

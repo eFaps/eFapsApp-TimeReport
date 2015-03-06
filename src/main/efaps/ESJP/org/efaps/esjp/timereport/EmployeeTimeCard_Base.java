@@ -56,6 +56,7 @@ import org.efaps.esjp.ci.CIProjects;
 import org.efaps.esjp.ci.CITimeReport;
 import org.efaps.esjp.common.parameter.ParameterUtil;
 import org.efaps.esjp.common.uiform.Create;
+import org.efaps.esjp.common.uitable.MultiPrint;
 import org.efaps.esjp.common.util.InterfaceUtils;
 import org.efaps.esjp.common.util.InterfaceUtils_Base.DojoLibs;
 import org.efaps.esjp.erp.CommonDocument;
@@ -516,6 +517,31 @@ public abstract class EmployeeTimeCard_Base
             }
         }
         return new Return();
+    }
+
+    public Return multiPrint4Project(final Parameter _parameter)
+        throws EFapsException
+    {
+        final MultiPrint multi = new MultiPrint()
+        {
+
+            @Override
+            protected void add2QueryBldr(final Parameter _parameter,
+                                         final QueryBuilder _queryBldr)
+                throws EFapsException
+            {
+                super.add2QueryBldr(_parameter, _queryBldr);
+                final QueryBuilder attrQueryBldr = new QueryBuilder(
+                                CITimeReport.Projects_ProjectService2EmployeeTimeCard);
+                attrQueryBldr.addWhereAttrEqValue(CITimeReport.Projects_ProjectService2EmployeeTimeCard.FromLink,
+                                _parameter.getInstance());
+
+                _queryBldr.addWhereAttrInQuery(CITimeReport.DocumentAbstract.ID,
+                                attrQueryBldr.getAttributeQuery(
+                                                CITimeReport.Projects_ProjectService2EmployeeTimeCard.ToAbstract));
+            }
+        };
+        return multi.execute(_parameter);
     }
 
     public static class DataBean
