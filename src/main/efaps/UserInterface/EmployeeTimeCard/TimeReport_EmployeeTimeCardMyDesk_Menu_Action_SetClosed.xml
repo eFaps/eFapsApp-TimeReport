@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
 
- Copyright 2003 - 2010 The eFaps Team
+ Copyright 2003 - 2014 The eFaps Team
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,28 +15,29 @@
  limitations under the License.
 
  Author:          The eFaps Team
- Revision:        $Rev: 5312 $
- Last Changed:    $Date: 2010-08-16 11:14:37 -0500 (Mon, 16 Aug 2010) $
- Last Changed By: $Author: miguel.a.aranya $
+ Revision:        $Rev: 12986 $
+ Last Changed:    $Date: 2014-06-04 17:43:43 -0500 (Wed, 04 Jun 2014) $
+ Last Changed By: $Author: luis.moreyra@efaps.org $
 
 -->
 <ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
-    <uuid>e907085c-4ff1-4faf-b196-7865591eb632</uuid>
+    <uuid>3e17886a-0679-492a-8fdb-b2117ae3b98f</uuid>
     <file-application>eFapsApp-TimeReport</file-application>
-    <file-revision>$Rev: 5312 $</file-revision>
+    <file-revision>$Rev: 12986 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
-        <name>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Delete</name>
+        <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_SetClosed</name>
         <target>
-            <execute program="org.efaps.esjp.common.uitable.CommonDelete"/>
-            <trigger event="UI_ACCESSCHECK" method="check4Status"
-                name="TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Delete.UI_ACCESSCHECK"
-                program="org.efaps.esjp.admin.access.AccessCheck4UI">
-                <property name="Status">Open</property>
-            </trigger>
+            <execute method="setStatus" program="org.efaps.esjp.admin.datamodel.StatusValue">
+                <property name="Status">Closed</property>
+                <property name="EvalOID">true</property>
+                <property name="NoUpdateStatus">Closed</property>
+                <property name="NoUpdateStatus01">Canceled</property>
+            </execute>
         </target>
         <property name="AskUser">true</property>
         <property name="Submit">true</property>
+        <property name="SubmitSelectedRows">-1</property>
     </definition>
 </ui-command>

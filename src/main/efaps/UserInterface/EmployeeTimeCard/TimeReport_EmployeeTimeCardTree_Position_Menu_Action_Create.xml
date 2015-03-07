@@ -31,6 +31,11 @@
         <target>
             <form>TimeReport_EmployeeTimeCardPositionForm</form>
             <execute method="createPosition" program="org.efaps.esjp.timereport.EmployeeTimeCard"/>
+            <trigger event="UI_ACCESSCHECK" method="check4Status"
+                name="TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Create.UI_ACCESSCHECK"
+                program="org.efaps.esjp.admin.access.AccessCheck4UI">
+                <property name="Status">Open</property>
+            </trigger>
         </target>
         <property name="Target">modal</property>
         <property name="TargetCmdRevise">true</property>

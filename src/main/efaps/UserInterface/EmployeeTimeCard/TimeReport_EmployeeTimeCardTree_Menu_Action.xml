@@ -30,6 +30,9 @@
         <name>TimeReport_EmployeeTimeCardTree_Menu_Action</name>
         <childs>
             <child>TimeReport_EmployeeTimeCardTree_Menu_Action_Edit</child>
+            <child>TimeReport_EmployeeTimeCardTree_Menu_Action_SetClosed</child>
+            <child>TimeReport_EmployeeTimeCardTree_Menu_Action_SetCanceled</child>
+            <child>ERP_DocumentAbstractTree_Action_EditStatus</child>
         </childs>
     </definition>
 </ui-menu>

@@ -57,9 +57,12 @@
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="statusAbstract">
-            <property name="FilterType">PICKLIST</property>
+            <property name="FilterType">Status</property>
+            <property name="FilterRequired">TRUE</property>
+            <property name="FilterBase">DATABASE</property>
+            <property name="FilterDefault">Open</property>
             <property name="ModeEdit">NONE</property>
-            <property name="Attribute">StatusAbstract</property>
+            <property name="Attribute">Status</property>
             <property name="Label">TimeReport_EmployeeTimeCard/Status.Label</property>
         </field>
         <field name="buttonOpenInNewWindow">
@@ -102,9 +105,12 @@
             <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="statusAbstract">
-            <property name="FilterType">PICKLIST</property>
+            <property name="FilterType">Status</property>
+            <property name="FilterRequired">TRUE</property>
+            <property name="FilterBase">DATABASE</property>
+            <property name="FilterDefault">Open</property>
             <property name="ModeEdit">NONE</property>
-            <property name="Attribute">StatusAbstract</property>
+            <property name="Attribute">Status</property>
             <property name="Label">TimeReport_EmployeeTimeCard/Status.Label</property>
         </field>
         <field name="project4View">
