@@ -28,6 +28,10 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Register</name>
+        <access>
+            <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
+        </access>
         <target>
             <form>TimeReport_EmployeeTimeCardRegisterSelectForm</form>
             <command>TimeReport_EmployeeTimeCardMyDesk_Menu_Action_Register2</command>
