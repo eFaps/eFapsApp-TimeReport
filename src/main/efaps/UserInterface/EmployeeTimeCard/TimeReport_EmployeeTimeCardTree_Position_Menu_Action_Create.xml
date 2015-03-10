@@ -28,6 +28,10 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Create</name>
+        <access>
+            <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
+        </access>
         <target>
             <form>TimeReport_EmployeeTimeCardPositionForm</form>
             <execute method="createPosition" program="org.efaps.esjp.timereport.EmployeeTimeCard"/>

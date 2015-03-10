@@ -31,6 +31,11 @@
             <application name="eFapsApp-Projects" />
         </application-dependencies>
         <name>TimeReport_Projects_ProjectTree_PositionAnalyseReport</name>
+        <access>
+            <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
+            <role>TimeReport_Reader</role>
+        </access>
         <target>
             <menu>TimeReport_Projects_ProjectTree_PositionAnalyseReport_Menu</menu>
             <form>TimeReport_PositionAnalyzeReportForm4Project</form>

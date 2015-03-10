@@ -28,6 +28,10 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_EmployeeTimeCardTree_Position_Menu_Action_Delete</name>
+        <access>
+            <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
+        </access>
         <target>
             <execute program="org.efaps.esjp.common.uitable.CommonDelete"/>
             <trigger event="UI_ACCESSCHECK" method="check4Status"
