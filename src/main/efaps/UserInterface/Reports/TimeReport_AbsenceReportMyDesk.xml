@@ -28,6 +28,9 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_AbsenceReportMyDesk</name>
+        <access>
+            <role>TimeReport_Admin</role>
+        </access>
         <target>
             <menu>TimeReport_AbsenceReportMyDesk_Menu</menu>
             <form>TimeReport_AbsenceReportForm</form>

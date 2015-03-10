@@ -28,6 +28,9 @@
     <definition>
         <version-expression>(version==latest)</version-expression>
         <name>TimeReport_PositionAnalyzeReportMyDesk</name>
+        <access>
+            <role>TimeReport_Admin</role>
+        </access>
         <target>
             <menu>TimeReport_PositionAnalyzeReportMyDesk_Menu</menu>
             <form>TimeReport_PositionAnalyzeReportForm</form>
