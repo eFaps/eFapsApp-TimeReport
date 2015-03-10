@@ -36,12 +36,12 @@
         <childs>
            <!--  <child>TimeReport_DocumentsMyDesk</child> -->
             <child>TimeReport_EmployeeTimeCardMyDesk</child>
-            <child>TimeReport_CategoryMyDesk</child>
             <child>TimeReport_AttendanceMyDesk</child>
             <child>TimeReport_AttendanceSelfRegMyDesk</child>
             <child>TimeReport_AttendanceSelfRegStartStop</child>
             <child>TimeReport_AttendanceSelfRegistrationReportSelect</child>
             <child>TimeReport_PositionAnalyzeReportMyDesk</child>
+            <child>TimeReport_AbsenceReportMyDesk</child>
         </childs>
     </definition>
 </ui-menu>
