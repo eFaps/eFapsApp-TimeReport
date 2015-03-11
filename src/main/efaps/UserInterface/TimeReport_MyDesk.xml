@@ -36,6 +36,7 @@
         <childs>
            <!--  <child>TimeReport_DocumentsMyDesk</child> -->
             <child>TimeReport_EmployeeTimeCardMyDesk</child>
+            <child>TimeReport_EmployeePreplannedAbsenceMyDesk</child>
             <child>TimeReport_AttendanceMyDesk</child>
             <child>TimeReport_AttendanceSelfRegMyDesk</child>
             <child>TimeReport_AttendanceSelfRegStartStop</child>

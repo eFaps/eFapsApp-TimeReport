@@ -42,6 +42,7 @@
         <type>TimeReport_ForecastReport</type>
         <type>TimeReport_TimeCardReport</type>
         <type>TimeReport_EmployeeTimeCard</type>
+        <type>TimeReport_EmployeePreplannedAbsence</type>
 
         <status group="TimeReport_EmployeeReportStatus">
             <key>Open</key>
@@ -68,6 +69,13 @@
         </status>
 
         <status group="TimeReport_EmployeeTimeCardStatus">
+            <key>Open</key>
+            <key>Closed</key>
+            <key>Canceled</key>
+        </status>
+
+        <status group="TimeReport_EmployeePreplannedAbsenceStatus">
+            <key>Draft</key>
             <key>Open</key>
             <key>Closed</key>
             <key>Canceled</key>

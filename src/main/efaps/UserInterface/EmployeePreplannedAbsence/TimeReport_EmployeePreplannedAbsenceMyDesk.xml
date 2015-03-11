@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+
+ Copyright 2003 - 2015 The eFaps Team
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ Author:          The eFaps Team
+ Revision:        $Rev: 5312 $
+ Last Changed:    $Date: 2010-08-16 11:14:37 -0500 (Mon, 16 Aug 2010) $
+ Last Changed By: $Author: miguel.a.aranya $
+
+-->
+<ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
+    <uuid>0ce6e5e4-3a51-48c3-81dc-2893f875e82e</uuid>
+    <file-application>eFapsApp-TimeReport</file-application>
+    <file-revision>$Rev: 5312 $</file-revision>
+    <definition>
+        <version-expression>(version==latest)</version-expression>
+        <name>TimeReport_EmployeePreplannedAbsenceMyDesk</name>
+        <access>
+            <role>TimeReport_Admin</role>
+            <role>TimeReport_Modifier</role>
+            <role>TimeReport_Reader</role>
+        </access>
+        <target>
+            <menu>TimeReport_EmployeePreplannedAbsenceMyDesk_Menu</menu>
+            <table>TimeReport_EmployeePreplannedAbsenceTable</table>
+            <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
+                <property name="Type">TimeReport_EmployeePreplannedAbsence</property>
+            </evaluate>
+        </target>
+        <property name="Target">content</property>
+        <property name="TargetShowCheckBoxes">true</property>
+    </definition>
+</ui-command>
