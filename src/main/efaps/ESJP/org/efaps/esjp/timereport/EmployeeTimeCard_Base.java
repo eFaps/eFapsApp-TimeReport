@@ -39,6 +39,7 @@ import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
 import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
+import org.efaps.db.CachedMultiPrintQuery;
 import org.efaps.db.Context;
 import org.efaps.db.Delete;
 import org.efaps.db.Insert;
@@ -262,7 +263,7 @@ public abstract class EmployeeTimeCard_Base
             .append("return cell.rawData()!= undefined ;\n")
             .append("}\n")
             .append("var layout = [\n")
-            .append("{ field: 'name', name: 'No', width: '40px'},\n")
+            .append("{ field: 'name', name: 'No', width: '50px'},\n")
             .append("{ field: 'number', name: 'DNI', width: '50px'},\n")
             .append("{ field: 'employee', name: 'Nombre', width: '200px'}\n");
 
@@ -306,7 +307,7 @@ public abstract class EmployeeTimeCard_Base
             .append("{name: 'Empleado', children: 3} \n");
 
         for (final LocalDate localDate : dates) {
-             script.append(",{ children: 5, name: '").append(localDate.toString(dateFormatter)).append("'}");
+            script.append(",{ children: 5, name: '").append(localDate.toString(dateFormatter)).append("'}");
         }
 
         script.append("];\n")
@@ -320,13 +321,15 @@ public abstract class EmployeeTimeCard_Base
         final MultiPrintQuery multi = new MultiPrintQuery(instances);
         multi.setEnforceSorted(true);
         final SelectBuilder selEmpl = SelectBuilder.get().linkto(CITimeReport.EmployeeTimeCard.EmployeeLink);
-        final SelectBuilder selEmplNumber = new SelectBuilder(selEmpl).attribute(CIHumanResource.EmployeeAbstract.Number);
+        final SelectBuilder selEmplInst = new SelectBuilder(selEmpl).instance();
+        final SelectBuilder selEmplNumber = new SelectBuilder(selEmpl).attribute(
+                        CIHumanResource.EmployeeAbstract.Number);
         //HumanResource_EmployeeMsgPhrase
         final MsgPhrase emplPhrase = MsgPhrase.get(UUID.fromString("f543ca6d-29fb-4f1a-8747-0057b9a08404"));
 
         multi.addMsgPhrase(selEmpl, emplPhrase);
 
-        multi.addSelect(selEmplNumber);
+        multi.addSelect(selEmplInst, selEmplNumber);
         multi.addAttribute(CITimeReport.EmployeeTimeCard.Name, CITimeReport.EmployeeTimeCard.Date,
                         CITimeReport.EmployeeTimeCard.DueDate);
         multi.execute();
@@ -357,14 +360,16 @@ public abstract class EmployeeTimeCard_Base
                 final PosBean bean = new PosBean();
                 bean.setLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
                                 CITimeReport.EmployeeTimeCardPosition.LaborTime)[0])
-                                .setExtraLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                    .setExtraLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
                                                 CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime)[0])
-                                .setNightLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                    .setNightLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
                                                 CITimeReport.EmployeeTimeCardPosition.NightLaborTime)[0])
-                                .setHolidayLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                    .setHolidayLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
                                                 CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)[0])
-                    .setReasonID(posMulti.<Long>getAttribute(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract));
-                map.put(posMulti.<DateTime>getAttribute(CITimeReport.EmployeeTimeCardPosition.Date).toLocalDate(), bean);
+                    .setReasonID(posMulti.<Long>getAttribute(
+                                    CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract));
+                map.put(posMulti.<DateTime>getAttribute(
+                                CITimeReport.EmployeeTimeCardPosition.Date).toLocalDate(), bean);
             }
 
             if (first) {
@@ -385,9 +390,8 @@ public abstract class EmployeeTimeCard_Base
                     if (map.containsKey(localDate)) {
                         bean = map.get(localDate);
                     } else {
-                        bean = new PosBean();
+                        bean = eval4Bean(_parameter, multi.<Instance>getSelect(selEmplInst), localDate);
                     }
-
                     script.append(",").append("A_").append(localDate.getDayOfYear()).append(":")
                         .append(bean.getReasonID())
                         .append(",").append("LT_").append(localDate.getDayOfYear()).append(":")
@@ -398,76 +402,102 @@ public abstract class EmployeeTimeCard_Base
                         .append(bean.getNightLaborTime())
                         .append(",").append("HLT_").append(localDate.getDayOfYear()).append(":")
                         .append(bean.getHolidayLaborTime());
-                } else {
-                    // table.addColumn("").getCurrentColumn().setCSSClass("firstC noneEdit")
-                    // .getRow().addColumn("").getCurrentColumn().setCSSClass("noneEdit")
-                    // .getRow().addColumn("").getCurrentColumn().setCSSClass("noneEdit")
-                    // .getRow().addColumn("").getCurrentColumn().setCSSClass("noneEdit");
                 }
             }
             script.append("}");
         }
 
         script.append("\n]")
-                .append("};\n")
-                .append("var store = new Memory({data: data});\n")
+            .append("};\n")
+            .append("var store = new Memory({data: data});\n")
 
-                .append("var grid = new Grid({")
-                .append("id: 'grid',")
-                .append("store: store,")
-                .append("structure: layout,")
-                .append("cacheClass: Cache,")
-                .append("columnLockCount: 3,")
-                .append("headerGroups: docHeaderGroup,")
-                .append("modules: [\n")
-                .append("GroupHeader,\n")
-                .append("ColumnLock,\n")
-                .append("Edit,\n")
-                .append("CellWidget\n")
-                .append("]\n")
+            .append("var grid = new Grid({")
+            .append("id: 'grid',")
+            .append("store: store,")
+            .append("structure: layout,")
+            .append("cacheClass: Cache,")
+            .append("columnLockCount: 3,")
+            .append("headerGroups: docHeaderGroup,")
+            .append("modules: [\n")
+            .append("GroupHeader,\n")
+            .append("ColumnLock,\n")
+            .append("Edit,\n")
+            .append("CellWidget\n")
+            .append("]\n")
 
-                .append("});\n")
-                .append("grid.placeAt(\"gridDiv\");")
-                .append("grid.edit.foc = grid.edit._focus;\n")
-                .append("grid.edit._focus= function(rowId, colId) {\n")
-                .append("grid.edit.foc(rowId, colId);\n")
-                .append(" var editor = grid.edit.getEditor(rowId, colId);\n")
-                .append("if (editor.textbox) {\n")
-                .append("editor.focusNode.select();\n")
-                .append("}\n")
-                .append("};\n")
+            .append("});\n")
+            .append("grid.placeAt(\"gridDiv\");")
+            .append("grid.edit.foc = grid.edit._focus;\n")
+            .append("grid.edit._focus= function(rowId, colId) {\n")
+            .append("grid.edit.foc(rowId, colId);\n")
+            .append(" var editor = grid.edit.getEditor(rowId, colId);\n")
+            .append("if (editor.textbox) {\n")
+            .append("editor.focusNode.select();\n")
+            .append("}\n")
+            .append("};\n")
 
-                .append("grid.startup();")
-                .append("topic.subscribe(\"eFaps/submitClose\", function(){\n")
+            .append("grid.startup();")
+            .append("topic.subscribe(\"eFaps/submitClose\", function(){\n")
 
-                .append("registry.byId('grid').model.save();\n")
-                .append("var json = [];\n")
-                .append("var query = store.query({ oid: /\\w*/ }).forEach(function (item) {\n")
-                .append("json.push(item);\n")
-                .append("});\n")
-                .append("var jsonStr = dojo.toJson(json);\n")
-                .append("document.getElementsByName('values') [0].value = jsonStr;\n")
-                .append("});\n") ;
+            .append("registry.byId('grid').model.save();\n")
+            .append("var json = [];\n")
+            .append("var query = store.query({ oid: /\\w*/ }).forEach(function (item) {\n")
+            .append("json.push(item);\n")
+            .append("});\n")
+            .append("var jsonStr = dojo.toJson(json);\n")
+            .append("document.getElementsByName('values') [0].value = jsonStr;\n")
+            .append("});\n");
 
         final StringBuilder html = new StringBuilder()
-                        .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/gridx/resources/claro/Gridx.css\" >")
-                        .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior/dojox/grid/resources/tundraGrid.css\" >")
-                        .append("<style>")
-                        .append(".dojoxGridCell.staticHeader {width: 120px;}")
-                        .append(".dow7 {background-color: #CC8181;}")
-                        .append("</style>")
-                        .append("<div id=\"gridDiv\" style=\"position: absolute; height:98%; width: 98%;\">")
-                        .append(InterfaceUtils.wrappInScriptTag(_parameter,
+            .append("<link rel=\"stylesheet\" type=\"text/css\" ")
+            .append("href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior")
+                .append("/gridx/resources/claro/Gridx.css\" >")
+            .append("<link rel=\"stylesheet\" type=\"text/css\" ")
+            .append("href=\"resource/org.efaps.ui.wicket.behaviors.dojo.AbstractDojoBehavior")
+                .append("/dojox/grid/resources/tundraGrid.css\" >")
+            .append("<style>")
+            .append(".dojoxGridCell.staticHeader {width: 120px;}")
+            .append(".dow7 {background-color: #CC8181;}")
+            .append("</style>")
+            .append("<div id=\"gridDiv\" style=\"position: absolute; height:98%; width: 98%;\">")
+            .append(InterfaceUtils.wrappInScriptTag(_parameter,
                                         InterfaceUtils.wrapInDojoRequire(_parameter, script,
                                         DojoLibs.MEMORY , DojoLibs.GXGRID, DojoLibs.GXCACHE, DojoLibs.GXGRPHEADER,
-                                        DojoLibs.GXEDIT,
-                                        DojoLibs.CLMLOCK,DojoLibs.GXEDIT,DojoLibs.GXCELLWIDGET,
-                                        DojoLibs.SELECT,DojoLibs.NBRTEXTBOX,DojoLibs.DOMATTR,
+                                        DojoLibs.GXEDIT, DojoLibs.CLMLOCK, DojoLibs.GXEDIT, DojoLibs.GXCELLWIDGET,
+                                        DojoLibs.SELECT, DojoLibs.NBRTEXTBOX, DojoLibs.DOMATTR,
                                         DojoLibs.REGISTRY, DojoLibs.TOPIC, DojoLibs.LANG), true, 0));
 
         ret.put(ReturnValues.SNIPLETT, html.toString());
         return ret;
     }
+
+    protected PosBean eval4Bean(final Parameter _parameter,
+                                final Instance _emplInst,
+                                final LocalDate _localDate)
+        throws EFapsException
+    {
+        final PosBean ret = new PosBean();
+
+        final QueryBuilder attQueryBldr = new QueryBuilder(CITimeReport.EmployeePreplannedAbsence);
+        attQueryBldr.addWhereAttrEqValue(CITimeReport.EmployeePreplannedAbsence.EmployeeAbstractLink, _emplInst);
+        attQueryBldr.addWhereAttrEqValue(CITimeReport.EmployeePreplannedAbsence.Status,
+                        Status.find(CITimeReport.EmployeePreplannedAbsenceStatus.Closed));
+        final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeePreplannedAbsencePosition);
+        queryBldr.addWhereAttrInQuery(CITimeReport.EmployeePreplannedAbsencePosition.DocumentAbstractLink,
+                        attQueryBldr.getAttributeQuery(CITimeReport.EmployeePreplannedAbsence.ID));
+        queryBldr.addWhereAttrLessValue(CITimeReport.EmployeePreplannedAbsencePosition.FromDate,
+                        _localDate.toDateTimeAtStartOfDay().plusMinutes(1));
+        queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeePreplannedAbsencePosition.ToDate,
+                        _localDate.toDateTimeAtStartOfDay().minusMinutes(1));
+        final CachedMultiPrintQuery multi = queryBldr.getCachedPrint4Request();
+        multi.addAttribute(CITimeReport.EmployeePreplannedAbsencePosition.AbsenceReasonLink);
+        multi.execute();
+        while (multi.next()) {
+            ret.setReasonID(multi.<Long>getAttribute(CITimeReport.EmployeePreplannedAbsencePosition.AbsenceReasonLink));
+        }
+        return ret;
+    }
+
 
     public Return getDateFieldvalue(final Parameter _parameter)
         throws EFapsException
@@ -478,7 +508,8 @@ public abstract class EmployeeTimeCard_Base
         return ret;
     }
 
-    public Return register(final Parameter _parameter) throws EFapsException
+    public Return register(final Parameter _parameter)
+        throws EFapsException
     {
         final String jsonStr = _parameter.getParameterValue("values");
         if (jsonStr != null && !jsonStr.isEmpty()) {
@@ -490,9 +521,7 @@ public abstract class EmployeeTimeCard_Base
             final ObjectMapper mapper = new ObjectMapper();
             try {
                 final List<HashMap<String, Object>> values = mapper.readValue(jsonStr,
-                                new TypeReference<List<HashMap<String, Object>>>()
-                                {
-                                });
+                                new TypeReference<List<HashMap<String, Object>>>() { });
                 final Map<Instance, DataBean> beans = new HashMap<>();
                 for (final HashMap<String, Object> map : values) {
                     final Instance instance = Instance.get(String.valueOf(map.get("oid")));
@@ -771,9 +800,9 @@ public abstract class EmployeeTimeCard_Base
                 ret = new Object[] {
                                 getHolidayLaborTime(),
                                 CITimeReport.EmployeeTimeCardPosition
-                                                .getType()
-                                                .getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime.name)
-                                                .getDimension().getBaseUoM().getId() };
+                                            .getType()
+                                            .getAttribute(CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime.name)
+                                            .getDimension().getBaseUoM().getId() };
             }
             return ret;
         }
@@ -782,6 +811,7 @@ public abstract class EmployeeTimeCard_Base
          * Setter method for instance variable {@link #laborTime}.
          *
          * @param _laborTime value for instance variable {@link #laborTime}
+         * @return this for chaining
          */
         public PosBean setLaborTime(final BigDecimal _laborTime)
         {
@@ -806,6 +836,7 @@ public abstract class EmployeeTimeCard_Base
          *
          * @param _extraLaborTime value for instance variable
          *            {@link #extraLaborTime}
+         * @return this for chaining
          */
         public PosBean setExtraLaborTime(final BigDecimal _extraLaborTime)
         {
@@ -830,6 +861,7 @@ public abstract class EmployeeTimeCard_Base
          *
          * @param _nightLaborTime value for instance variable
          *            {@link #nightLaborTime}
+         * @return this for chaining
          */
         public PosBean setNightLaborTime(final BigDecimal _nightLaborTime)
         {
@@ -852,8 +884,8 @@ public abstract class EmployeeTimeCard_Base
         /**
          * Setter method for instance variable {@link #holidayLaborTime}.
          *
-         * @param _holidayLaborTime value for instance variable
-         *            {@link #holidayLaborTime}
+         * @param _holidayLaborTime value for instance variable {@link #holidayLaborTime}
+         * @return this for chaining
          */
         public PosBean setHolidayLaborTime(final BigDecimal _holidayLaborTime)
         {
