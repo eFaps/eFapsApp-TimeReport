@@ -118,10 +118,10 @@ public abstract class OnAdvance_Base
     {
         // must not be related to any Payslip
         final QueryBuilder attrQueryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCard2Payslip);
-        _queryBldr.addWhereAttrNotInQuery(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
-                        attrQueryBldr.getAttributeQuery(CITimeReport.EmployeeTimeCard2Payslip.ToLink));
+        _queryBldr.addWhereAttrNotInQuery(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink,
+                        attrQueryBldr.getAttributeQuery(CITimeReport.EmployeeTimeCard2Payslip.FromLink));
 
-        _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.EmployeeLink, getEmplInst());
-        _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, getDate().plusDays(1));
+        _queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeAbstractPosition.EmployeeAbstractLink, getEmplInst());
+        _queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeAbstractPosition.Date, getDate().plusDays(1));
     }
 }
