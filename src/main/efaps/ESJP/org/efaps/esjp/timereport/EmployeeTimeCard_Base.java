@@ -322,14 +322,13 @@ public abstract class EmployeeTimeCard_Base
         multi.setEnforceSorted(true);
         final SelectBuilder selEmpl = SelectBuilder.get().linkto(CITimeReport.EmployeeTimeCard.EmployeeLink);
         final SelectBuilder selEmplInst = new SelectBuilder(selEmpl).instance();
+        final SelectBuilder selEmplStatus = new SelectBuilder(selEmpl).status();
         final SelectBuilder selEmplNumber = new SelectBuilder(selEmpl).attribute(
                         CIHumanResource.EmployeeAbstract.Number);
         //HumanResource_EmployeeMsgPhrase
         final MsgPhrase emplPhrase = MsgPhrase.get(UUID.fromString("f543ca6d-29fb-4f1a-8747-0057b9a08404"));
-
         multi.addMsgPhrase(selEmpl, emplPhrase);
-
-        multi.addSelect(selEmplInst, selEmplNumber);
+        multi.addSelect(selEmplInst, selEmplNumber, selEmplStatus);
         multi.addAttribute(CITimeReport.EmployeeTimeCard.Name, CITimeReport.EmployeeTimeCard.Date,
                         CITimeReport.EmployeeTimeCard.DueDate);
         multi.execute();
@@ -338,73 +337,76 @@ public abstract class EmployeeTimeCard_Base
             final String name = multi.getAttribute(CITimeReport.EmployeeTimeCard.Name);
             final String number = multi.getSelect(selEmplNumber);
             final String employee = multi.getMsgPhrase(selEmpl, emplPhrase);
+            final Status emplStatus = multi.getSelect(selEmplStatus);
 
-            final DateTime tcDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.Date);
-            final DateTime tcDueDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.DueDate);
-            final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
-            queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
-            queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
-                            multi.getCurrentInstance());
-            queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date, fromDate.minusDays(1));
-            queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, toDate.plusDays(1));
-            final MultiPrintQuery posMulti = queryBldr.getPrint();
-            posMulti.addAttribute(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract,
-                            CITimeReport.EmployeeTimeCardPosition.Date,
-                            CITimeReport.EmployeeTimeCardPosition.LaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.NightLaborTime,
-                            CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime);
-            posMulti.execute();
-            final Map<LocalDate, PosBean> map = new HashMap<>();
-            while (posMulti.next()) {
-                final PosBean bean = new PosBean();
-                bean.setLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
-                                CITimeReport.EmployeeTimeCardPosition.LaborTime)[0])
-                    .setExtraLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
-                                                CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime)[0])
-                    .setNightLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
-                                                CITimeReport.EmployeeTimeCardPosition.NightLaborTime)[0])
-                    .setHolidayLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
-                                                CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)[0])
-                    .setReasonID(posMulti.<Long>getAttribute(
-                                    CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract));
-                map.put(posMulti.<DateTime>getAttribute(
-                                CITimeReport.EmployeeTimeCardPosition.Date).toLocalDate(), bean);
-            }
-
-            if (first) {
-                first = false;
-            } else {
-                script.append(",");
-            }
-
-            script.append("{").append("oid:\"").append(multi.getCurrentInstance().getOid())
-                            .append("\", name:\"").append(name)
-                            .append("\", number:\"").append(number)
-                            .append("\", employee:\"").append(employee).append("\"");
-            for (final LocalDate localDate : dates) {
-                if (localDate.isEqual(tcDate.toLocalDate()) || localDate.isEqual(tcDueDate.toLocalDate())
-                                || localDate.isAfter(tcDate.toLocalDate())
-                                && localDate.isBefore(tcDueDate.toLocalDate())) {
-                    PosBean bean;
-                    if (map.containsKey(localDate)) {
-                        bean = map.get(localDate);
-                    } else {
-                        bean = eval4Bean(_parameter, multi.<Instance>getSelect(selEmplInst), localDate);
-                    }
-                    script.append(",").append("A_").append(localDate.getDayOfYear()).append(":")
-                        .append(bean.getReasonID())
-                        .append(",").append("LT_").append(localDate.getDayOfYear()).append(":")
-                        .append(bean.getLaborTime())
-                        .append(",").append("ELT_").append(localDate.getDayOfYear()).append(":")
-                        .append(bean.getExtraLaborTime())
-                        .append(",").append("NLT_").append(localDate.getDayOfYear()).append(":")
-                        .append(bean.getNightLaborTime())
-                        .append(",").append("HLT_").append(localDate.getDayOfYear()).append(":")
-                        .append(bean.getHolidayLaborTime());
+            if (emplStatus.equals(Status.find(CIHumanResource.EmployeeStatus.Worker))) {
+                final DateTime tcDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.Date);
+                final DateTime tcDueDate = multi.getAttribute(CITimeReport.EmployeeTimeCard.DueDate);
+                final QueryBuilder queryBldr = new QueryBuilder(CITimeReport.EmployeeTimeCardPosition);
+                queryBldr.addType(CITimeReport.EmployeeAbsencePosition);
+                queryBldr.addWhereAttrEqValue(CITimeReport.EmployeeTimeCardPosition.DocumentAbstractLink,
+                                multi.getCurrentInstance());
+                queryBldr.addWhereAttrGreaterValue(CITimeReport.EmployeeTimeCardPosition.Date, fromDate.minusDays(1));
+                queryBldr.addWhereAttrLessValue(CITimeReport.EmployeeTimeCardPosition.Date, toDate.plusDays(1));
+                final MultiPrintQuery posMulti = queryBldr.getPrint();
+                posMulti.addAttribute(CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract,
+                                CITimeReport.EmployeeTimeCardPosition.Date,
+                                CITimeReport.EmployeeTimeCardPosition.LaborTime,
+                                CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime,
+                                CITimeReport.EmployeeTimeCardPosition.NightLaborTime,
+                                CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime);
+                posMulti.execute();
+                final Map<LocalDate, PosBean> map = new HashMap<>();
+                while (posMulti.next()) {
+                    final PosBean bean = new PosBean();
+                    bean.setLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                                    CITimeReport.EmployeeTimeCardPosition.LaborTime)[0])
+                        .setExtraLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                                                    CITimeReport.EmployeeTimeCardPosition.ExtraLaborTime)[0])
+                        .setNightLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                                                    CITimeReport.EmployeeTimeCardPosition.NightLaborTime)[0])
+                        .setHolidayLaborTime((BigDecimal) posMulti.<Object[]>getAttribute(
+                                                    CITimeReport.EmployeeTimeCardPosition.HolidayLaborTime)[0])
+                        .setReasonID(posMulti.<Long>getAttribute(
+                                        CITimeReport.EmployeeTimeCardPosition.AttrDefLinkAbstract));
+                    map.put(posMulti.<DateTime>getAttribute(
+                                    CITimeReport.EmployeeTimeCardPosition.Date).toLocalDate(), bean);
                 }
+
+                if (first) {
+                    first = false;
+                } else {
+                    script.append(",");
+                }
+
+                script.append("{").append("oid:\"").append(multi.getCurrentInstance().getOid())
+                                .append("\", name:\"").append(name)
+                                .append("\", number:\"").append(number)
+                                .append("\", employee:\"").append(employee).append("\"");
+                for (final LocalDate localDate : dates) {
+                    if (localDate.isEqual(tcDate.toLocalDate()) || localDate.isEqual(tcDueDate.toLocalDate())
+                                    || localDate.isAfter(tcDate.toLocalDate())
+                                    && localDate.isBefore(tcDueDate.toLocalDate())) {
+                        PosBean bean;
+                        if (map.containsKey(localDate)) {
+                            bean = map.get(localDate);
+                        } else {
+                            bean = eval4Bean(_parameter, multi.<Instance>getSelect(selEmplInst), localDate);
+                        }
+                        script.append(",").append("A_").append(localDate.getDayOfYear()).append(":")
+                            .append(bean.getReasonID())
+                            .append(",").append("LT_").append(localDate.getDayOfYear()).append(":")
+                            .append(bean.getLaborTime())
+                            .append(",").append("ELT_").append(localDate.getDayOfYear()).append(":")
+                            .append(bean.getExtraLaborTime())
+                            .append(",").append("NLT_").append(localDate.getDayOfYear()).append(":")
+                            .append(bean.getNightLaborTime())
+                            .append(",").append("HLT_").append(localDate.getDayOfYear()).append(":")
+                            .append(bean.getHolidayLaborTime());
+                    }
+                }
+                script.append("}");
             }
-            script.append("}");
         }
 
         script.append("\n]")
