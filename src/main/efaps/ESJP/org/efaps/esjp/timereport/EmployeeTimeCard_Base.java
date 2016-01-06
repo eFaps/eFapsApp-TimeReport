@@ -242,7 +242,8 @@ public abstract class EmployeeTimeCard_Base
 
         while (rMutli.next()) {
             script.append(",{ id: ").append(rMutli.getCurrentInstance().getId())
-                .append(",label: '").append(rMutli.getAttribute(CITimeReport.AttributeDefinitionAbsenceReason.Value))
+                .append(",label: '")
+                    .append(rMutli.<String>getAttribute(CITimeReport.AttributeDefinitionAbsenceReason.Value))
                 .append("'}\n");
         }
 
