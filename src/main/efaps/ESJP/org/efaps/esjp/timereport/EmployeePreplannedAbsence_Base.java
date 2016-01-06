@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2015 The eFaps Team
+ * Copyright 2003 - 2016 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Revision:        $Rev$
- * Last Changed:    $Date$
- * Last Changed By: $Author$
  */
 
 package org.efaps.esjp.timereport;
@@ -23,7 +20,7 @@ package org.efaps.esjp.timereport;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Insert;
 import org.efaps.db.Instance;
@@ -38,10 +35,9 @@ import org.efaps.util.EFapsException;
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id: $
  */
 @EFapsUUID("ef181682-1f77-4948-a0bc-69e08fe892fd")
-@EFapsRevision("$Rev: 4628 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class EmployeePreplannedAbsence_Base
     extends CommonDocument
 {
@@ -116,7 +112,7 @@ public abstract class EmployeePreplannedAbsence_Base
                 print.addAttribute(CITimeReport.EmployeePreplannedAbsence.EmployeeLink);
                 print.execute();
                 _insert.add(CITimeReport.EmployeePreplannedAbsencePosition.EmployeeLink,
-                                print.getAttribute(CITimeReport.EmployeePreplannedAbsence.EmployeeLink));
+                                print.<Long>getAttribute(CITimeReport.EmployeePreplannedAbsence.EmployeeLink));
             }
         };
         return create.execute(_parameter);

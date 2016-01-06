@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2015 The eFaps Team
+ * Copyright 2003 - 2016 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Revision:        $Rev$
- * Last Changed:    $Date$
- * Last Changed By: $Author$
  */
 
 package org.efaps.esjp.timereport;
@@ -37,7 +34,7 @@ import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.CachedMultiPrintQuery;
 import org.efaps.db.Context;
@@ -74,10 +71,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id: $
  */
 @EFapsUUID("bc1ebe71-6af7-4ef8-b9b8-7ebcb61432db")
-@EFapsRevision("$Rev: 4628 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class EmployeeTimeCard_Base
     extends CommonDocument
 {
@@ -193,7 +189,7 @@ public abstract class EmployeeTimeCard_Base
                 print.addAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink);
                 print.execute();
                 _insert.add(CITimeReport.EmployeeTimeCardPosition.EmployeeLink,
-                                print.getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
+                                print.<Long>getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
             }
         };
         return create.execute(_parameter);
@@ -635,7 +631,7 @@ public abstract class EmployeeTimeCard_Base
                         print.addAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink);
                         print.execute();
                         update.add(CITimeReport.EmployeeAbstractPosition.EmployeeAbstractLink,
-                                        print.getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
+                                        print.<Long>getAttribute(CITimeReport.EmployeeTimeCard.EmployeeLink));
                         update.add(CITimeReport.EmployeeAbstractPosition.DocumentAbstractLink, getInstance());
                     }
                     update.add(CITimeReport.EmployeeAbstractPosition.Date, new DateTime(bean.getDate().getYear(),
