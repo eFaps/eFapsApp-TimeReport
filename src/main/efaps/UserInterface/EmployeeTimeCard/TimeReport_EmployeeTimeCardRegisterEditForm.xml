@@ -39,11 +39,11 @@
         </field>
         <field name="values">
             <property name="ModeCreate">HIDDEN</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="fromDate">
             <property name="ModeCreate">HIDDEN</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.timereport.EmployeeTimeCard"
                 method="getDateFieldvalue"
                 name="Payroll_PayslipEditMassiveUpdateForm.fromDate.UI_FIELD_VALUE"
@@ -53,7 +53,7 @@
         </field>
         <field name="toDate">
             <property name="ModeCreate">HIDDEN</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.timereport.EmployeeTimeCard"
                 method="getDateFieldvalue"
                 name="Payroll_PayslipEditMassiveUpdateForm.fromDate.UI_FIELD_VALUE"

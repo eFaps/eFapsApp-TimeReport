@@ -30,7 +30,7 @@
         <name>TimeReport_AttendanceSelfRegStartStopForm</name>
         <field name="type">
             <property name="ModeCreate">EDITABLE</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="Required">true</property>
             <property name="Label">TimeReport_AttendanceAbstract/Type.Label</property>
             <trigger program="org.efaps.esjp.timereport.Attendance" 

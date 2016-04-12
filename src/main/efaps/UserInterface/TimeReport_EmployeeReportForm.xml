@@ -120,7 +120,7 @@
             <property name="Required">true</property>
         </field>
         <field name="resume">
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="HideLabel">true</property>
             <trigger program="org.efaps.esjp.timereport.EmployeeReport"
                 method="getResumeUIFieldValue"

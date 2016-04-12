@@ -94,7 +94,7 @@
             <property name="ModeEdit">READONLY</property>
             <property name="ModeView">READONLY</property>
             <property name="Required">true</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.humanresource.Employee"
                 method="autoComplete4Employee"
                 name="Payroll_PayslipForm.number.UI_FIELD_AUTOCOMPLETE"
@@ -114,7 +114,7 @@
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
             <property name="ModeCreate">READONLY</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
     </definition>
     <definition>
@@ -186,7 +186,7 @@
             <property name="ModeEdit">READONLY</property>
             <property name="ModeView">READONLY</property>
             <property name="Required">true</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.humanresource.Employee"
                 method="autoComplete4Employee"
                 name="Payroll_PayslipForm.number.UI_FIELD_AUTOCOMPLETE"
@@ -206,7 +206,7 @@
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
             <property name="ModeCreate">READONLY</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="headingProject" character="Heading">
             <property name="Level">2</property>
@@ -219,7 +219,7 @@
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
             <property name="Columns">100</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.projects.Project"
                 method="autoComplete4Project"
                 name="Payroll_PayslipForm.project.UI_FIELD_AUTOCOMPLETE"
@@ -239,7 +239,7 @@
             <property name="ModeCreate">READONLY</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">NONE</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="project4View">
             <property name="SelectAlternateOID">linkfrom[TimeReport_Projects_ProjectService2EmployeeTimeCard#ToLink].linkto[FromLink].oid</property>
@@ -249,7 +249,7 @@
             <property name="ModeCreate">NONE</property>
             <property name="ModeEdit">NONE</property>
             <property name="ModeView">READONLY</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="Columns">50</property>
         </field>
     </definition>

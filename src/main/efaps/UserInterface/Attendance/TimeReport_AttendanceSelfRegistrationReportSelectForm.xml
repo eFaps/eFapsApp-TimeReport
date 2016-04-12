@@ -30,7 +30,7 @@
         <name>TimeReport_AttendanceSelfRegistrationReportSelectForm</name>
         <field name="dateFrom">
             <property name="ModeEdit">EDITABLE</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.DateUI</property>
             <property name="Label">TimeReport_AttendanceSelfRegistrationReportSelectForm.dateFrom.Label</property>
             <trigger program="org.efaps.esjp.common.uiform.Field"
                 method="getDefault4DateFieldValue" 
@@ -42,7 +42,7 @@
         </field>
         <field name="dateUntil">
             <property name="ModeEdit">EDITABLE</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.DateUI</property>
             <property name="Label">TimeReport_AttendanceSelfRegistrationReportSelectForm.dateFrom.Label</property>
             <trigger program="org.efaps.esjp.common.uiform.Field"
                 method="getDefault4DateFieldValue" 
@@ -52,7 +52,7 @@
         </field>
         <field name="employee">
             <property name="ModeEdit">EDITABLE</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="Label">TimeReport_AttendanceSelfRegistrationReportSelectForm.employee.Label</property>
             <trigger program="org.efaps.esjp.humanresource.Employee"
                 method="autoComplete4Employee" 

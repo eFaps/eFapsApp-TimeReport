@@ -50,7 +50,7 @@
             <property name="SelectAlternateOID">linkto[EmployeeLink].oid</property>
             <property name="Label">TimeReport_EmployeeReportPosition.employeeLink.Label</property>
             <property name="Phrase">$&lt;linkto[EmployeeLink].attribute[LastName]&gt; - $&lt;linkto[EmployeeLink].attribute[FirstName]&gt;</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <property name="ModeCreate">NONE</property>
         </field>
         <field name="quantity">

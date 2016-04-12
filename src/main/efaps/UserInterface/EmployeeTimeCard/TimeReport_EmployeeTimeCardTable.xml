@@ -54,7 +54,7 @@
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
             <property name="MsgPhrase">HumanResource_EmployeeWithNumberMsgPhrase</property>
             <property name="Label">TimeReport_EmployeeTimeCard/EmployeeAbstractLink.Label</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="statusAbstract">
             <property name="FilterType">Status</property>
@@ -102,7 +102,7 @@
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
             <property name="MsgPhrase">HumanResource_EmployeeWithNumberMsgPhrase</property>
             <property name="Label">TimeReport_EmployeeTimeCard/EmployeeAbstractLink.Label</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="statusAbstract">
             <property name="FilterType">Status</property>
@@ -119,7 +119,7 @@
             <property name="Phrase">$&lt;linkfrom[TimeReport_Projects_ProjectService2EmployeeTimeCard#ToLink].linkto[FromLink].attribute[Name]&gt; - $&lt;linkfrom[TimeReport_Projects_ProjectService2EmployeeTimeCard#ToLink].linkto[FromLink].attribute[Description]&gt;</property>
             <property name="HRef">${COMMONURL}/MenuTree.jsp</property>
             <property name="Label">TimeReport_EmployeeTimeCardForm.project.Label</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
         </field>
         <field name="buttonOpenInNewWindow">
             <icon>eFapsActionNewWindow</icon>

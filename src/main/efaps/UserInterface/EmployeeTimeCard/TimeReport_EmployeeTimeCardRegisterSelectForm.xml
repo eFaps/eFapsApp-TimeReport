@@ -38,7 +38,7 @@
             <property name="ModeEdit">EDITABLE</property>
             <property name="Required">true</property>
             <property name="Label">TimeReport_EmployeeTimeCard/Date.Label</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.DateUI</property>
         </field>
         <field name="toDate">
             <property name="Columns">12</property>
@@ -46,11 +46,11 @@
             <property name="ModeEdit">EDITABLE</property>
             <property name="Required">true</property>
             <property name="Label">TimeReport_EmployeeTimeCard/DueDate.Label</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.DateUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.DateUI</property>
         </field>
          <field name="selection">
             <property name="ModeCreate">HIDDEN</property>
-            <property name="ClassNameUI">org.efaps.admin.datamodel.ui.StringUI</property>
+            <property name="UIProvider">org.efaps.admin.datamodel.ui.StringUI</property>
             <trigger program="org.efaps.esjp.common.uiform.Field"
                 method="getStoreOIDsFieldValue"
                 name="TimeReport_EmployeeTimeCardRegisterSelectForm.selection.UI_FIELD_VALUE"
