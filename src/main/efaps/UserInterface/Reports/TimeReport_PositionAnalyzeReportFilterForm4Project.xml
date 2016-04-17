@@ -23,7 +23,7 @@
 <ui-form xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>adb91c34-9754-4dd2-926f-f24ec1e88ff1</uuid>
-    <file-application>eFapsApp-Commons</file-application>
+    <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 14794 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>

@@ -23,7 +23,7 @@
 <datamodel-type xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>50ae9408-46d2-4952-9d84-832fd8856e59</uuid>
-    <file-application>eFapsApp-Payroll</file-application>
+    <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 14269 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>

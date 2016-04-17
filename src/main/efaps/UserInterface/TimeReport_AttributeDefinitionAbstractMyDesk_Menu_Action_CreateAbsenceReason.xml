@@ -23,7 +23,7 @@
 <ui-command xmlns="http://www.efaps.org/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.efaps.org/xsd http://www.efaps.org/xsd/eFaps_1.0.xsd">
     <uuid>b6f779d3-51de-4e62-952f-8c84d081b23d</uuid>
-    <file-application>eFapsApp-HumanResource</file-application>
+    <file-application>eFapsApp-TimeReport</file-application>
     <file-revision>$Rev: 11017 $</file-revision>
     <definition>
         <version-expression>(version==latest)</version-expression>
