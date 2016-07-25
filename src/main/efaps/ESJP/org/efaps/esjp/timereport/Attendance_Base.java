@@ -29,23 +29,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.base.expression.AbstractValueFormatter;
-import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
-import net.sf.dynamicreports.report.builder.datatype.DateType;
-import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
-import net.sf.dynamicreports.report.builder.subtotal.AggregationSubtotalBuilder;
-import net.sf.dynamicreports.report.datasource.DRDataSource;
-import net.sf.dynamicreports.report.definition.ReportParameters;
-import net.sf.jasperreports.engine.JRDataSource;
-
 import org.efaps.admin.datamodel.Type;
 import org.efaps.admin.dbproperty.DBProperties;
 import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.AttributeQuery;
 import org.efaps.db.Context;
@@ -69,6 +58,17 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.expression.AbstractValueFormatter;
+import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.datatype.DateType;
+import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
+import net.sf.dynamicreports.report.builder.subtotal.AggregationSubtotalBuilder;
+import net.sf.dynamicreports.report.datasource.DRDataSource;
+import net.sf.dynamicreports.report.definition.ReportParameters;
+import net.sf.jasperreports.engine.JRDataSource;
+
 /**
  * TODO comment!
  *
@@ -77,7 +77,7 @@ import org.joda.time.format.DateTimeFormatter;
  *          $
  */
 @EFapsUUID("5e8e3fe4-a95d-4381-aa47-2684c9d4368e")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class Attendance_Base
 {
 
@@ -126,7 +126,7 @@ public abstract class Attendance_Base
         final Return ret = new Return();
         final Field field = new Field();
         final boolean start = new DateTime().isBefore(new DateTime().withHourOfDay(12));
-        final List<DropDownPosition> values = new ArrayList<DropDownPosition>();
+        final List<DropDownPosition> values = new ArrayList<>();
         final DropDownPosition pos = new DropDownPosition(CITimeReport.AttendanceSelfRegStart.getType().getId(),
                         CITimeReport.AttendanceSelfRegStart.getType().getLabel());
         values.add(pos);
@@ -160,7 +160,7 @@ public abstract class Attendance_Base
                             CIFormTimeReport.TimeReport_AttendanceSelfRegistrationReportSelectForm.dateFrom.name));
             final DateTime dateUntil = new DateTime(_parameter.getParameterValue(
                             CIFormTimeReport.TimeReport_AttendanceSelfRegistrationReportSelectForm.dateUntil.name));
-            final Map<LocalDate, AttendanceTime> values = new TreeMap<LocalDate, AttendanceTime>();
+            final Map<LocalDate, AttendanceTime> values = new TreeMap<>();
 
             final QueryBuilder queryBuilder = new QueryBuilder(CITimeReport.AttendanceAbstract);
             queryBuilder.addWhereAttrGreaterValue(CITimeReport.AttendanceAbstract.Time, dateFrom.minusMinutes(1));
@@ -303,8 +303,8 @@ public abstract class Attendance_Base
     public static class AttendanceTime
     {
 
-        private final List<DateTime> starts = new ArrayList<DateTime>();
-        private final List<DateTime> ends = new ArrayList<DateTime>();
+        private final List<DateTime> starts = new ArrayList<>();
+        private final List<DateTime> ends = new ArrayList<>();
 
         private Long hours;
         private Long minutes;

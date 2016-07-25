@@ -21,6 +21,6 @@
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 package org.efaps.esjp.timereport.util;

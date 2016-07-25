@@ -29,7 +29,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.efaps.admin.datamodel.Status;
 import org.efaps.admin.event.Parameter;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Insert;
 import org.efaps.db.Instance;
@@ -54,7 +54,7 @@ import org.joda.time.DateTime;
  * @version $Id: $
  */
 @EFapsUUID("04a65fab-e47f-4349-9d59-6a490dc184c1")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class OnPayslip_Base
     extends AbstractOnPayroll
     implements IOnPayslip

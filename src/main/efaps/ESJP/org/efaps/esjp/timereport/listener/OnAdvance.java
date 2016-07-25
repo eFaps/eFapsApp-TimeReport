@@ -20,8 +20,8 @@
 
 package org.efaps.esjp.timereport.listener;
 
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsListener;
-import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 /**
@@ -34,7 +34,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  *          $
  */
 @EFapsUUID("408cf918-75e9-43f1-89a9-9d446a3a8a07")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 @EFapsListener
 public class OnAdvance
     extends OnAdvance_Base

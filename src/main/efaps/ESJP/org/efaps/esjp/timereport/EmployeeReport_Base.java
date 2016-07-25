@@ -43,7 +43,7 @@ import org.efaps.admin.event.Parameter;
 import org.efaps.admin.event.Parameter.ParameterValues;
 import org.efaps.admin.event.Return;
 import org.efaps.admin.event.Return.ReturnValues;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Context;
 import org.efaps.db.Insert;
@@ -64,10 +64,10 @@ import org.joda.time.format.DateTimeFormatter;
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 @EFapsUUID("5626aabf-4f61-4844-8bca-498e65a878c6")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class EmployeeReport_Base
     extends CommonDocument
 {
@@ -123,7 +123,7 @@ public abstract class EmployeeReport_Base
                                              final Instance _reportInst)
         throws EFapsException
     {
-        final List<Instance> ret = new ArrayList<Instance>();
+        final List<Instance> ret = new ArrayList<>();
         final String[] employees = _parameter.getParameterValues("employeeLink");
         final String[] quantity = _parameter.getParameterValues("quantity");
         final String[] quantityUoM = _parameter.getParameterValues("quantityUoM");
@@ -350,7 +350,7 @@ public abstract class EmployeeReport_Base
         _parameter.get(ParameterValues.OTHERS);
         final Map<?, ?> properties = (Map<?, ?>) _parameter.get(ParameterValues.PROPERTIES);
         properties.get("key");
-        final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        final List<Map<String, String>> list = new ArrayList<>();
 
         final Return retVal = new Return();
         retVal.put(ReturnValues.VALUES, list);
@@ -367,8 +367,8 @@ public abstract class EmployeeReport_Base
         throws EFapsException
     {
         final Return retVal = new Return();
-        final Map<String, Long> map = new TreeMap<String, Long>();
-        final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        final Map<String, Long> map = new TreeMap<>();
+        final List<Map<String, String>> list = new ArrayList<>();
         final Integer pos = _parameter.getParameterValue("eFapsRowSelectedRow") != null
                         ? Integer.parseInt(_parameter.getParameterValue("eFapsRowSelectedRow"))
                                         : 0;
@@ -384,7 +384,7 @@ public abstract class EmployeeReport_Base
                 final String name = multi.<String>getAttribute(CITimeReport.CategoryEmployee.Name);
                 map.put(name, id);
             }
-            final Map<String, String> mapValue = new HashMap<String, String>();
+            final Map<String, String> mapValue = new HashMap<>();
             final StringBuilder js = new StringBuilder();
             if (!map.isEmpty()) {
                 js.append("new Array('").append(1).append("'");
@@ -425,8 +425,8 @@ public abstract class EmployeeReport_Base
         multi.addSelect(selEmpOid, selEmpLastName, selEmpFirstName);
         multi.addAttribute(CITimeReport.EmployeeReportPosition.Date, CITimeReport.EmployeeReportPosition.Quantity);
         multi.execute();
-        final Map<Instance, EmpReportPos> values = new HashMap<Instance, EmpReportPos>();
-        final List<EmpReportPos> employees = new ArrayList<EmpReportPos>();
+        final Map<Instance, EmpReportPos> values = new HashMap<>();
+        final List<EmpReportPos> employees = new ArrayList<>();
         while (multi.next()) {
             final Instance emplInst = Instance.get((String) multi.getSelect(selEmpOid));
             final Object[] quant = multi.getAttribute(CITimeReport.EmployeeReportPosition.Quantity);
@@ -443,7 +443,7 @@ public abstract class EmployeeReport_Base
             values.put(emplInst, pos);
             pos.add(date, (BigDecimal) quant[0], (UoM) quant[1]);
         }
-        final Set<DateTime> dates = new TreeSet<DateTime>();
+        final Set<DateTime> dates = new TreeSet<>();
         for (final EmpReportPos pos : values.values()) {
             for (final DateTime date : pos.getDate2quantity().keySet()) {
                 dates.add(date);
@@ -492,7 +492,7 @@ public abstract class EmployeeReport_Base
 
         private UoM uom = null;
 
-        private final Map<DateTime, BigDecimal> date2quantity = new HashMap<DateTime, BigDecimal>();
+        private final Map<DateTime, BigDecimal> date2quantity = new HashMap<>();
 
 
         /**

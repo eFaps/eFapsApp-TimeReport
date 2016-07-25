@@ -21,7 +21,7 @@
 
 package org.efaps.esjp.timereport;
 
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 
@@ -31,10 +31,10 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * class.
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 @EFapsUUID("da3efd47-1f2b-4f5e-a1dd-314752a4db18")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public class EmployeeReport
     extends EmployeeReport_Base
 {

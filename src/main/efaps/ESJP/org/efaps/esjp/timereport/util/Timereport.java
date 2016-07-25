@@ -23,7 +23,7 @@ package org.efaps.esjp.timereport.util;
 import java.util.UUID;
 
 import org.efaps.admin.common.SystemConfiguration;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.util.cache.CacheReloadException;
 
@@ -31,10 +31,10 @@ import org.efaps.util.cache.CacheReloadException;
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 @EFapsUUID("46e33969-a2cd-4416-bf20-cc75562d6be1")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public final class Timereport
 {
     /**

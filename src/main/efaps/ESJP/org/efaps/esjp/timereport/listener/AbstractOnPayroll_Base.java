@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.util.Properties;
 
 import org.efaps.admin.event.Parameter;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.CachedPrintQuery;
 import org.efaps.db.Instance;
@@ -45,7 +45,7 @@ import org.joda.time.DateTime;
  * @version $Id: $
  */
 @EFapsUUID("be7bb3ea-2e4d-43bb-8dc7-173d18573aca")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class AbstractOnPayroll_Base
     extends AbstractCommon
 {

@@ -21,7 +21,7 @@
 
 package org.efaps.esjp.timereport;
 
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 
@@ -31,10 +31,10 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * class.
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 @EFapsUUID("c5b268d1-18ac-4df2-ab53-4d25ca9f2e22")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public class Attendance
     extends Attendance_Base
 {

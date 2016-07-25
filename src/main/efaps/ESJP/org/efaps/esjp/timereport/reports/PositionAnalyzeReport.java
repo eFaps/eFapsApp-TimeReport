@@ -21,7 +21,7 @@
 
 package org.efaps.esjp.timereport.reports;
 
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 
@@ -34,7 +34,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * @version $Id: EmployeeReport.java 4628 2010-06-01 16:17:36Z jan.moxter $
  */
 @EFapsUUID("9d706b67-24b6-4e51-b630-d6497c2322f9")
-@EFapsRevision("$Rev: 4628 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public class PositionAnalyzeReport
     extends PositionAnalyzeReport_Base
 {

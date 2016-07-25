@@ -21,7 +21,7 @@
 
 package org.efaps.esjp.timereport.util;
 
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 
@@ -29,10 +29,10 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * TODO comment!
  *
  * @author The eFaps Team
- * @version $Id$
+ * eFapsApp-Sales
  */
 @EFapsUUID("3861c8fd-6e6a-4d0d-b662-7824a528f5ee")
-@EFapsRevision("$Rev$")
+@EFapsApplication("eFapsApp-TimeReport")
 public interface TimereportSettings
 {
     /**

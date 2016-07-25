@@ -20,8 +20,8 @@
 
 package org.efaps.esjp.timereport.listener;
 
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsListener;
-import org.efaps.admin.program.esjp.EFapsRevision;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 /**
@@ -33,7 +33,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * @version $Id: OnPurchaseRecord.java 14133 2014-09-29 17:15:24Z jan@moxter.net $
  */
 @EFapsUUID("02c47f7a-8938-4de0-8149-669e3806e0eb")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 @EFapsListener
 public class OnPayslip
     extends OnPayslip_Base

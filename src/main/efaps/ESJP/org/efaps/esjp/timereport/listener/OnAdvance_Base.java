@@ -23,7 +23,7 @@ package org.efaps.esjp.timereport.listener;
 import java.math.BigDecimal;
 
 import org.efaps.admin.event.Parameter;
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 import org.efaps.db.Instance;
 import org.efaps.db.QueryBuilder;
@@ -39,7 +39,7 @@ import org.joda.time.DateTime;
  * @version $Id: $
  */
 @EFapsUUID("46c3ca20-6be4-43ef-8433-4bf815050e56")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class OnAdvance_Base
     extends AbstractOnPayroll
     implements IOnAdvance

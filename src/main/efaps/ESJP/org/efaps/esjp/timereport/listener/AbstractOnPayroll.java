@@ -20,7 +20,7 @@
 
 package org.efaps.esjp.timereport.listener;
 
-import org.efaps.admin.program.esjp.EFapsRevision;
+import org.efaps.admin.program.esjp.EFapsApplication;
 import org.efaps.admin.program.esjp.EFapsUUID;
 
 /**
@@ -32,7 +32,7 @@ import org.efaps.admin.program.esjp.EFapsUUID;
  * @version $Id: $
  */
 @EFapsUUID("4f65dcb7-51a5-4bdf-a9c3-51caec98e5e9")
-@EFapsRevision("$Rev: 14133 $")
+@EFapsApplication("eFapsApp-TimeReport")
 public abstract class AbstractOnPayroll
     extends AbstractOnPayroll_Base
 {

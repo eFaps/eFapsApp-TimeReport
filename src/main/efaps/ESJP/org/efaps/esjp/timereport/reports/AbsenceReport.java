@@ -21,6 +21,8 @@
 
 package org.efaps.esjp.timereport.reports;
 
+import org.efaps.admin.program.esjp.EFapsApplication;
+import org.efaps.admin.program.esjp.EFapsUUID;
 
 /**
  * TODO comment!
@@ -28,6 +30,8 @@ package org.efaps.esjp.timereport.reports;
  * @author The eFaps Team
  * @version $Id: $
  */
+@EFapsUUID("48908ed5-476e-4bee-a25b-1032e1907f15")
+@EFapsApplication("eFapsApp-TimeReport")
 public class AbsenceReport
     extends AbsenceReport_Base
 {
