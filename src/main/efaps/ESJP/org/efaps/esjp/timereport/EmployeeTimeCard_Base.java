@@ -116,10 +116,10 @@ public abstract class EmployeeTimeCard_Base
             final Instance projInst = multi.getSelect(selProjInst);
             if (employinst.isValid() && projInst.isValid()) {
                 final Parameter parameter = ParameterUtil.clone(_parameter);
-                ParameterUtil.setParmeterValue(parameter,
+                ParameterUtil.setParameterValues(parameter,
                                 CIFormTimeReport.TimeReport_EmployeeTimeCardForm.employee.name,
                                 employinst.getOid());
-                ParameterUtil.setParmeterValue(parameter,
+                ParameterUtil.setParameterValues(parameter,
                                 CIFormTimeReport.TimeReport_EmployeeTimeCardForm.project.name,
                                 projInst.getOid());
                 create(parameter);
@@ -311,7 +311,7 @@ public abstract class EmployeeTimeCard_Base
             .append("var data = {")
             .append("identifier: \"oid\",")
             .append(" items: [\n");
-        ParameterUtil.setParmeterValue(_parameter, "selectedRow",
+        ParameterUtil.setParameterValues(_parameter, "selectedRow",
                         (String[]) Context.getThreadContext().getSessionAttribute(
                                         CIFormTimeReport.TimeReport_EmployeeTimeCardRegisterSelectForm.selection.name));
         final List<Instance> instances = getSelectedInstances(_parameter);
