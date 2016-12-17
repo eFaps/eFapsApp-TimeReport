@@ -138,8 +138,8 @@
             <property name="ModeEdit">NONE</property>
             <table>TimeReport_EmployeeReportPositionTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_EmployeeReportAbstractPosition</property>
-                <property name="LinkFroms">DocumentAbstractLink</property>
+                <property name="Type">TimeReport_EmployeeReportAbstractPosition</property>
+                <property name="LinkFrom">DocumentAbstractLink</property>
             </evaluate>
         </field>
     </definition>

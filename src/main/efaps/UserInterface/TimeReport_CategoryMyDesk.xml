@@ -41,7 +41,7 @@
             <menu>TimeReport_CategoryMyDesk_Menu</menu>
             <table>TimeReport_CategoryAbstractTable</table>
             <evaluate program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_CategoryAbstract</property>
+                <property name="Type">TimeReport_CategoryAbstract</property>
                 <property name="ExpandChildTypes">true</property>
             </evaluate>
         </target>

@@ -36,7 +36,7 @@
             <table>TimeReport_AttendanceTable</table>
             <evaluate 
                 program="org.efaps.esjp.common.uitable.MultiPrint">
-                <property name="Types">TimeReport_AttendanceAbstract</property>
+                <property name="Type">TimeReport_AttendanceAbstract</property>
             </evaluate>
         </target>
 
