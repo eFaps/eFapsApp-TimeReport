@@ -73,7 +73,7 @@
             <property name="ModeCreate">EDITABLE</property>
             <property name="ModeEdit">EDITABLE</property>
             <property name="Columns">60</property>
-            <trigger program="org.efaps.esjp.admin.access.AccessOnField"
+            <trigger program="org.efaps.esjp.admin.access.AccessCheck4UI"
                  method="configCheck"
                  name="TimeReport_EmployeeReportPositionTable.categoryDesc.UI_ACCESSCHECK"
                  event="UI_ACCESSCHECK">
